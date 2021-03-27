@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'w3-css/w3.css';
 
-import Com from './Component'
+import Navbar from './components/Navbar/Navbar'
 
 class App extends Component{
 
+  
+
     render(){
       return(
-        <Com></Com>
+        <Navbar />
       )
       
     }

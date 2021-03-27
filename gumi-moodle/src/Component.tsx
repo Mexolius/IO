@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
+import 'w3-css/w3.css';
 
 
 class Com extends Component{
@@ -12,7 +13,7 @@ class Com extends Component{
 
     render(){
         return (
-          <div>Hello</div>
+            <h1>hej</h1>
         );
     }
 }
