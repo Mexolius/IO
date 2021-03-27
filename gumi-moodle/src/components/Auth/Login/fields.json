@@ -1,12 +1,12 @@
 [
     {
         "type": "text",
-        "name": "login",
+        "name": "Login",
         "classnames": "w3-input w3-border"
     },
     {
         "type": "password",
-        "name": "password",
+        "name": "Password",
         "classnames": "w3-input w3-border"
     }
 ]
