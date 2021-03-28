@@ -7,6 +7,7 @@ import Login from '../Auth/Login/Login'
 import Register from '../Auth/Register/Register';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import StMainView from '../MainView/Student/StMainView';
+import GradeList from '../Grades/GradeList/GradeList';
 
 
 class Navbar extends Component {
@@ -20,7 +21,8 @@ class Navbar extends Component {
                             <Link to={'/profile'} className="w3-bar-item w3-button">Profile</Link>
                             <Link to={'/login'} className="w3-bar-item w3-button">Login</Link>
                             <Link to={'/register'} className="w3-bar-item w3-button">Register</Link>
-                            <Link to={'/courses'} className="w3-bar-item w3-button">Register</Link>
+                            <Link to={'/courses'} className="w3-bar-item w3-button">Courses</Link>
+                            <Link to={'/grades_test'} className="w3-bar-item w3-button">Grades_test</Link>
                         </div>  
                     </div>
                 <Switch>
@@ -29,6 +31,7 @@ class Navbar extends Component {
                         <Route path='/login' component={Login} />
                         <Route path='/register' component={Register} />
                         <Route path='/courses' component={StMainView} />
+                        <Route path='/grades_test' component={GradeList} />
                 </Switch>
             </Router>
         );
