@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Component } from 'react'
 //import axios from 'axios'
 import GradeDisplay, { Grade } from '../GradeDisplay/GradeDisplay'
@@ -9,6 +10,7 @@ import './GradeList.css'
 export default class GradeList extends Component<{ APIaddres: string, studentID: number, courseID: number }, { grades: Array<Grade> }>{
 
     componentDidMount() {
+
         /*
                 axios.get(this.props.APIaddres+'/courses').then((newGrades)=>{
             this.setState({grades: newGrades.data})
@@ -25,8 +27,6 @@ export default class GradeList extends Component<{ APIaddres: string, studentID:
                 }
             )
         });
-
-
     }
 
     constructor(props: { APIaddres: string, studentID: number, courseID: number }) {
@@ -40,9 +40,9 @@ export default class GradeList extends Component<{ APIaddres: string, studentID:
     render() {
         return (
             <div className="row">
-                {this.state.grades.map((grade: Grade) => {
+                {this.state.grades.map((grade: Grade, k:number) => {
                     return (
-                        <GradeDisplay grade={grade}></GradeDisplay>
+                        <GradeDisplay key={"grade+"+k} grade={grade}></GradeDisplay>
                     )
                 })}
             </div>
