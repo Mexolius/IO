@@ -1,17 +1,7 @@
 [
     {
         "type": "text",
-        "name": "Name",
-        "classnames": "w3-input w3-border"
-    },
-    {
-        "type": "text",
-        "name": "Surname",
-        "classnames": "w3-input w3-border"
-    },
-    {
-        "type": "text",
-        "name": "login",
+        "name": "email",
         "classnames": "w3-input w3-border"
     },
     {
@@ -21,7 +11,12 @@
     },
     {
         "type": "text",
-        "name": "email",
+        "name": "Name",
+        "classnames": "w3-input w3-border"
+    },
+    {
+        "type": "text",
+        "name": "Surname",
         "classnames": "w3-input w3-border"
     }
 ]

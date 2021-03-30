@@ -3,7 +3,11 @@ import f from './fields.json'
 import 'w3-css/w3.css';
 
 import AbstractFormComponent from '../AbstractFormComponent'
+import axios from 'axios';
 
+const headers = {
+    "Content-type": "application/json"
+}
 
 export default class Register extends AbstractFormComponent {
 
@@ -17,10 +21,18 @@ export default class Register extends AbstractFormComponent {
     }
 
     onSubmit(event:any): boolean{
-        this.rfs.forEach(v=>{
-            console.log(v.current?.value);
-        })
         event.preventDefault();
+        const payload = {
+            "firstName": this.rfs.get('Name')?.current?.value,
+            "lastName": this.rfs.get('Surname')?.current?.value,
+            "email": this.rfs.get('email')?.current?.value,
+            "password": this.rfs.get('password')?.current?.value
+        }
+        console.log(payload);
+        axios.post("http://localhost:8080/register",payload,{headers:headers})
+        .then(res=>{}).catch(err=>{
+            console.log(err);
+        })
         return true;
     }
 
