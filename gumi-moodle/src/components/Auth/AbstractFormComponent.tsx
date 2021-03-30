@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import './login.css';
 
-export default abstract class AbstractFormComponent extends Component{
+export default abstract class AbstractFormComponent<P = {}, S = {}, SS = any> extends Component<P,S,SS>{
 
     protected fields: Array<any> = [];
     protected rfs : Map<string, React.RefObject<HTMLInputElement>>;

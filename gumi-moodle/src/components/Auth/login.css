@@ -3,7 +3,11 @@
     text-decoration: none;
     transition-duration: 1s;
     font-weight: bold;
+}
 
+.red{
+    color: red;
+    font-size: 12px;
 }
 
 .hover-move:hover{

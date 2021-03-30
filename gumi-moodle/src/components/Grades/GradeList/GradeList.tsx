@@ -40,9 +40,9 @@ export default class GradeList extends Component<{ APIaddres: string, studentID:
     render() {
         return (
             <div className="row">
-                {this.state.grades.map((grade: Grade) => {
+                {this.state.grades.map((grade: Grade, k:number) => {
                     return (
-                        <GradeDisplay grade={grade}></GradeDisplay>
+                        <GradeDisplay key={"grade+"+k} grade={grade}></GradeDisplay>
                     )
                 })}
             </div>
