@@ -10,34 +10,52 @@ import GradeList from '../Grades/GradeList/GradeList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
+type AppState = {
+    user?: string,
+    logged?: boolean
+};
 
-class Navbar extends Component {
+class Navbar extends Component<AppState> {
+    state: AppState;
     constructor(props: any) {
         super(props);
-
-        this.state = {
-            user: {},
-        };
+        this.state =(
+            {
+                user: "",
+                logged: false
+            }
+        )
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
+        this.setState(
+            {
+                user: localStorage.getItem('user'),
+                logged: true
+            }
+        )
+      }
+
+    handleChange() {
         this.setState({ 
             user: localStorage.getItem('user'),
+            logged: true
         });
-        console.log(localStorage.getItem('user'));
     }
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('user');
+        this.setState({
+            user: "",
+            logged: false
+        }
+        )
     }
 
     isLogged(){
-        if(localStorage.getItem('user') === null) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return this.state.logged;
     }
 
     getUsername(){
@@ -45,7 +63,6 @@ class Navbar extends Component {
     }
 
     render() {
-        const user = this.setState
         return (
             <Router>
             <div className="w3-bar w3-light-gray w3-border w3-card">

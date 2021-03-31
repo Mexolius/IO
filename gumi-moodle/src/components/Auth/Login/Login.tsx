@@ -5,16 +5,29 @@ import AbstractFormComponent from '../AbstractFormComponent'
 import axios from 'axios';
 
 
-export default class Login extends AbstractFormComponent {
+type AppState = {
+    status?: number
+};
+
+export default class Login extends AbstractFormComponent<AppState> {
+    state: AppState;
 
     constructor(props:any){
         super(props);
+
+        this.state =(
+            {
+                status: 0
+            }
+        )
 
         this.fields = f;
         this.fields.forEach((x:any)=>{
             this.rfs.set(x.name, React.createRef());
          })
+         this.login = this.login.bind(this);
     }
+
 
     login(usern: any, pass: any) {
         const tkn = usern+":"+pass;
@@ -33,12 +46,22 @@ export default class Login extends AbstractFormComponent {
             .then(response => {
                 if(response.status === 200) {
                     localStorage.setItem('user', usern);
+                    this.state =(
+                        {
+                            status: 200
+                        }
+                    )
+                    window.location.reload(); 
                 }
                 else {
                     console.log("error");
                 }
                 
             });
+    }
+
+    getStatus(){
+        return this.state.status;
     }
 
     onSubmit(event:any): boolean{
@@ -50,7 +73,16 @@ export default class Login extends AbstractFormComponent {
 
     render() {
 
-        return (
+        
+            if(this.getStatus()===200){
+                return(
+                <div className="login-container flex-col">
+                    <h2>Thank you for joining GUMI-MOODLE</h2>
+                </div>
+                )
+            }
+            else{
+                return (
             <div className="login-container flex-col">
                 <h2>Login</h2>
                 <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
@@ -70,9 +102,7 @@ export default class Login extends AbstractFormComponent {
                 <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
                 <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
             </div>
-
-
         )
-
     }
+}
 }
