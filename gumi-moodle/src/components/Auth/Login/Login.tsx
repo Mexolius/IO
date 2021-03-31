@@ -1,9 +1,9 @@
 import React from 'react'
 import f from './fields.json'
 import 'w3-css/w3.css';
-
-
 import AbstractFormComponent from '../AbstractFormComponent'
+import axios from 'axios';
+
 
 export default class Login extends AbstractFormComponent {
 
@@ -16,10 +16,33 @@ export default class Login extends AbstractFormComponent {
          })
     }
 
+    login(usern: any, pass: any) {
+        const tkn = usern+":"+pass;
+        const encodedToken = Buffer.from(tkn).toString('base64');
+        const session_url = 'http://0.0.0.0:8080/logged';
+
+        axios({
+            method: 'get',
+            url: session_url,
+            headers: { 
+                'Access-Control-Allow-Origin':'*',
+                'Content-Type':'text/plain; charset=utf-8',
+                'Authorization': 'Basic '+ encodedToken,
+        }
+            })
+            .then(response => {
+                if(response.status === 200) {
+                    localStorage.setItem('user', usern);
+                }
+                else {
+                    console.log("error");
+                }
+                
+            });
+    }
+
     onSubmit(event:any): boolean{
-        this.rfs.forEach(v=>{
-            console.log(v.current?.value);
-        })
+        this.login(this.rfs.get('Login')?.current?.value, this.rfs.get('Password')?.current?.value);
         event.preventDefault();
         return true;
     }

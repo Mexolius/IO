@@ -5,24 +5,60 @@ import Home from '../Home/Home';
 import Profile from '../Profile/Profile';
 import Login from '../Auth/Login/Login'
 import Register from '../Auth/Register/Register';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import StMainView from '../MainView/Student/StMainView';
 import GradeList from '../Grades/GradeList/GradeList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 
 class Navbar extends Component {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            user: {},
+        };
+    }
+
+    componentDidMount() {
+        this.setState({ 
+            user: localStorage.getItem('user'),
+        });
+        console.log(localStorage.getItem('user'));
+    }
+    logout() {
+        // remove user from local storage to log user out
+        localStorage.removeItem('user');
+    }
+
+    isLogged(){
+        if(localStorage.getItem('user') === null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    getUsername(){
+        return localStorage.getItem('user');
+    }
+
     render() {
+        const user = this.setState
         return (
             <Router>
-                    <div className="w3-bar w3-white w3-card">
-                    <Link to={'/'} className="w3-bar-item w3-button w3-wide">GumiMoodle</Link>
-                        <div className="w3-right">
-                            <Link to={'/'} className="w3-bar-item w3-button"><FontAwesomeIcon icon="check-square" /> Home</Link>
+            <div className="w3-bar w3-light-gray w3-border w3-card">
+                    <Link to='/' className="w3-bar-item w3-button w3-wide"><img style={{height:"50px", width:"219px"}} src="logo.png" alt="logo"/></Link>
+                    <div className="w3-right w3-bar-item">
+                            {this.isLogged() && <div className="w3-bar-item w3-button"><FontAwesomeIcon icon={faUser} />{this.getUsername()}</div>  }
+                            {this.isLogged() && <button  className="w3-button w3-red" onClick={this.logout}>Log out</button> }
+                            <Link to={'/'} className="w3-bar-item w3-button"> Home</Link>
                             <Link to={'/profile'} className="w3-bar-item w3-button">Profile</Link>
-                            <Link to={'/login'} className="w3-bar-item w3-button">Login</Link>
-                            <Link to={'/register'} className="w3-bar-item w3-button">Register</Link>
+                            {!this.isLogged() &&<Link to={'/login'} className="w3-bar-item w3-button">Login</Link>}
+                            {!this.isLogged() &&<Link to={'/register'} className="w3-bar-item w3-button">Register</Link>}
                             <Link to={'/courses'} className="w3-bar-item w3-button">Courses</Link>
-                            <Link to={'/grades_test'} className="w3-bar-item w3-button">Grades_test</Link>
+                            <Link to={'/grades_test'} className="w3-bar-item w3-button">Grades_test</Link>                    
                         </div>  
                     </div>
                 <Switch>
