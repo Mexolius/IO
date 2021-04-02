@@ -40,7 +40,7 @@ export default class Register extends AbstractFormComponent<any,{status: number}
             })
         }).catch(err=>{
             if(err.response){
-               
+               this.setState({status:err.reposonse.status});
             }
             else{
                 this.setState({
