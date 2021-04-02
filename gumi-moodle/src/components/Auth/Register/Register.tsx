@@ -3,6 +3,7 @@ import f from './fields.json'
 import 'w3-css/w3.css';
 
 import AbstractFormComponent from '../AbstractFormComponent'
+import ResponseError from '../../RepsonseError/ResponseError'
 import axios from 'axios';
 
 const headers = {
@@ -39,7 +40,7 @@ export default class Register extends AbstractFormComponent<any,{status: number}
             })
         }).catch(err=>{
             if(err.response){
-               
+               this.setState({status:err.reposonse.status});
             }
             else{
                 this.setState({
@@ -63,45 +64,32 @@ export default class Register extends AbstractFormComponent<any,{status: number}
 
     render() {
 
-        if(this.state.status===200){
-            return(
-            <div className="login-container flex-col">
-                <h2>Thank you for joining GUMI-MOODLE</h2>
-            </div>
-            )
-        }
-        else if([409,0].includes(this.state.status)){
-            let err = this.state.status===0?null:<div className="red">{this.error_message(409)}</div>
-            return (
-                <div className="login-container flex-col">
-                    <h2>Register</h2>
-                    <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
-                        {err}
-                        {this.fields.map(x => {
-                            return (
-                                <div key={x.name}>
-                                    <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
-                                </div>
-                            )
-                        })}
-                        <div className="buttons">
-                            <button>Sign up</button>
-                        </div>
-    
-                    </form>
-                    <a className="hover-move" href="/Login">Already have an account? Sign in{'>'}{'>'}</a>
-                </div>
-            )
-        }
+        return(
+             <div className="login-container flex-col">
+                {
+                    this.state.status===200?
+                        <h2>Thank you for joining GUMI-MOODLE</h2> 
+                        :
+                        [409,0].includes(this.state.status)?
 
-        else{
-            return(
-                <div className="login-container flex-col">
-                    <h2>{this.error_message(this.state.status)}</h2>
-                </div>
-                )
-        }
-
+                           <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
+                               <h2>Register</h2>
+                               <ResponseError status={this.state.status}/>
+                               {this.fields.map(x => {
+                                   return (
+                                       <div key={x.name}>
+                                           <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
+                                       </div>
+                                   )
+                               })}
+                               <div className="buttons">
+                                   <button>Sign up</button>
+                               </div>
+                               <a className="hover-move" href="/Login">Already have an account? Sign in{'>'}{'>'}</a>
+                           </form> 
+                           :
+                           <ResponseError status={this.state.status}/>
+                }
 
     }
 }

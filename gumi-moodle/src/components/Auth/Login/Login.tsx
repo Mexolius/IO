@@ -4,9 +4,12 @@ import 'w3-css/w3.css';
 import AbstractFormComponent from '../AbstractFormComponent'
 import axios from 'axios';
 
+import ResponseError from '../../RepsonseError/ResponseError';
+
 
 type AppState = {
-    status?: number
+    status: number
+
 };
 
 export default class Login extends AbstractFormComponent<AppState> {
@@ -46,20 +49,19 @@ export default class Login extends AbstractFormComponent<AppState> {
             .then(response => {
                 if(response.status === 200) {
                     localStorage.setItem('user', usern);
-                    this.state =(
-                        {
-                            status: 200
-                        }
-                    )
-                    window.location.reload(); 
+
+                    this.setState({status:200});
                 }
-                else {
-                    console.log("error");
-                }
-                
             })
             .catch(err=>{
-                console.log(err);
+                if(err.response){
+                    this.setState({status:err.reposonse.status});
+                 }
+                 else{
+                     this.setState({
+                         status: -1,
+                     })
+                 }
             });
     }
 
@@ -76,34 +78,30 @@ export default class Login extends AbstractFormComponent<AppState> {
 
     render() {
 
-        
-            if(this.getStatus()===200){
-                return(
-                <div className="login-container flex-col">
-                    <h2>Thank you for joining GUMI-MOODLE</h2>
-                </div>
-                )
-            }
-            else{
-                return (
+        return(
             <div className="login-container flex-col">
-                <h2>Login</h2>
-                <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
-                    {this.fields.map((x: { type: string, name: string, classnames: string }) => {
-                        return (
-                            <div key={x.name}>
-                                <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
-                            </div>
-                        )
-                    })}
-                    <div className="buttons">
-                        <button>Login</button>
-                        <button>Internal</button>
-                    </div>
-
-                </form>
-                <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
-                <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
+                {
+            this.getStatus()===200
+            ? <h2>Thank you for joining GUMI-MOODLE</h2>
+            : [0,401].includes(this.getStatus())
+                ?   <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
+                        <h2>Login</h2>
+                           {this.fields.map((x: { type: string, name: string, classnames: string }) => {
+                               return (
+                                   <div key={x.name}>
+                                       <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
+                                   </div>
+                               )
+                           })}
+                           <div className="buttons">
+                               <button>Login</button>
+                               <button>Internal</button>
+                           </div>
+                           <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
+                           <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
+                    </form>
+                    :  <ResponseError status={this.state.status}/>
+                }
             </div>
         )
     }
