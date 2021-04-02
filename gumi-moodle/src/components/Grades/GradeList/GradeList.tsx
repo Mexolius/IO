@@ -42,7 +42,7 @@ export default class GradeList extends Component<{ APIaddres: string, studentID:
             <div className="row">
                 {this.state.grades.map((grade: Grade, k:number) => {
                     return (
-                        <GradeDisplay key={"grade+"+k} grade={grade}></GradeDisplay>
+                        <GradeDisplay key={"grade_"+k} grade={grade}></GradeDisplay>
                     )
                 })}
             </div>

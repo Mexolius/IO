@@ -3,11 +3,13 @@ import f from './fields.json'
 import 'w3-css/w3.css';
 import AbstractFormComponent from '../AbstractFormComponent'
 import axios from 'axios';
+
 import ResponseError from '../../RepsonseError/ResponseError';
 
 
 type AppState = {
     status: number
+
 };
 
 export default class Login extends AbstractFormComponent<AppState> {
@@ -47,6 +49,7 @@ export default class Login extends AbstractFormComponent<AppState> {
             .then(response => {
                 if(response.status === 200) {
                     localStorage.setItem('user', usern);
+
                     this.setState({status:200});
                 }
             })
@@ -59,8 +62,6 @@ export default class Login extends AbstractFormComponent<AppState> {
                          status: -1,
                      })
                  }
-                 
-                 console.log(err);
             });
     }
 
@@ -76,6 +77,7 @@ export default class Login extends AbstractFormComponent<AppState> {
 
 
     render() {
+
         return(
             <div className="login-container flex-col">
                 {
@@ -103,4 +105,5 @@ export default class Login extends AbstractFormComponent<AppState> {
             </div>
         )
     }
+}
 }

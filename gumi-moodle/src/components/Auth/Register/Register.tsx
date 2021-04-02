@@ -63,6 +63,7 @@ export default class Register extends AbstractFormComponent<any,{status: number}
     }
 
     render() {
+
         return(
              <div className="login-container flex-col">
                 {
@@ -89,7 +90,6 @@ export default class Register extends AbstractFormComponent<any,{status: number}
                            :
                            <ResponseError status={this.state.status}/>
                 }
-            </div>
-        )
+
     }
 }
