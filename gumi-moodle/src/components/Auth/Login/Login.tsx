@@ -32,7 +32,7 @@ export default class Login extends AbstractFormComponent<AppState> {
     login(usern: any, pass: any) {
         const tkn = usern+":"+pass;
         const encodedToken = Buffer.from(tkn).toString('base64');
-        const session_url = 'http://0.0.0.0:8080/logged';
+        const session_url = 'http://localhost:8080/logged';
 
         axios({
             method: 'get',
@@ -57,6 +57,9 @@ export default class Login extends AbstractFormComponent<AppState> {
                     console.log("error");
                 }
                 
+            })
+            .catch(err=>{
+                console.log(err);
             });
     }
 
