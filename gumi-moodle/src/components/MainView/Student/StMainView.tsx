@@ -1,40 +1,38 @@
 import { Component } from 'react'
 //import axios from 'axios'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import CreateCourse from '../CreateCourse/CreateCourse';
+import CourseList from '../CourseList/CourseList';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 
-interface Course {
-    name: string;
-}
 
-const List = (props: any) => (<ul>
-    {props.ls.map((x: Course) => {
-        return (<li>{x.name}</li>)
-    })}
-</ul>)
 
-export default class StMainView extends Component<any,{ls: Array<Course>}> {
-
-    componentDidMount(){
-        /*
-        axios.get(props.APIaddress+"/courses_student?id="auth.currentUser.ID").then((courses:Array<Course>)=>{
-            this.setState({ls:courses})
-        })
-        */
-        this.setState({ls:Array.from(new Array<Course>(5),(v,k)=>Object.assign({},{name:`Course ${k}`}))});
-    }
+export default class StMainView extends Component {
 
     constructor(props: any){
         super(props);
-
-        this.state={
-            ls: new Array<Course>()
-        };
     }
+
 
     render() {
         return (
-            <div>
-                Hello StMainView
-                <List ls={this.state.ls}></List>
-            </div>)
+        <Router>
+
+            <div className="w3-section w3-bottombar w3-topbar w3-dark-gray w3-padding-16 w3-center">
+            <Link to={'/add_course'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faPlus} /> Add Course</Link>
+            <Link to={'/all_courses'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faList} /> My Courses</Link>
+            </div>
+                      <div className="w3-container w3-light-gray w3-border w3-padding-16">
+
+          <Switch>
+                        <Route path='/add_course' component={CreateCourse} />
+                        <Route path='/all_courses' component={CourseList} />
+                    </Switch>
+                    </div>
+        </Router>    
+            
+        )
     }
 }

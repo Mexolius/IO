@@ -25,7 +25,7 @@ class Navbar extends Component<AppState> {
                 logged: false
             }
         )
-        this.componentDidMount = this.componentDidMount.bind(this);
+       // this.componentDidMount = this.componentDidMount.bind(this);
         this.logout = this.logout.bind(this);
     }
 
@@ -37,13 +37,9 @@ class Navbar extends Component<AppState> {
             }
         )
       }
+      
 
-    handleChange() {
-        this.setState({ 
-            user: localStorage.getItem('user'),
-            logged: true
-        });
-    }
+
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('user');
@@ -65,17 +61,16 @@ class Navbar extends Component<AppState> {
     render() {
         return (
             <Router>
-            <div className="w3-bar w3-light-gray w3-border w3-card">
-                    <Link to='/' className="w3-bar-item w3-button w3-wide"><img style={{height:"50px", width:"219px"}} src="logo.png" alt="logo"/></Link>
+            <div className="w3-bar w3-light-gray w3-border">
+                    <Link to='/' className="w3-bar-item w3-wide"><img style={{height:"50px", width:"219px"}} src="logo.png" alt="logo"/></Link>
                     <div className="w3-right w3-bar-item">
-                            {this.isLogged() && <div className="w3-bar-item w3-button"><FontAwesomeIcon icon={faUser} />{this.getUsername()}</div>  }
-                            {this.isLogged() && <button  className="w3-button w3-red" onClick={this.logout}>Log out</button> }
-                            <Link to={'/'} className="w3-bar-item w3-button"> Home</Link>
-                            <Link to={'/profile'} className="w3-bar-item w3-button">Profile</Link>
-                            {!this.isLogged() &&<Link to={'/login'} className="w3-bar-item w3-button">Login</Link>}
-                            {!this.isLogged() &&<Link to={'/register'} className="w3-bar-item w3-button">Register</Link>}
-                            <Link to={'/courses'} className="w3-bar-item w3-button">Courses</Link>
-                            <Link to={'/grades_test'} className="w3-bar-item w3-button">Grades_test</Link>                    
+                            {this.isLogged() && <Link to={'/profile'} className="w3-bar-item w3-hover-blue w3-button"><FontAwesomeIcon icon={faUser} /> {this.getUsername()}</Link> }
+                            {this.isLogged() && <button  className="w3-button w3-red w3-hover-orange" onClick={this.logout}>Log out</button> }
+                            <Link to={'/'} className="w3-bar-item w3-hover-blue w3-button"> Home</Link>
+                            {!this.isLogged() &&<Link to={'/login'} className="w3-bar-item w3-hover-blue w3-button">Login</Link>}
+                            {!this.isLogged() &&<Link to={'/register'} className="w3-bar-item w3-hover-blue w3-button">Register</Link>}
+                            <Link to={'/courses'} className="w3-bar-item w3-hover-blue w3-button">Courses</Link>
+                            <Link to={'/grades_test'} className="w3-bar-item w3-hover-blue w3-button">Grades_test</Link>                    
                         </div>  
                     </div>
                 <Switch>

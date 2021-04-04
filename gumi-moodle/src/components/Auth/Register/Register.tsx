@@ -61,6 +61,7 @@ export default class Register extends AbstractFormComponent<any,{status: number}
             default: return "Daaah... Something went wrong and we don't know what :(\n error code: " + code
         }
     }
+ 
 
     render() {
 
@@ -89,7 +90,8 @@ export default class Register extends AbstractFormComponent<any,{status: number}
                            </form> 
                            :
                            <ResponseError status={this.state.status}/>
-                }
-
+                    }
+                </div>
+        )
     }
 }

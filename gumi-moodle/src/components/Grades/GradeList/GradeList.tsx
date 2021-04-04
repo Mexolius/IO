@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Component } from 'react'
 //import axios from 'axios'
 import GradeDisplay, { Grade } from '../GradeDisplay/GradeDisplay'

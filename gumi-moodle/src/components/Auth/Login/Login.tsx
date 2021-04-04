@@ -49,7 +49,6 @@ export default class Login extends AbstractFormComponent<AppState> {
             .then(response => {
                 if(response.status === 200) {
                     localStorage.setItem('user', usern);
-
                     this.setState({status:200});
                 }
             })
@@ -105,5 +104,4 @@ export default class Login extends AbstractFormComponent<AppState> {
             </div>
         )
     }
-}
 }
