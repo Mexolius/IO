@@ -9,6 +9,7 @@ import StMainView from '../MainView/Student/StMainView';
 import GradeList from '../Grades/GradeList/GradeList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import CourseDetails from '../MainView/CourseList/CourseDetails';
 
 type AppState = {
     user?: string,

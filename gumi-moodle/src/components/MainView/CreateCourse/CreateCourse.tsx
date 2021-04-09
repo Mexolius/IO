@@ -1,8 +1,6 @@
 import {Component} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileSignature } from '@fortawesome/free-solid-svg-icons'
-import { faFilePrescription } from '@fortawesome/free-solid-svg-icons'
-import { faKey } from '@fortawesome/free-solid-svg-icons'
+import { faFilePrescription, faFileSignature, faKey } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {useForm} from 'react-hook-form'

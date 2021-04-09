@@ -6,15 +6,11 @@ import CourseList from '../CourseList/CourseList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { faList } from '@fortawesome/free-solid-svg-icons'
+import CourseDetails from '../CourseList/CourseDetails';
 
 
 
 export default class StMainView extends Component {
-
-    constructor(props: any){
-        super(props);
-    }
-
 
     render() {
         return (
@@ -29,6 +25,8 @@ export default class StMainView extends Component {
           <Switch>
                         <Route path='/add_course' component={CreateCourse} />
                         <Route path='/all_courses' component={CourseList} />
+                        <Route exact path='/course_details/:id' children={<CourseDetails/>} />
+
                     </Switch>
                     </div>
         </Router>    
