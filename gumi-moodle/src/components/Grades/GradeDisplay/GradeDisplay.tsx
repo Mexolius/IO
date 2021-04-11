@@ -4,7 +4,8 @@ import 'react-circular-progressbar/dist/styles.css';
 export interface Grade {
     max: number,
     current: number,
-    name: string
+    name: string,
+    children: Array<Grade>
 }
 
 function numeric_grade(percent: number):{value: number, color:string}{

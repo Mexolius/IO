@@ -6,29 +6,9 @@ import './GradeList.css'
 
 
 
-export default class GradeList extends Component<{ APIaddres: string, studentID: number, courseID: number }, { grades: Array<Grade> }>{
+export default class GradeList extends Component<{ grades: Array<Grade> }>{
 
-    componentDidMount() {
-
-        /*
-                axios.get(this.props.APIaddres+'/courses').then((newGrades)=>{
-            this.setState({grades: newGrades.data})
-        })
-        */
-        this.setState({
-            grades: Array.from(
-                new Array<Grade>(40), (v, k) => {
-                    return {
-                        max: 100,
-                        current:~~(Math.random()*100),
-                        name: "abc"
-                    }
-                }
-            )
-        });
-    }
-
-    constructor(props: { APIaddres: string, studentID: number, courseID: number }) {
+    constructor(props: { grades: Array<Grade> }) {
         super(props);
 
         this.state = {
@@ -39,7 +19,7 @@ export default class GradeList extends Component<{ APIaddres: string, studentID:
     render() {
         return (
             <div className="row">
-                {this.state.grades.map((grade: Grade, k:number) => {
+                {this.props.grades.map((grade: Grade, k:number) => {
                     return (
                         <GradeDisplay key={"grade_"+k} grade={grade}></GradeDisplay>
                     )
