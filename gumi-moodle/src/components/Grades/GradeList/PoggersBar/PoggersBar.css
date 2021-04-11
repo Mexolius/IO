@@ -1,0 +1,23 @@
+.prog-bar{
+    position: relative;
+    height: 20px;
+    width: 350px;
+    border-radius: 50px;
+    border: 1px solid #333;
+}
+
+.filler{
+    position: absolute;
+    height: 100%;
+    border-radius: inherit;
+    transition: width .2s ease-in;
+}
+
+.threshold{
+    position: absolute;
+    top: -5px;
+    z-index: 100;
+    height: 30px;
+    width: 3px;
+    background: #888;
+}

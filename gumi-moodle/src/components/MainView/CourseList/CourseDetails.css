@@ -1,0 +1,17 @@
+.course-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.instructor-list{
+    background: tomato;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.instructor-list li{
+    background: peachpuff;
+}
+

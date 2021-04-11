@@ -1,9 +1,13 @@
 import { Component } from 'react';
 import { useParams } from 'react-router';
-import axios from 'axios';
-import { Grade } from '../../Grades/GradeDisplay/GradeDisplay';
+//import axios from 'axios';
 import ResponseError from '../../RepsonseError/ResponseError';
-import GradeList from '../../Grades/GradeList/GradeList';
+import GradeList, { Grade } from '../../Grades/GradeList/GradeList';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserGraduate } from '@fortawesome/free-solid-svg-icons'
+
+import './CourseDetails.css'
 
 const CourseDetails = () => {
     let { id } = useParams<{ id: string }>();
@@ -34,13 +38,22 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
                 return (
                     <div>
                         <div>Hello Course {this.state.course.name} Details </div>
-                        <div>
-                            <div><ul>
-                                {this.state.course.instructors.map((inst, key)=>{
-                                    return(<li key={"inst_"+key}>{inst}</li>);
-                                })}    
-                            </ul></div>
-                            <GradeList grades={this.state.course.grades}/>
+                        <div className="course-container">
+                            <div>
+                                <h3>Prowadzący</h3>
+                                <div className="instructor-list">
+                                {this.state.course.instructors.map((inst, key) => {
+                                    return (
+                                        <li key={"inst_" + key}>
+                                            <FontAwesomeIcon icon={faUserGraduate}/>
+                                            {inst}
+                                        </li>
+                                    );
+                                })}
+                            </div>
+                            </div>
+                            
+                            <GradeList grades={this.state.course.grades} />
                         </div>
                     </div>
 
@@ -68,16 +81,53 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
 
         this.setState({
             status: 200,
-            course:{
+            course: {
                 name: "FajnyKurs",
                 instructors: ["Jan Kowalski", "Wacław Frydrych"],
                 grades: Array.from(
-                    new Array<Grade>(40), () => {
+                    new Array<Grade>(10), () => {
                         return {
-                            max: 100,
-                            current: ~~(Math.random() * 100),
-                            name: "abc",
-                            children: []
+                            data: {
+                                max: 100,
+                                current: ~~(Math.random() * 100),
+                                name: "Parent"
+                            },
+                            children: Math.random() < 0.2 ? [{
+                                data: {
+                                    max: 100,
+                                    current: ~~(Math.random() * 100),
+                                    name: "Child"
+                                },
+                                children: []
+                            }, {
+                                data: {
+                                    max: 100,
+                                    current: ~~(Math.random() * 100),
+                                    name: "Child"
+                                },
+                                children: [{
+                                    data: {
+                                        max: 100,
+                                        current: ~~(Math.random() * 100),
+                                        name: "Child"
+                                    },
+                                    children: []
+                                }, {
+                                    data: {
+                                        max: 100,
+                                        current: ~~(Math.random() * 100),
+                                        name: "Child"
+                                    },
+                                    children: []
+                                }]
+                            }, {
+                                data: {
+                                    max: 100,
+                                    current: ~~(Math.random() * 100),
+                                    name: "Child"
+                                },
+                                children: []
+                            }] : []
                         }
                     }
                 )

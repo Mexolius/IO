@@ -6,10 +6,9 @@ import Profile from '../Profile/Profile';
 import Login from '../Auth/Login/Login'
 import Register from '../Auth/Register/Register';
 import StMainView from '../MainView/Student/StMainView';
-import GradeList from '../Grades/GradeList/GradeList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
-import CourseDetails from '../MainView/CourseList/CourseDetails';
+
 
 type AppState = {
     user?: string,
@@ -71,7 +70,6 @@ class Navbar extends Component<AppState> {
                             {!this.isLogged() &&<Link to={'/login'} className="w3-bar-item w3-hover-blue w3-button">Login</Link>}
                             {!this.isLogged() &&<Link to={'/register'} className="w3-bar-item w3-hover-blue w3-button">Register</Link>}
                             <Link to={'/courses'} className="w3-bar-item w3-hover-blue w3-button">Courses</Link>
-                            <Link to={'/grades_test'} className="w3-bar-item w3-hover-blue w3-button">Grades_test</Link>                    
                         </div>  
                     </div>
                 <Switch>
@@ -80,7 +78,6 @@ class Navbar extends Component<AppState> {
                         <Route path='/login' component={Login} />
                         <Route path='/register' component={Register} />
                         <Route path='/courses' component={StMainView} />
-                        <Route path='/grades_test' component={GradeList} />
                 </Switch>
             </Router>
         );
