@@ -18,13 +18,13 @@ export default class StMainView extends Component {
 
                 <div className="w3-section w3-bottombar w3-topbar w3-dark-gray w3-padding-16 w3-center">
                     <Link to={'/add_course'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faPlus} /> Add Course</Link>
-                    <Link to={'/all_courses'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faList} /> My Courses</Link>
+                    <Link to={'/my_courses'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faList} /> My Courses</Link>
                 </div>
                 <div className="w3-container w3-light-gray w3-border w3-padding-16">
 
                     <Switch>
                         <Route path='/add_course' component={CreateCourse} />
-                        <Route path='/all_courses' component={CourseList} />
+                        <Route path='/my_courses' component={CourseList} />
                         <Route exact path='/course_details/:id' children={<CourseDetails />} />
 
                     </Switch>

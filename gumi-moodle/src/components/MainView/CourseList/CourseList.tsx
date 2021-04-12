@@ -1,12 +1,16 @@
 import { Component } from 'react'
 import { Link} from 'react-router-dom';
 import ResponseError from '../../RepsonseError/ResponseError'
+import axios from 'axios';
 //import axios from 'axios'
 
-
 export interface Course {
+    id: string,
     name: string,
-    id: number
+    description: string,
+    studentsLimit: number,
+    students: [],
+    teachers: []
 }
 
 const List = (props: any) => (
@@ -19,7 +23,7 @@ const List = (props: any) => (
                             <img alt="" src="https://www.pngkit.com/png/detail/449-4499737_energy-appraiser-certification-course-materials-icon-course-icon.png" className="w3-bar-item w3-circle" style={{ width: "85px" }}></img>
                             <div className="w3-bar-item">
                                 <h3 className="w3-bottombar">{x.name}</h3>
-                                <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsucimen book.</span>
+                                <span>{x.description}</span>
                             </div>
                     </Link>
                     </li>
@@ -30,6 +34,8 @@ const List = (props: any) => (
 )
 
 export default class CourseList extends Component<any, { ls: Array<Course>, status: number }> {
+
+
 
     componentDidMount() {
         /*
@@ -43,7 +49,7 @@ export default class CourseList extends Component<any, { ls: Array<Course>, stat
 
         })
         */
-        this.setState({ ls: Array.from(new Array<Course>(5), (v, k) => Object.assign({}, { name: `Course ${k}`, id:k })) });
+       // this.setState({ ls: Array.from(new Array<Course>(5), (v, k) => Object.assign({}, { name: `Course ${k}`, id:k })) });
     }
 
     constructor(props: any) {
@@ -53,7 +59,58 @@ export default class CourseList extends Component<any, { ls: Array<Course>, stat
             ls: new Array<Course>(),
             status: 0
         };
+        this.getCourses();
     }
+
+    getCourses() {
+        const userID = localStorage.getItem('userID');
+        const encodedToken = localStorage.getItem('authData');
+        const session_url = 'http://0.0.0.0:8080/courses/of-student/' + userID;
+      
+        axios({
+            method: 'get',
+            url: session_url,
+            headers: { 
+                'Access-Control-Allow-Origin':'*',
+                'Content-Type':'text/plain; charset=utf-8',
+                'Authorization': 'Basic '+ encodedToken,
+        }
+            })
+            .then(response => {
+                if(response.status === 200) {
+                    const courses = JSON.parse(JSON.stringify(response.data));
+                    let courseList = new Array<Course>();
+                    courses.map(
+                        (                        course: { [x: string]: any; }) => {
+                            courseList.push({
+                                name: course['name'], 
+                                id:course['_id'], 
+                                description: 
+                                course['description'], 
+                                studentsLimit: course['studentsLimit'], 
+                                students:course['students'], 
+                                teachers: course['teachers']
+                            })
+                        });
+                        this.setState({
+                            ls: courseList,
+                            status: 200
+                        })
+                }
+            })
+            .catch(err=>{
+                if(err.response){
+                    this.setState({
+                        status:err.response
+                    })
+                 }
+                 else{
+                     this.setState({
+                             status:-1
+                     })
+                 }
+            });
+      }
 
 
     render() {
