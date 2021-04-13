@@ -1,18 +1,22 @@
+import { Component } from "react"
 import { Link } from "react-router-dom"
 
-export interface Course {
+export interface Course<Type> {
     id: string,
     name: string,
     description: string,
     studentsLimit: number,
-    students: [],
+    students: {content: Type},
     teachers: Array<String>
 }
 
-export const CourseList = (props: {ls:Array<Course>}) => (
+export class CourseList<Type> extends Component<{ls:Array<Course<Type>>}>{
+
+    render(){
+        return(
 
     <ul className="w3-ul w3-card-4 ">
-        {props.ls.map((x: Course) => {
+        {this.props.ls.map((x: Course<Type>) => {
             return (
                 <li key={"course_"+x.id} className="w3-bar w3-white w3-hover-light-gray">
                 <Link to={'./course_details/' + x.id}>
@@ -28,3 +32,6 @@ export const CourseList = (props: {ls:Array<Course>}) => (
         })}
     </ul>
 )
+    }
+}
+

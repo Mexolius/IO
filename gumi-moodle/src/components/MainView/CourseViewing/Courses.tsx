@@ -5,13 +5,13 @@ import axios from 'axios';
 
 import { Course, CourseList } from './CourseUtils';
 
-export default class Courses extends Component<{ url: string }, { ls: Array<Course>, status: number }> {
+export default class Courses<Type> extends Component<{ url: string }, { ls: Array<Course<Type>>, status: number }> {
 
     constructor(props: { url: string }) {
         super(props);
 
         this.state = {
-            ls: new Array<Course>(),
+            ls: new Array<Course<Type>>(),
             status: 0
         };
     }
@@ -21,6 +21,12 @@ export default class Courses extends Component<{ url: string }, { ls: Array<Cour
     }
 
     getCourses() {
+        if(localStorage.getItem('userID')==null){
+            this.setState({
+                status: 403
+            });
+            return;
+        }
         axios({
             method: 'get',
             url: this.props.url,
@@ -31,7 +37,6 @@ export default class Courses extends Component<{ url: string }, { ls: Array<Cour
             }
         })
             .then(response => {
-                console.log(response);
                 if (response.status === 200) {
                     const courses = JSON.parse(JSON.stringify(response.data));
 

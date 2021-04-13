@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { RouteComponentProps} from 'react-router-dom';
 import { Course } from '../../MainView/CourseViewing/CourseUtils';
+import { Grade } from '../GradeList/GradeList';
 
 export interface IValues {
     title: string,
@@ -13,7 +14,7 @@ export interface IFormState {
     values: IValues[];
     submitSuccess: boolean;
     status: number;
-    courses: Course[];
+    courses: Course<Array<Grade>>[];
 }
 
 
