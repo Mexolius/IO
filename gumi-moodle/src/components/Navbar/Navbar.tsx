@@ -5,9 +5,9 @@ import Home from '../Home/Home';
 import Profile from '../Profile/Profile';
 import Login from '../Auth/Login/Login'
 import Register from '../Auth/Register/Register';
-import StMainView from '../MainView/Student/StMainView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import MainView from '../MainView/Student/MainView';
 
 
 type AppState = {
@@ -80,7 +80,7 @@ class Navbar extends Component<AppState> {
                         <Route path='/profile' component={Profile} />
                         <Route path='/login' component={Login} />
                         <Route path='/register' component={Register} />
-                        <Route path='/courses' component={StMainView} />
+                        <Route path='/courses' component={MainView} />
                 </Switch>
             </Router>
         );

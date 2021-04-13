@@ -50,11 +50,11 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
         this.setState({ submitSuccess: true, values: [...this.state.values, formData]});
 
         const encodedToken = localStorage.getItem('authData');
-        const session_url = 'http://0.0.0.0:8080/course'
+        const session_url = 'http://localhost:8080/course'
 
         let headers = { 
             'Access-Control-Allow-Origin':'*',
-            'Content-Type':'text/plain; charset=utf-8',
+            'Content-Type':'application/json',
             'Authorization': 'Basic '+ encodedToken
         }
 
@@ -70,9 +70,10 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
             }
             
             console.log(err);
-        }).then(
-            
-        )
+        })
+        .finally( ()=>{
+            console.log("Finally done")
+        });
 
     }
 

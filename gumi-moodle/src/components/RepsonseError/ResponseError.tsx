@@ -11,6 +11,7 @@ function transalte_error(status: Number) {
 }
 
 const ResponseError = (props: { status: Number }) => {
+    console.log(`RESPONSE ERROR - STATUS: ${props.status}`)
     return(transalte_error(props.status));
 }
 

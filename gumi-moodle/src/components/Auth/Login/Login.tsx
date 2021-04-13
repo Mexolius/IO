@@ -16,96 +16,114 @@ type AppState = {
 export default class Login extends AbstractFormComponent<RouteComponentProps, AppState> {
     state: AppState;
 
-    constructor(props: RouteComponentProps){
+    constructor(props: RouteComponentProps) {
         super(props);
 
-        this.state =(
+        this.state = (
             {
                 status: 0
             }
         )
 
         this.fields = f;
-        this.fields.forEach((x:any)=>{
+        this.fields.forEach((x: any) => {
             this.rfs.set(x.name, React.createRef());
-         })
-         this.login = this.login.bind(this);
+        })
+        this.login = this.login.bind(this);
     }
 
 
     login(usern: any, pass: any) {
-        const tkn = usern+":"+pass;
+        const tkn = usern + ":" + pass;
         const encodedToken = Buffer.from(tkn).toString('base64');
         const session_url = 'http://localhost:8080/logged';
 
         axios({
             method: 'get',
             url: session_url,
-            headers: { 
-                'Access-Control-Allow-Origin':'*',
-                'Content-Type':'text/plain; charset=utf-8',
-                'Authorization': 'Basic '+ encodedToken,
-        }
-            })
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Authorization': 'Basic ' + encodedToken,
+            }
+        })
             .then(response => {
-                if(response.status === 200) {
+                if (response.status === 200) {
                     localStorage.setItem('user', usern);
                     localStorage.setItem('authData', encodedToken);
-                    this.setState({status:200});
-                    this.saveUserID(usern, encodedToken);
+                    this.saveUserDetails(usern, encodedToken);
                 }
+                else
+                    this.setState({
+                        status: response.status
+                    });
             })
-            .catch(err=>{
-                if(err.response){
-                    this.setState({status:err.reposonse.status});
-                 }
-                 else{
-                     this.setState({
-                         status: -1,
-                     })
-                 }
-            }).then(
-                data => [
-                    setTimeout(() => {
-                        this.props.history.push('/');
-                        window.location.reload();
-                    }, 150)
-                ]
+            .catch(err => {
+                if (err.response)
+                    this.setState({
+                        status: err.reposonse.status
+                    });
+
+                else
+                    this.setState({
+                        status: -1,
+                    })
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    this.props.history.push('/');
+                    window.location.reload();
+                }, 150)
+            }
             );
     }
 
     //this is bad solution, but necessary
-    saveUserID(email: any, encodedToken: any){
+    saveUserDetails(email: any, encodedToken: any) {
+
+
         const session_url = 'http://localhost:8080/user/' + email;
-      
+
+
+        console.log(session_url);
         axios({
             method: 'get',
             url: session_url,
-            headers: { 
-                'Access-Control-Allow-Origin':'*',
-                'Content-Type':'text/plain; charset=utf-8',
-                'Authorization': 'Basic '+ encodedToken,
-        }
-            })
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'text/plain; charset=utf-8',
+                'Authorization': 'Basic ' + encodedToken,
+            }
+        })
             .then(response => {
-                if(response.status === 200) {
+                console.log('saving');
+                if (response.status === 200) {
                     const userInfo = JSON.parse(JSON.stringify(response.data));
                     localStorage.setItem('userID', userInfo['_id']);
+                    localStorage.setItem('userRoles', userInfo['roles'].join(';'));
                 }
+                this.setState({
+                    status: response.status
+                });
             })
-            .catch(err=>{
-                if(err.response){
-                 }
-                 else{
-                 }
+            .catch(err => {
+                console.log(err);
+                if (err.response)
+                    this.setState({
+                        status: err.response
+                    });
+                else
+                    this.setState({
+                        status: -1
+                    });
             });
     }
 
-    getStatus(){
+    getStatus() {
         return this.state.status;
     }
 
-    onSubmit(event:any): boolean{
+    onSubmit(event: any): boolean {
         this.login(this.rfs.get('Login')?.current?.value, this.rfs.get('Password')?.current?.value);
         event.preventDefault();
         return true;
@@ -114,29 +132,29 @@ export default class Login extends AbstractFormComponent<RouteComponentProps, Ap
 
     render() {
 
-        return(
+        return (
             <div className="login-container flex-col">
                 {
-            this.getStatus()===200
-            ? <h2>Thank you for joining GUMI-MOODLE</h2>
-            : [0,401].includes(this.getStatus())
-                ?   <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
-                        <h2>Login</h2>
-                           {this.fields.map((x: { type: string, name: string, classnames: string }) => {
-                               return (
-                                   <div key={x.name}>
-                                       <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
-                                   </div>
-                               )
-                           })}
-                           <div className="buttons">
-                               <button>Login</button>
-                               <button>Internal</button>
-                           </div>
-                           <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
-                           <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
-                    </form>
-                    :  <ResponseError status={this.state.status}/>
+                    this.getStatus() === 200
+                        ? <h2>Thank you for joining GUMI-MOODLE</h2>
+                        : [0, 401].includes(this.getStatus())
+                            ? <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
+                                <h2>Login</h2>
+                                {this.fields.map((x: { type: string, name: string, classnames: string }) => {
+                                    return (
+                                        <div key={x.name}>
+                                            <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
+                                        </div>
+                                    )
+                                })}
+                                <div className="buttons">
+                                    <button>Login</button>
+                                    <button>Internal</button>
+                                </div>
+                                <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
+                                <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
+                            </form>
+                            : <ResponseError status={this.state.status} />
                 }
             </div>
         )

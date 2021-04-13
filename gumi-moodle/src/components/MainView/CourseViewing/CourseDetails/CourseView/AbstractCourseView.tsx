@@ -1,27 +1,14 @@
-import { Component } from 'react';
-import { useParams } from 'react-router';
-//import axios from 'axios';
-import ResponseError from '../../RepsonseError/ResponseError';
-import GradeList, { Grade } from '../../Grades/GradeList/GradeList';
+import { Component } from "react";
+import { Course } from "../../CourseUtils";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons'
+import ResponseError from "../../../../RepsonseError/ResponseError";
 
-import './CourseDetails.css'
+import '../CourseDetails.css'
 
-const CourseDetails = () => {
-    let { id } = useParams<{ id: string }>();
-    return (<CourseBody id={parseInt(id)}></CourseBody>);
-}
-
-interface Course {
-    name: string,
-    instructors: Array<String>,
-    grades: Array<Grade>;
-}
-
-class CourseBody extends Component<{ id: number }, { course: Course, status: number }>{
-    constructor(props: { id: number }) {
+export default class AbstractCourseView extends Component<{ studentID: number, courseID: number}, { course: Course, status: number }>{
+    constructor(props: { studentID: number, courseID: number}) {
         super(props);
 
         this.state = {
@@ -42,7 +29,7 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
                             <div>
                                 <h3>Prowadzący</h3>
                                 <div className="instructor-list">
-                                {this.state.course.instructors.map((inst, key) => {
+                                {this.state.course.teachers.map((inst, key) => {
                                     return (
                                         <li key={"inst_" + key}>
                                             <FontAwesomeIcon icon={faUserGraduate}/>
@@ -53,7 +40,7 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
                             </div>
                             </div>
                             
-                            <GradeList grades={this.state.course.grades} />
+                            {/*<GradeList grades={this.state.course.grades} />*/}
                         </div>
                     </div>
 
@@ -64,7 +51,7 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
     }
 
     componentDidMount() {
-        /*axios.get('localhost:8080/courses/'+this.props.id)
+        /*axios.get(`localhost:8080/courses/${this.props.id}/${this.props.}`)
         .then(res=>{
             this.setState({
                 course: res.data,
@@ -81,9 +68,9 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
 
         this.setState({
             status: 200,
-            course: {
+            /*course: {
                 name: "FajnyKurs",
-                instructors: ["Jan Kowalski", "Wacław Frydrych"],
+                teachers: ["Jan Kowalski", "Wacław Frydrych"],
                 grades: Array.from(
                     new Array<Grade>(10), () => {
                         return {
@@ -131,9 +118,7 @@ class CourseBody extends Component<{ id: number }, { course: Course, status: num
                         }
                     }
                 )
-            }
+            }*/
         });
     }
 }
-
-export default CourseDetails;

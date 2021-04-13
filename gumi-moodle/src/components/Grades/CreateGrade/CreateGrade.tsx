@@ -4,7 +4,7 @@ import { faFilePrescription, faFileSignature, faKey } from '@fortawesome/free-so
 import axios from 'axios';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { useForm } from 'react-hook-form'
-import { Course } from '../../MainView/CourseList/CourseList';
+import { Course } from '../../MainView/CourseViewing/CourseUtils';
 import ResponseError from '../../RepsonseError/ResponseError';
 
 export interface IValues {
@@ -61,11 +61,11 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8080/courses')
+        /*axios.get('http://localhost:8080/courses')
             .then(res => {
                 console.log(res.data);
                 this.setState({
-                    status: 200,
+                    status: res.status,
                     courses: res.data
                 })
             })
@@ -78,52 +78,72 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
                 else this.setState({
                     status: -1
                 })
-            })
+            })*/
     }
 
     render() {
         const { submitSuccess } = this.state;
 
-        switch (this.state.status) {
+        /*switch (this.state.status) {
             case 0:
                 return (<div>Loading...</div>)
             case 200:
                 return (
                     <div className="w3-section w3-padding-16">
                         {!submitSuccess && (
-                            <form id={"create-post-form"} onSubmit={this.processFormSubmission} noValidate={true} className="w3-container w3-border w3-padding-16 w3-white">
-                                <h1 className="w3-bottombar w3-border-dark-gray">Add new course</h1>
-
-
-                                <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFileSignature} /> Name</b></label>
-                                <select className="w3-input w3-border w3-white" onChange={(e) => this.handleInputChanges(e)}>
-                                    <option>------------</option>
-                                    {this.state.courses.map((v: Course, k) => {
-                                        return (<option key={"option_" + k}>{v.name}</option>)
-                                    })}
-                                </select>
-
-                                <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faKey} /> Password</b></label>
-                                <input className="w3-input w3-border w3-white" onChange={(e) => this.handleInputChanges(e)} type="text" />
-
-                                <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFilePrescription} /> Description</b></label>
-                                <input className="w3-input w3-border w3-white" style={{ height: "100px" }} onChange={(e) => this.handleInputChanges(e)} type="text" />
-
-                                <button type="submit" className="w3-button w3-block w3-dark-gray w3-margin-bottom">Submit</button>
-                            </form>
+                                         <div className="login-container flex-col">
+                                         {
+                                             this.state.status===200?
+                                                 <h2>Thank you for joining GUMI-MOODLE</h2> 
+                                                 :
+                                                 [409,0].includes(this.state.status)?
+                         
+                                                    <form className="flex-col" name="loginForm">
+                                                        <h2>Add Grade</h2>
+                                                        <ResponseError status={this.state.status}/>
+                                                        <input type="text" placeholder="Name"/>
+                                                        <input type="number" placeholder="MaxPoints"/>
+                                                    </form> 
+                                                    :
+                                                    <ResponseError status={this.state.status}/>
+                                             }
+                                         </div>
+                         
                         )}
 
                         {submitSuccess && (
                             <div className="w3-panel w3-round-large w3-border w3-green">
                                 <h3>Success!</h3>
-                                <p>   The form was successfully submitted!</p>
+                                <p>The form was successfully submitted!</p>
                             </div>
                         )}
                     </div>
                 )
                 default:
-                    return(<ResponseError status={this.state.status}/>)
-        }
+                    return(<ResponseError status={this.state.status}/>)*/
+
+        return (<div className="login-container flex-col">
+            {
+                //this.state.status===200?
+                //<h2>Thank you for joining GUMI-MOODLE</h2> 
+                //:
+                //[409,0].includes(this.state.status)?
+
+                <form className="flex-col" name="loginForm">
+                    <h2>Add Grade</h2>
+                    { /*<ResponseError status={this.state.status}/> */}
+                    <input type="text" placeholder="Name" />
+                    <input type="number" placeholder="dst" />
+                    <input type="number" placeholder="dst+" />
+                    <input type="number" placeholder="db" />
+                    <input type="number" placeholder="db+" />
+                    <input type="number" placeholder="bdb" />
+                </form>
+                //:
+                //<ResponseError status={this.state.status}/>
+            }
+        </div>)
+
 
 
     }

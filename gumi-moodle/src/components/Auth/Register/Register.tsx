@@ -1,5 +1,5 @@
 import React from 'react'
-import f from './fields.json'
+import f from './formfields.json'
 import 'w3-css/w3.css';
 
 import AbstractFormComponent from '../AbstractFormComponent'

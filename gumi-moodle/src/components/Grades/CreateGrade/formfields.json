@@ -1,0 +1,26 @@
+[
+    {
+        "type": "text",
+        "name": "Name",
+        "classnames": "w3-input w3-border",
+        "value":""
+    },
+    {
+        "type": "number",
+        "name": "Max points",
+        "classnames": "w3-input w3-border",
+        "value":""
+    },
+    {
+        "type": "text",
+        "name": "Name",
+        "classnames": "w3-input w3-border",
+        "value":""
+    },
+    {
+        "type": "text",
+        "name": "Surname",
+        "classnames": "w3-input w3-border",
+        "value":""
+    }
+]
