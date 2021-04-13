@@ -13,7 +13,6 @@ export default class StudenCourseView extends AbstractCourseView<Array<Grade>>{
             case 0:
                 return (<div>Loading...</div>)
             case 200:
-                this.state.course.students={content:[]};
                 return (
                     <div>
                         <div>Hello Course {this.state.course.name} Details </div>
@@ -31,8 +30,12 @@ export default class StudenCourseView extends AbstractCourseView<Array<Grade>>{
                                     })}
                                 </div>
                             </div>
+                            {
+                                localStorage.getItem('userID')==null
+                                ?<GradeList grades={[]}/>
+                                :<GradeList grades={this.state.course.students[localStorage.getItem('userID') as string]}/>
+                            }
 
-                            <GradeList grades={this.state.course.students.content} />
                         </div>
                     </div>
 

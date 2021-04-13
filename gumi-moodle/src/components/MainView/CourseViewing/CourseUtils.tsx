@@ -6,7 +6,7 @@ export interface Course<Type> {
     name: string,
     description: string,
     studentsLimit: number,
-    students: {content: Type},
+    students: {[key:string]: Type},
     teachers: Array<String>
 }
 

@@ -4,6 +4,7 @@ import { Course } from "../../CourseUtils";
 import '../CourseDetails.css'
 import axios from "axios";
 
+//abstract not abstract class. Fun.
 export default class AbstractCourseView<Type> extends Component<{ courseID: string }, { course: Course<Type>, status: number }>{
     constructor(props: { courseID: string }) {
         super(props);
