@@ -6,9 +6,10 @@ import { faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import ResponseError from "../../../../RepsonseError/ResponseError";
 
 import '../CourseDetails.css'
+import axios from "axios";
 
-export default class AbstractCourseView extends Component<{ studentID: number, courseID: number}, { course: Course, status: number }>{
-    constructor(props: { studentID: number, courseID: number}) {
+export default class AbstractCourseView extends Component<{ courseID: number }, { course: Course, status: number }>{
+    constructor(props: { courseID: number }) {
         super(props);
 
         this.state = {
@@ -18,30 +19,32 @@ export default class AbstractCourseView extends Component<{ studentID: number, c
     }
 
     render() {
+        console.log(this.state.status)
         switch (this.state.status) {
             case 0:
                 return (<div>Loading...</div>)
             case 200:
+                
                 return (
                     <div>
                         <div>Hello Course {this.state.course.name} Details </div>
-                        <div className="course-container">
+                        {/*<div className="course-container">
                             <div>
                                 <h3>Prowadzący</h3>
                                 <div className="instructor-list">
-                                {this.state.course.teachers.map((inst, key) => {
-                                    return (
-                                        <li key={"inst_" + key}>
-                                            <FontAwesomeIcon icon={faUserGraduate}/>
-                                            {inst}
-                                        </li>
-                                    );
-                                })}
+                                    {this.state.course.teachers.map((inst, key) => {
+                                        return (
+                                            <li key={"inst_" + key}>
+                                                <FontAwesomeIcon icon={faUserGraduate} />
+                                                {inst}
+                                            </li>
+                                        );
+                                    })}
+                                </div>
                             </div>
-                            </div>
-                            
-                            {/*<GradeList grades={this.state.course.grades} />*/}
-                        </div>
+
+                            <GradeList grades={this.state.course.grades} />
+                        </div>*/}
                     </div>
 
                 )
@@ -51,74 +54,32 @@ export default class AbstractCourseView extends Component<{ studentID: number, c
     }
 
     componentDidMount() {
-        /*axios.get(`localhost:8080/courses/${this.props.id}/${this.props.}`)
-        .then(res=>{
-            this.setState({
-                course: res.data,
-                status: 200
+        console.log(`http://localhost:8080/courses/${localStorage.getItem('userID')}/${this.props.courseID}`)
+        axios(
+            {
+                method: 'get',
+                url: `localhost:8080/courses/${localStorage.getItem('userID')}/${this.props.courseID}`,
+                headers: {
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'Authorization': 'Basic ' + localStorage.getItem('authData'),
+                }
+            })
+            .then(res => {
+                console.log(res);
+                /*this.setState({
+                    course: res.data,
+                    status: 200
+                });*/
+            })
+            .catch(err => {
+                console.log(err);
+                if (err.response) {
+                    this.setState({ status: err.response.status });
+                }
+                else this.setState({ status: -1 });
+
             });
-        })
-        .catch(err=>{
-            if(err.response){
-                this.setState({status: err.response.status});
-            }
-            else this.setState({status: -1});
 
-        });*/
-
-        this.setState({
-            status: 200,
-            /*course: {
-                name: "FajnyKurs",
-                teachers: ["Jan Kowalski", "Wacław Frydrych"],
-                grades: Array.from(
-                    new Array<Grade>(10), () => {
-                        return {
-                            data: {
-                                max: 100,
-                                current: ~~(Math.random() * 100),
-                                name: "Parent"
-                            },
-                            children: Math.random() < 0.2 ? [{
-                                data: {
-                                    max: 100,
-                                    current: ~~(Math.random() * 100),
-                                    name: "Child"
-                                },
-                                children: []
-                            }, {
-                                data: {
-                                    max: 100,
-                                    current: ~~(Math.random() * 100),
-                                    name: "Child"
-                                },
-                                children: [{
-                                    data: {
-                                        max: 100,
-                                        current: ~~(Math.random() * 100),
-                                        name: "Child"
-                                    },
-                                    children: []
-                                }, {
-                                    data: {
-                                        max: 100,
-                                        current: ~~(Math.random() * 100),
-                                        name: "Child"
-                                    },
-                                    children: []
-                                }]
-                            }, {
-                                data: {
-                                    max: 100,
-                                    current: ~~(Math.random() * 100),
-                                    name: "Child"
-                                },
-                                children: []
-                            }] : []
-                        }
-                    }
-                )
-            }*/
-        });
     }
 }

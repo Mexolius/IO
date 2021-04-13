@@ -47,13 +47,6 @@ export default class Courses extends Component<{ url: string }, { ls: Array<Cour
                                     students: course['students'],
                                     teachers: course['teachers']
                                 }
-                            }).concat({
-                                name: 'test',
-                                id: 1,
-                                description: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolores nulla ad provident dolorum reprehenderit sapiente?",
-                                studentsLimit: 20,
-                                students: ["Stasio Powsinoga"],
-                                teachers: ["Zbigniew Wyszyński"]
                             })
                     });
                 }

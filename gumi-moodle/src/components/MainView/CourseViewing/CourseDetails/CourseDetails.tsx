@@ -4,12 +4,12 @@ import StudenCourseView from './CourseView/StudentCourseView';
 import TeacherCourseView from './CourseView/TeacherCourseView';
 
 const CourseDetails = () => {
-    let { studentID, courseID } = useParams<{ studentID: string, courseID: string }>();
+    let { id } = useParams<{  id: string }>();
     if(localStorage.getItem('userRoles')?.includes("TEACHER")){
-        return (<StudenCourseView studentID={parseInt(studentID)} courseID={parseInt(courseID)} />);
+        return (<StudenCourseView courseID={parseInt(id)} />);
     }
     else{
-        return (<TeacherCourseView studentID={parseInt(studentID)} courseID={parseInt(courseID)} />);
+        return (<TeacherCourseView courseID={parseInt(id)} />);
     }
 }
 
