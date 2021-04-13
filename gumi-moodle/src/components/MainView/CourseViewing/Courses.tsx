@@ -31,6 +31,7 @@ export default class Courses extends Component<{ url: string }, { ls: Array<Cour
             }
         })
             .then(response => {
+                console.log(response);
                 if (response.status === 200) {
                     const courses = JSON.parse(JSON.stringify(response.data));
 

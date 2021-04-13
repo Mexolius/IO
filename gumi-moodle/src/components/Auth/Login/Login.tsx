@@ -3,7 +3,7 @@ import f from './fields.json'
 import 'w3-css/w3.css';
 import AbstractFormComponent from '../AbstractFormComponent'
 import axios from 'axios';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps} from 'react-router-dom';
 
 import ResponseError from '../../RepsonseError/ResponseError';
 

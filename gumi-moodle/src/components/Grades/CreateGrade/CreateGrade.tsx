@@ -1,11 +1,6 @@
 import { Component } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilePrescription, faFileSignature, faKey } from '@fortawesome/free-solid-svg-icons'
-import axios from 'axios';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { useForm } from 'react-hook-form'
+import { RouteComponentProps} from 'react-router-dom';
 import { Course } from '../../MainView/CourseViewing/CourseUtils';
-import ResponseError from '../../RepsonseError/ResponseError';
 
 export interface IValues {
     title: string,
@@ -82,7 +77,7 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
     }
 
     render() {
-        const { submitSuccess } = this.state;
+        //const { submitSuccess } = this.state;
 
         /*switch (this.state.status) {
             case 0:

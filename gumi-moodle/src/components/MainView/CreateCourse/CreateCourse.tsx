@@ -2,15 +2,14 @@ import {Component} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilePrescription, faFileSignature, faKey } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import {useForm} from 'react-hook-form'
+import { RouteComponentProps} from 'react-router-dom';
 
 
 
 export interface IValues {
     name: string,
     description: string,
-    studentsLimit: number,
+    studentLimit: number,
     students: [],
     teachers: []
 }
@@ -27,25 +26,30 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
         this.state = {
             name: '',
             description: '',
-            studentsLimit: 0,
+            studentLimit: 0,
             students: [],
             teachers: [],
             values: [],
             submitSuccess: false,
         }
+
+        this.handleInputChanges = this.handleInputChanges.bind(this);
     }
 
     private processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        this.setState({
-            students: [localStorage.getItem('userID')]
-        })
+
+        let user = {} as {[key: string]: any;}
+        const key = localStorage.getItem('userID');
+        if(key!==null)
+        user[key] = {};
+
         const formData = {
-            name: this.state.name,
-            description: this.state.description,
-            studentsLimit: this.state.studentsLimit,
-            students: this.state.students,
-            teachers: this.state.teachers
+            "name": this.state.name,
+            "description": this.state.description,
+            "studentLimit": this.state.studentLimit,
+            "students": user as any,
+            "teachers": this.state.teachers
         }
         this.setState({ submitSuccess: true, values: [...this.state.values, formData]});
 
@@ -59,6 +63,7 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
         }
 
 
+        console.log(formData);
         axios.post(session_url, formData, {headers:headers})
         .then(res=>{
             console.log(res);
@@ -96,13 +101,13 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
                 
             
                     <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFileSignature} /> Title</b></label>
-                    <input className="w3-input w3-border w3-white" onChange={(e) => this.handleInputChanges(e)} type="text" />
+                    <input name="name" className="w3-input w3-border w3-white" onChange={this.handleInputChanges} type="text" />
 
                     <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faKey} /> Students Limit</b></label>
-                    <input className="w3-input w3-border w3-white" onChange={(e) => this.handleInputChanges(e)} type="text" />
+                    <input name="description" className="w3-input w3-border w3-white" onChange={this.handleInputChanges} type="text" />
                 
                     <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFilePrescription} /> Description</b></label>
-                    <input className="w3-input w3-border w3-white" style={{height:"100px"}} onChange={(e) => this.handleInputChanges(e)} type="text" />
+                    <input name="studentLimit" className="w3-input w3-border w3-white" style={{height:"100px"}} onChange={this.handleInputChanges} type="text" />
                 
                     <button type="submit" className="w3-button w3-block w3-dark-gray w3-margin-bottom">Submit</button>
                 </form> 
