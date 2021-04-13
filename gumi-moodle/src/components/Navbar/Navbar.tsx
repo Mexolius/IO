@@ -43,6 +43,9 @@ class Navbar extends Component<AppState> {
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('user');
+        localStorage.removeItem('authData');
+        localStorage.removeItem('userID');
+
         this.setState({
             user: "",
             logged: false

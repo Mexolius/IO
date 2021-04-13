@@ -3,6 +3,7 @@ import f from './fields.json'
 import 'w3-css/w3.css';
 import AbstractFormComponent from '../AbstractFormComponent'
 import axios from 'axios';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import ResponseError from '../../RepsonseError/ResponseError';
 
@@ -12,10 +13,10 @@ type AppState = {
 
 };
 
-export default class Login extends AbstractFormComponent<AppState> {
+export default class Login extends AbstractFormComponent<RouteComponentProps, AppState> {
     state: AppState;
 
-    constructor(props:any){
+    constructor(props: RouteComponentProps){
         super(props);
 
         this.state =(
@@ -49,7 +50,9 @@ export default class Login extends AbstractFormComponent<AppState> {
             .then(response => {
                 if(response.status === 200) {
                     localStorage.setItem('user', usern);
+                    localStorage.setItem('authData', encodedToken);
                     this.setState({status:200});
+                    this.saveUserID(usern, encodedToken);
                 }
             })
             .catch(err=>{
@@ -60,6 +63,40 @@ export default class Login extends AbstractFormComponent<AppState> {
                      this.setState({
                          status: -1,
                      })
+                 }
+            }).then(
+                data => [
+                    setTimeout(() => {
+                        this.props.history.push('/');
+                        window.location.reload();
+                    }, 150)
+                ]
+            );
+    }
+
+    //this is bad solution, but necessary
+    saveUserID(email: any, encodedToken: any){
+        const session_url = 'http://localhost:8080/user/' + email;
+      
+        axios({
+            method: 'get',
+            url: session_url,
+            headers: { 
+                'Access-Control-Allow-Origin':'*',
+                'Content-Type':'text/plain; charset=utf-8',
+                'Authorization': 'Basic '+ encodedToken,
+        }
+            })
+            .then(response => {
+                if(response.status === 200) {
+                    const userInfo = JSON.parse(JSON.stringify(response.data));
+                    localStorage.setItem('userID', userInfo['_id']);
+                }
+            })
+            .catch(err=>{
+                if(err.response){
+                 }
+                 else{
                  }
             });
     }

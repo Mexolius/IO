@@ -5,11 +5,16 @@ import axios from 'axios';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {useForm} from 'react-hook-form'
 
+
+
 export interface IValues {
-    title: string,
-    password: string,
-    description: string
+    name: string,
+    description: string,
+    studentsLimit: number,
+    students: [],
+    teachers: []
 }
+
 export interface IFormState {
     [key: string]: any;
     values: IValues[];
@@ -20,9 +25,11 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
     constructor(props: RouteComponentProps){
         super(props);
         this.state = {
-            title: '',
-            password: '',
+            name: '',
             description: '',
+            studentsLimit: 0,
+            students: [],
+            teachers: [],
             values: [],
             submitSuccess: false,
         }
@@ -30,18 +37,43 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
 
     private processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
+        this.setState({
+            students: [localStorage.getItem('userID')]
+        })
         const formData = {
-            title: this.state.title,
-            password: this.state.password,
+            name: this.state.name,
             description: this.state.description,
+            studentsLimit: this.state.studentsLimit,
+            students: this.state.students,
+            teachers: this.state.teachers
         }
         this.setState({ submitSuccess: true, values: [...this.state.values, formData]});
-        axios.post(`http://localhost:8080/courses`, formData).then(data => [
-            setTimeout(() => {
-                this.props.history.push('/');
-            }, 1500)
-        ]);
-        console.log("sent");
+
+        const encodedToken = localStorage.getItem('authData');
+        const session_url = 'http://0.0.0.0:8080/course'
+
+        let headers = { 
+            'Access-Control-Allow-Origin':'*',
+            'Content-Type':'text/plain; charset=utf-8',
+            'Authorization': 'Basic '+ encodedToken
+        }
+
+
+        axios.post(session_url, formData, {headers:headers})
+        .then(res=>{
+            console.log(res);
+        }).catch(err=>{
+            if(err.response){
+            }
+            else{
+
+            }
+            
+            console.log(err);
+        }).then(
+            
+        )
+
     }
 
     private handleInputChanges = (e: React.FormEvent<HTMLInputElement>) => {
@@ -65,7 +97,7 @@ export default class CreateCourse extends Component<RouteComponentProps, IFormSt
                     <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFileSignature} /> Title</b></label>
                     <input className="w3-input w3-border w3-white" onChange={(e) => this.handleInputChanges(e)} type="text" />
 
-                    <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faKey} /> Password</b></label>
+                    <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faKey} /> Students Limit</b></label>
                     <input className="w3-input w3-border w3-white" onChange={(e) => this.handleInputChanges(e)} type="text" />
                 
                     <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFilePrescription} /> Description</b></label>
