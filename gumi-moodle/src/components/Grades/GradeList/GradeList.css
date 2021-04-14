@@ -1,5 +1,4 @@
 .row{
-    background: turquoise;
     display: flex;
     flex-direction: row;
     padding: 1em;

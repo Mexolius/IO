@@ -7,13 +7,12 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
 
 interface GradeData {
-    max: number,
-    current: number,
-    name: string
+    
 }
 
 export interface Grade {
-    data: GradeData
+    points: number,
+    name: string
     children: Array<Grade>
 }
 
@@ -32,14 +31,14 @@ function isCompound(g: Grade): boolean {
     return Array.isArray(g.children) && g.children.length !== 0;
 }
 
-const SimpleGrade = (props: { grade: GradeData }) => {
-    const percent = 100 * props.grade.current / props.grade.max;
+const SimpleGrade = (props: { grade: Grade }) => {
+    const percent = 100 * props.grade.points / 100;
     const numeric = numeric_grade(percent);
 
     return (
         <div className="col">
             <div>{props.grade.name}</div>
-            <PoggersBar max={props.grade.max} values={[props.grade.current, 70]} thresholds={[30, 60, 90]} />
+            <PoggersBar max={100} values={[~~(Math.random()*100)]} thresholds={[30, 60, 90]} />
         </div>
     )
 }
@@ -63,18 +62,17 @@ class GradeDisplay extends Component<{ grade: Grade }, { expanded: boolean }>{
         if (isCompound(this.props.grade)){
             const reduced_grade = this.props.grade.children.reduce((a:Grade,b:Grade)=>{
                 return{
-                    data:{
-                        name:'',
-                        max: a.data.max+b.data.max,
-                        current: a.data.current+b.data.current
-                    },
-                    children:[]
+
+                        name:a.name+b.name,
+                        points: a.points+b.points,
+
+                    children:new Array<Grade>(0)
                 }
-            },{data:{max: 0, current: 0, name:''},children:[]})
+            },{points: 0, name:'',children:[]})
             return (
                 <div>
                     <div className="row">
-                        <SimpleGrade grade={reduced_grade.data} />
+                        <SimpleGrade grade={reduced_grade} />
                         <div onClick={this.onSubgradesClick}>Subgrades
                         <FontAwesomeIcon icon={faChevronDown} className="w3-bar-item w3-centered w3-circle" /></div>
                     </div>
@@ -84,19 +82,22 @@ class GradeDisplay extends Component<{ grade: Grade }, { expanded: boolean }>{
         }
             
         else
-            return (<div className="row"><SimpleGrade grade={this.props.grade.data} /></div>)
+            return (<div className="row"><SimpleGrade grade={this.props.grade} /></div>)
     }
 }
 
 class GradeList extends Component<{ grades: Array<Grade> }>{
 
     render() {
+
         return (
             <ul className="grade-list">
                 {this.props.grades.map((grade: Grade, k) => {
+                    const changed = grade;
+                    changed.children=[{name: "g1", points:~~(Math.random()*100), children:[]},{name: "g2", points:~~(Math.random()*100), children:[]},{name: "g3", points:~~(Math.random()*100), children:[]}]
                     return (
                         <li key={"grade_" + k}>
-                            <GradeDisplay grade={grade}></GradeDisplay>
+                            <GradeDisplay grade={changed}></GradeDisplay>
                         </li>
                     )
                 })}

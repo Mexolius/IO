@@ -42,7 +42,7 @@ getRoles(){
 getData() {
   const email = localStorage.getItem('user');
   const encodedToken = localStorage.getItem('authData');
-  const session_url = 'http://0.0.0.0:8080/user/' + email;
+  const session_url = 'http://localhost:8080/user/' + email;
 
   axios({
       method: 'get',
@@ -54,8 +54,10 @@ getData() {
   }
       })
       .then(response => {
+        //console.log(response);
           if(response.status === 200) {
               const userInfo = JSON.parse(JSON.stringify(response.data));
+              console.log(userInfo);
               this.setState({
                 firstname: userInfo['firstName'],
                 lastname: userInfo['lastName'],
@@ -90,9 +92,9 @@ getData() {
                   <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faFileSignature} /> Last Name:   <b>{this.getLastName()}</b></p></li>
                   <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faEnvelope} /> E-mail:  <b>{this.getEmail()}</b></p></li>
                   <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faUserTag} /> Roles: <b>
-                  {this.getRoles().map(x => {
+                  {this.getRoles().map((x,k) => {
                                    return (
-                                    <span className="w3-tag w3-teal w3-hover-green w3-round">{x} </span>
+                                    <span key={"role_"+k} className="w3-tag w3-teal w3-hover-green w3-round">{x} </span>
                                    )
                                })}
                     

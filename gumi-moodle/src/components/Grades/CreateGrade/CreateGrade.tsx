@@ -1,60 +1,34 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { RouteComponentProps} from 'react-router-dom';
+import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent';
 import { Course } from '../../MainView/CourseViewing/CourseUtils';
 import { Grade } from '../GradeList/GradeList';
 
-export interface IValues {
-    title: string,
-    password: string,
-    description: string
-}
-
-export interface IFormState {
-    [key: string]: any;
-    values: IValues[];
-    submitSuccess: boolean;
-    status: number;
-    courses: Course<Array<Grade>>[];
-}
+import f from './formfields.json'
 
 
 
-export default class CreateCourse extends Component<RouteComponentProps, IFormState>{
-    constructor(props: RouteComponentProps) {
-        super(props);
-        this.state = {
-            title: '',
-            password: '',
-            description: '',
-            values: [],
-            submitSuccess: false,
-            status: 0,
-            courses: []
-        }
+
+
+export default class CreateCourse extends AbstractFormComponent<any,{status: number}>{
+    
+    onSubmit(event:any): boolean{
+        return true;
     }
 
-    private processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        const formData = {
-            title: this.state.title,
-            password: this.state.password,
-            description: this.state.description,
-        }
-        this.setState({ submitSuccess: true, values: [...this.state.values, formData] });
-        /*axios.post(`http://localhost:8080/courses`, formData).then(data => [
-            setTimeout(() => {
-                this.props.history.push('/');
-            }, 1500)
-        ]);*/
-        console.log("sent" + formData);
+
+    constructor(props: any){
+        super(props)
+
+        this.fields = f;
+        this.fields.forEach((x:any)=>{
+            this.rfs.set(x.name, React.createRef());
+         });
+         this.state = {
+             status: 0,
+         }
     }
 
-    private handleInputChanges = (e: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
-        e.preventDefault();
-        this.setState({
-            [e.currentTarget.name]: e.currentTarget.value,
-        })
-    }
 
     componentDidMount() {
         /*axios.get('http://localhost:8080/courses')

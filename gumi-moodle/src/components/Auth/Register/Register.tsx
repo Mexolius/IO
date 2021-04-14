@@ -2,7 +2,7 @@ import React from 'react'
 import f from './formfields.json'
 import 'w3-css/w3.css';
 
-import AbstractFormComponent from '../AbstractFormComponent'
+import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent'
 import ResponseError from '../../RepsonseError/ResponseError'
 import axios from 'axios';
 

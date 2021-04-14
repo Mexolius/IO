@@ -1,7 +1,7 @@
 import React from 'react'
 import f from './fields.json'
 import 'w3-css/w3.css';
-import AbstractFormComponent from '../AbstractFormComponent'
+import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent'
 import axios from 'axios';
 import { RouteComponentProps} from 'react-router-dom';
 
