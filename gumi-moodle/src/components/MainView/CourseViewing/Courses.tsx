@@ -4,6 +4,7 @@ import axios from 'axios';
 //import axios from 'axios'
 
 import { Course, CourseList } from './CourseUtils';
+import { Database } from '../../../Structure/Database';
 
 export default class Courses<Type> extends Component<{ url: string }, { ls: Array<Course<Type>>, status: number }> {
 
@@ -18,6 +19,14 @@ export default class Courses<Type> extends Component<{ url: string }, { ls: Arra
 
     componentDidMount() {
         this.getCourses(); // API calls in componentDidMount are safer;
+        Database.getCourses().then(res=>{
+            if(res.ok){
+                res.json().then(json=>{
+                console.log(json);
+            })
+            }
+            
+        })
     }
 
     getCourses() {
