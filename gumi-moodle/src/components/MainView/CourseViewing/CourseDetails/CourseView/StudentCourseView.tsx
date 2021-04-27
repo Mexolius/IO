@@ -1,10 +1,10 @@
 import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import GradeList, { Grade } from "../../../../Grades/GradeList/GradeList";
+import GradeList from "../../../../Grades/GradeList/GradeList";
 import ResponseError from "../../../../RepsonseError/ResponseError";
 import AbstractCourseView from "./AbstractCourseView";
 
-export default class StudenCourseView extends AbstractCourseView<Array<Grade>>{
+export default class StudenCourseView extends AbstractCourseView{
 
     render() {
         
@@ -33,7 +33,7 @@ export default class StudenCourseView extends AbstractCourseView<Array<Grade>>{
                             {
                                 localStorage.getItem('userID')==null
                                 ?<GradeList grades={[]}/>
-                                :<GradeList grades={this.state.course.students[localStorage.getItem('userID') as string]}/>
+                                :<GradeList grades={this.state.course.gradeModel}/>
                             }
 
                         </div>

@@ -1,8 +1,5 @@
-import React, { Component } from 'react'
-import { RouteComponentProps} from 'react-router-dom';
+import React from 'react'
 import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent';
-import { Course } from '../../MainView/CourseViewing/CourseUtils';
-import { Grade } from '../GradeList/GradeList';
 
 import f from './formfields.json'
 

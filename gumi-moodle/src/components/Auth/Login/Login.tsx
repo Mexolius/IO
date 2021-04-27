@@ -9,7 +9,7 @@ import { Database } from '../../../Structure/Database';
 import LoadingWrapper, { LoadingProps } from '../../LoadingWrapper'
 
 
-interface LBProps extends LoadingProps {
+/*interface LBProps extends LoadingProps {
 }
 
 const LoginButtons = (props: LBProps) => {
@@ -42,7 +42,7 @@ const LoginButtons = (props: LBProps) => {
     )
 }
 
-const WrappedButtons = LoadingWrapper(LoginButtons, "Logging in");
+const WrappedButtons = LoadingWrapper(LoginButtons, "Logging in");*/
 
 interface IState {
     status: number
@@ -74,6 +74,7 @@ class Login extends AbstractFormComponent<IProps, IState> {
 
         Database.getUserDetails(usern)
             .then(user => {
+                console.log("Setting id "+user._id)
                 localStorage.setItem('userID', user._id);
                 localStorage.setItem('userRoles', user.roles.join(';'));
             })
@@ -85,7 +86,7 @@ class Login extends AbstractFormComponent<IProps, IState> {
                 this.props.setLoading(false);
                 setTimeout(()=>{
                     this.props.history.push('/');
-                    window.location.reload();
+                    //window.location.reload();
                 },150)
                 
             })

@@ -1,17 +1,17 @@
 import { Component } from "react";
-import { Course } from "../../CourseUtils";
 
 import '../CourseDetails.css'
 import axios from "axios";
+import { CourseData } from "../../../../../Structure/DataModel.interface";
 
 //abstract not abstract class. Fun.
-export default class AbstractCourseView<Type> extends Component<{ courseID: string }, { course: Course<Type>, status: number }>{
+export default class AbstractCourseView extends Component<{ courseID: string }, { course: CourseData, status: number }>{
     constructor(props: { courseID: string }) {
         super(props);
 
         this.state = {
             status: 0,
-            course: {} as Course<Type> //type safety not lost cause status 0 doesn't allow to render with missing data
+            course: {} as CourseData //type safety not lost cause status 0 doesn't allow to render with missing data
         }
     }
 

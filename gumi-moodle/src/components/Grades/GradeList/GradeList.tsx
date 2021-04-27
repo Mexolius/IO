@@ -4,17 +4,8 @@ import PoggersBar from './PoggersBar/PoggersBar';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { Grade } from '../../../Structure/DataModel.interface';
 
-
-interface GradeData {
-    
-}
-
-export interface Grade {
-    points: number,
-    name: string
-    children: Array<Grade>
-}
 
 function numeric_grade(percent: number): { value: number, color: string } {
     const thresholds = [60, 70, 80, 90];

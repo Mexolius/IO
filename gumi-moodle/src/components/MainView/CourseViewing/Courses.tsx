@@ -1,36 +1,47 @@
 import { Component } from 'react'
 import ResponseError from '../../RepsonseError/ResponseError'
 import axios from 'axios';
-//import axios from 'axios'
 
-import { Course, CourseList } from './CourseUtils';
+import CourseList from './CourseUtils';
 import { Database } from '../../../Structure/Database';
+import { ApiRequestState, CourseData } from '../../../Structure/DataModel.interface';
 
-export default class Courses<Type> extends Component<{ url: string }, { ls: Array<Course<Type>>, status: number }> {
+interface IProps {
+    readonly url: string
+}
+
+interface IState extends ApiRequestState<Array<CourseData>> { }
+
+export default class Courses extends Component<IProps, IState>{
 
     constructor(props: { url: string }) {
         super(props);
 
         this.state = {
-            ls: new Array<Course<Type>>(),
+            data: new Array<CourseData>(),
             status: 0
         };
     }
 
     componentDidMount() {
-        this.getCourses(); // API calls in componentDidMount are safer;
-        Database.getCourses().then(res=>{
-            if(res.ok){
-                res.json().then(json=>{
-                console.log(json);
+        //this.getCourses(); // API calls in componentDidMount are safer;
+        Database.getAllCourses()
+            .then(courses => {
+                this.setState({
+                    data: courses,
+                    status: 200
+                })
             })
-            }
-            
-        })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    status: err.status
+                })
+            })
     }
 
     getCourses() {
-        if(localStorage.getItem('userID')==null){
+        /*if (localStorage.getItem('userID') == null) {
             this.setState({
                 status: 403
             });
@@ -80,7 +91,7 @@ export default class Courses<Type> extends Component<{ url: string }, { ls: Arra
                     this.setState({
                         status: -1
                     });
-            });
+            });*/
     }
 
 
@@ -92,7 +103,7 @@ export default class Courses<Type> extends Component<{ url: string }, { ls: Arra
                 );
             case 200:
                 return (
-                    <CourseList ls={this.state.ls} />
+                    <CourseList data={this.state.data} />
                 );
             default:
                 return (
