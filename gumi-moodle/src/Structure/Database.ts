@@ -53,5 +53,13 @@ export namespace Database {
             method: "GET"
         })
     }
+
+    export function postCourseGradeModel(course_id: String, data: string){
+        return fetch(url + "course/grade/"+course_id, {
+            headers: authorized,
+            method: "POST",
+            body: data
+        });
+    }
 }
 
