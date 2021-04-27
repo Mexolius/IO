@@ -1,29 +1,65 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import f from './fields.json'
 import 'w3-css/w3.css';
 import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent'
-import axios from 'axios';
-import { RouteComponentProps} from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import ResponseError from '../../RepsonseError/ResponseError';
+import { Database } from '../../../Structure/Database';
+import LoadingWrapper, { LoadingProps } from '../../LoadingWrapper'
 
 
-type AppState = {
+interface LBProps extends LoadingProps {
+}
+
+const LoginButtons = (props: LBProps) => {
+
+    const { setLoading } = props;
+
+    useEffect(() => { setLoading(false) })
+
+    setLoading(false);
+
+    const onSubmit = async () => {
+        setLoading(true);
+
+        await new Promise(res => {
+            setTimeout(() => { res(1) }, 800)
+        })
+
+        setLoading(false);
+    }
+
+    return (
+        <>
+            <div className="buttons">
+                <button onClick = {onSubmit}>Login</button>
+                <button onClick={onSubmit}>Internal</button>
+            </div>
+            <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
+            <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
+        </>
+    )
+}
+
+const WrappedButtons = LoadingWrapper(LoginButtons, "Logging in");
+
+interface IState {
     status: number
+}
 
-};
+interface IProps extends RouteComponentProps, LoadingProps { }
 
-export default class Login extends AbstractFormComponent<RouteComponentProps, AppState> {
-    state: AppState;
+class Login extends AbstractFormComponent<IProps, IState> {
 
     constructor(props: RouteComponentProps) {
         super(props);
 
-        this.state = (
-            {
-                status: 0
-            }
-        )
+        this.props.setLoading(false);
+
+        this.state = ({
+            status: 0
+        });
 
         this.fields = f;
         this.fields.forEach((x: any) => {
@@ -32,91 +68,48 @@ export default class Login extends AbstractFormComponent<RouteComponentProps, Ap
         this.login = this.login.bind(this);
     }
 
+    onLoginSuccess(usern: string, tkn: string) {
+        localStorage.setItem('user', usern);
+        localStorage.setItem('authData', tkn);
 
-    login(usern: any, pass: any) {
-        const tkn = usern + ":" + pass;
-        const encodedToken = Buffer.from(tkn).toString('base64');
-        const session_url = 'http://localhost:8080/logged';
-
-        axios({
-            method: 'get',
-            url: session_url,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'text/plain; charset=utf-8',
-                'Authorization': 'Basic ' + encodedToken,
-            }
-        })
-            .then(response => {
-                if (response.status === 200) {
-                    localStorage.setItem('user', usern);
-                    localStorage.setItem('authData', encodedToken);
-                    this.saveUserDetails(usern, encodedToken);
-                }
-                else
-                    this.setState({
-                        status: response.status
-                    });
+        Database.getUserDetails(usern)
+            .then(user => {
+                localStorage.setItem('userID', user._id);
+                localStorage.setItem('userRoles', user.roles.join(';'));
             })
             .catch(err => {
-                if (err.response)
-                    this.setState({
-                        status: err.reposonse.status
-                    });
-
-                else
-                    this.setState({
-                        status: -1,
-                    })
+                console.log("Fail to set user details. Reason:");
+                console.log(err);
             })
-            .finally(() => {
-                setTimeout(() => {
+            .finally(()=>{
+                this.props.setLoading(false);
+                setTimeout(()=>{
                     this.props.history.push('/');
                     window.location.reload();
-                }, 150)
-            }
-            );
+                },150)
+                
+            })
     }
 
-    //this is bad solution, but necessary
-    saveUserDetails(email: any, encodedToken: any) {
+    onLoginFail(status: number) {
+        this.setState({ status: status });
+        this.props.setLoading(false);
+    }
 
 
-        const session_url = 'http://localhost:8080/user/' + email;
+    login(usern: string, pass: string) {
+        const tkn = Buffer.from(usern + ":" + pass).toString('base64');
 
-
-        console.log(session_url);
-        axios({
-            method: 'get',
-            url: session_url,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'text/plain; charset=utf-8',
-                'Authorization': 'Basic ' + encodedToken,
-            }
-        })
-            .then(response => {
-                console.log('saving');
-                if (response.status === 200) {
-                    const userInfo = JSON.parse(JSON.stringify(response.data));
-                    localStorage.setItem('userID', userInfo['_id']);
-                    localStorage.setItem('userRoles', userInfo['roles'].join(';'));
-                }
-                this.setState({
-                    status: response.status
-                });
+        Database.login(tkn)
+            .then(res => {
+                if (res.ok) this.onLoginSuccess(usern, tkn);
+                else this.onLoginFail(res.status);
             })
             .catch(err => {
-                console.log(err);
-                if (err.response)
-                    this.setState({
-                        status: err.response
-                    });
-                else
-                    this.setState({
-                        status: -1
-                    });
-            });
+                console.log("Login error " + err);
+                if (err.response) this.onLoginFail(err.response.status);
+                else this.onLoginFail(-1);
+            })
     }
 
     getStatus() {
@@ -124,14 +117,14 @@ export default class Login extends AbstractFormComponent<RouteComponentProps, Ap
     }
 
     onSubmit(event: any): boolean {
-        this.login(this.rfs.get('Login')?.current?.value, this.rfs.get('Password')?.current?.value);
         event.preventDefault();
+        this.props.setLoading(true);
+        this.login(this.rfs.get('Login')?.current?.value!, this.rfs.get('Password')?.current?.value!);
         return true;
     }
 
 
     render() {
-
         return (
             <div className="login-container flex-col">
                 {
@@ -147,6 +140,7 @@ export default class Login extends AbstractFormComponent<RouteComponentProps, Ap
                                         </div>
                                     )
                                 })}
+                                {/*<WrappedButtons onSubmit={this.onSubmit} />*/}
                                 <div className="buttons">
                                     <button>Login</button>
                                     <button>Internal</button>
@@ -160,3 +154,5 @@ export default class Login extends AbstractFormComponent<RouteComponentProps, Ap
         )
     }
 }
+
+export default LoadingWrapper(Login, "Logging in");

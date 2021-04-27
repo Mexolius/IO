@@ -46,22 +46,15 @@ class Profile extends Component<RouteComponentProps, IState> {
     if (email == null) this.setState({ status: 403 });
     else {
       Database.getUserDetails(email!)
-        .then(res => {
-          if (res.ok) {
-            res.json().then((json: IUser) => {
-              console.log(json)
-              this.setState({
-                user: json,
-                status: 200
-              });
-            });
-          }
-          else this.setState({ status: res.status });
+        .then(user => {
+          this.setState({
+            user: user,
+            status: 200
+          });
         })
         .catch(err => {
           console.log(err);
-          if (err.response) this.setState({ status: err.response.status });
-          else this.setState({ status: -1 })
+          this.setState({ status: err.status})
         })
     }
 
