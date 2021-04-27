@@ -86,7 +86,7 @@ class Login extends AbstractFormComponent<IProps, IState> {
                 this.props.setLoading(false);
                 setTimeout(()=>{
                     this.props.history.push('/');
-                    //window.location.reload();
+                    window.location.reload();
                 },150)
                 
             })
