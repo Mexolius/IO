@@ -47,26 +47,21 @@ export namespace Database {
         });
     }
 
-    export function getUserDetails(email: string): Promise<IUser> {
 
+    export function getUserDetails(email: string, token?: string) : Promise<IUser> {
+        const tempLoginHeaders = token===undefined
+            ?authorized
+            :Object.assign(unauthorized, {'Authorization': 'Basic ' + token});
+        
         return new Promise<IUser>((resolve, reject) => {
             fetch(url + "user/" + email, {
-                headers: authorized,
+                headers: tempLoginHeaders,
                 method: "GET"
             })
                 .then(response => handleThen(response, resolve, reject))
                 .catch(() => handleCatch(reject));
         })
-    }
 
-    export function login(token: string) {
-        let tempLoginHeaders = Object.assign(unauthorized, {
-            'Authorization': 'Basic ' + token
-        });
-        return fetch(url + "logged", {
-            headers: tempLoginHeaders,
-            method: "GET"
-        })
     }
 
     export function postCourseGradeModel(course_id: String, data: string){

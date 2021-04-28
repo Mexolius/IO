@@ -7,46 +7,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import ResponseError from '../../RepsonseError/ResponseError';
 import { Database } from '../../../Structure/Database';
 import LoadingWrapper, { LoadingProps } from '../../LoadingWrapper'
+import { ApiRequestState, IUser } from '../../../Structure/DataModel.interface';
 
-
-/*interface LBProps extends LoadingProps {
-}
-
-const LoginButtons = (props: LBProps) => {
-
-    const { setLoading } = props;
-
-    useEffect(() => { setLoading(false) })
-
-    setLoading(false);
-
-    const onSubmit = async () => {
-        setLoading(true);
-
-        await new Promise(res => {
-            setTimeout(() => { res(1) }, 800)
-        })
-
-        setLoading(false);
-    }
-
-    return (
-        <>
-            <div className="buttons">
-                <button onClick = {onSubmit}>Login</button>
-                <button onClick={onSubmit}>Internal</button>
-            </div>
-            <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
-            <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
-        </>
-    )
-}
-
-const WrappedButtons = LoadingWrapper(LoginButtons, "Logging in");*/
-
-interface IState {
-    status: number
-}
+interface IState extends ApiRequestState<IUser>{}
 
 interface IProps extends RouteComponentProps, LoadingProps { }
 
@@ -58,7 +21,8 @@ class Login extends AbstractFormComponent<IProps, IState> {
         this.props.setLoading(false);
 
         this.state = ({
-            status: 0
+            status: 0,
+            data: {} as IUser
         });
 
         this.fields = f;
@@ -68,48 +32,28 @@ class Login extends AbstractFormComponent<IProps, IState> {
         this.login = this.login.bind(this);
     }
 
-    onLoginSuccess(usern: string, tkn: string) {
-        localStorage.setItem('user', usern);
-        localStorage.setItem('authData', tkn);
+    login(email: string, pass: string) {
+        const tkn = Buffer.from(email + ":" + pass).toString('base64');
 
-        Database.getUserDetails(usern)
+        Database.getUserDetails(email, tkn)
             .then(user => {
-                console.log("Setting id "+user._id)
                 localStorage.setItem('userID', user._id);
                 localStorage.setItem('userRoles', user.roles.join(';'));
+                localStorage.setItem('user', email);
+                localStorage.setItem('authData', tkn);
+
+                this.setState({status: 200})
             })
             .catch(err => {
-                console.log("Fail to set user details. Reason:");
-                console.log(err);
+                console.log("Login error " + err);
+                this.setState({ status: err.status });
             })
             .finally(()=>{
                 this.props.setLoading(false);
                 setTimeout(()=>{
                     this.props.history.push('/');
-                    //window.location.reload();
+                    window.location.reload();
                 },150)
-                
-            })
-    }
-
-    onLoginFail(status: number) {
-        this.setState({ status: status });
-        this.props.setLoading(false);
-    }
-
-
-    login(usern: string, pass: string) {
-        const tkn = Buffer.from(usern + ":" + pass).toString('base64');
-
-        Database.login(tkn)
-            .then(res => {
-                if (res.ok) this.onLoginSuccess(usern, tkn);
-                else this.onLoginFail(res.status);
-            })
-            .catch(err => {
-                console.log("Login error " + err);
-                if (err.response) this.onLoginFail(err.response.status);
-                else this.onLoginFail(-1);
             })
     }
 
