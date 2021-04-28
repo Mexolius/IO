@@ -3,10 +3,6 @@ import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent';
 
 import f from './formfields.json'
 
-
-
-
-
 export default class CreateCourse extends AbstractFormComponent<any,{status: number}>{
     
     onSubmit(event:any): boolean{

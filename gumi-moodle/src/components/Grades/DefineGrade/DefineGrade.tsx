@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import SortableTree, {addNodeUnderParent, removeNodeAtPath, TreeItem, changeNodeAtPath, map as mapTree, walk as walkTree } from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,10 +7,18 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Database } from '../../../Structure/Database';
 import ResponseError from '../../RepsonseError/ResponseError';
 
+interface IProps{
+  course_id: string
+}
+interface IState{
+  treeData: TreeItem[], 
+  nodeClicked: any, 
+  isInput: boolean, 
+  status: Number
+}
 
-
-export class DefineGrade extends Component<{course_id: String}, {treeData: TreeItem[], nodeClicked: any, isInput: boolean, status: Number}> {
-  constructor(props: {course_id: String}) {
+export class DefineGrade extends Component<IProps, IState> {
+  constructor(props:any) {
     super(props);
     console.log(this.props.course_id)
 

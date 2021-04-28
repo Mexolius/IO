@@ -1,6 +1,8 @@
-import { CourseData, IUser} from "./DataModel.interface";
+import { Course, IUser } from "./DataModel.interface";
 
 export namespace Database {
+    //////////////
+    //#region UTIL
 
     const url = "http://localhost:8080/";
     const authorized = {
@@ -28,9 +30,14 @@ export namespace Database {
             reason: "Network Error"
         });
     }
+    //#endregion UTIL
+    /////////////////
 
-    export function getAllCourses(): Promise<Array<CourseData>> {
-        return new Promise<Array<CourseData>>((resolve, reject) => {
+    /////////////
+    //#region GET
+
+    export function getAllCourses(): Promise<Array<Course>> {
+        return new Promise<Array<Course>>((resolve, reject) => {
             fetch(url + "courses", {
                 headers: authorized,
                 method: "GET"
@@ -40,19 +47,23 @@ export namespace Database {
         })
     }
 
-    export function getStudentCourses(studentID: string) {
-        return fetch(url + "courses", {
-            headers: authorized,
-            method: "GET"
-        });
+    export function getCourseDetails(userID: string, courseID: string) : Promise<Course> {
+        return new Promise<Course>((resolve, reject) => {
+            fetch(url + `courses/${userID}/${courseID}`, {
+                headers: authorized,
+                method: "GET"
+            })
+                .then(response => handleThen(response, resolve, reject))
+                .catch(() => handleCatch(reject))
+        })
     }
 
 
-    export function getUserDetails(email: string, token?: string) : Promise<IUser> {
-        const tempLoginHeaders = token===undefined
-            ?authorized
-            :Object.assign(unauthorized, {'Authorization': 'Basic ' + token});
-        
+    export function getUserDetails(email: string, token?: string): Promise<IUser> {
+        const tempLoginHeaders = token === undefined
+            ? authorized
+            : Object.assign(unauthorized, { 'Authorization': 'Basic ' + token });
+
         return new Promise<IUser>((resolve, reject) => {
             fetch(url + "user/" + email, {
                 headers: tempLoginHeaders,
@@ -61,15 +72,41 @@ export namespace Database {
                 .then(response => handleThen(response, resolve, reject))
                 .catch(() => handleCatch(reject));
         })
-
     }
 
-    export function postCourseGradeModel(course_id: String, data: string){
-        return fetch(url + "course/grade/"+course_id, {
+    //#endregion GET
+    ////////////////
+
+    //////////////
+    //#region POST
+
+    //alias
+    export const register = postUser;
+    export function postUser(data: string) {
+        return fetch(url + "user", {
+            headers: unauthorized,
+            method: "POST",
+            body: data
+        });
+    }
+
+    export function postCourse(data: string) {
+        return fetch(url + "course", {
+            headers: authorized,
+            method: "POST",
+            body: data
+        })
+    }
+
+    export function postCourseGradeModel(course_id: string, data: string) {
+        return fetch(url + "course/grade/" + course_id, {
             headers: authorized,
             method: "POST",
             body: data
         });
     }
+
+    //#endregion POST
+    /////////////////
 }
 

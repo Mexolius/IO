@@ -15,5 +15,5 @@ export default abstract class AbstractFormComponent<P = {}, S = {}, SS = any> ex
 
     }
 
-    abstract onSubmit(event:any) : boolean;
+    abstract onSubmit(event:any) : void;
 }

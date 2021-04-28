@@ -1,44 +1,40 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { RouteComponentProps } from 'react-router';
-//import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserTag, faUser, faEnvelope, faFileSignature } from '@fortawesome/free-solid-svg-icons'
 import { Database } from '../../Structure/Database';
 import ResponseError from '../RepsonseError/ResponseError';
-import {IUser} from '../../Structure/DataModel.interface'
+import {ApiRequestState, IUser} from '../../Structure/DataModel.interface'
 
-interface IState {
-  user: IUser,
-  status: number
-}
+interface IState extends ApiRequestState<IUser> {}
 
+interface IProps extends RouteComponentProps{}
 
-
-class Profile extends Component<RouteComponentProps, IState> {
+class Profile extends Component<IProps, IState> {
 
   constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
-      user: {} as IUser,
+      data: {} as IUser,
       status: 0
     }
     this.getData();
   }
 
   private getFirstName(): string {
-    return this.state.user.firstName;
+    return this.state.data.firstName;
   }
 
   private getLastName(): string {
-    return this.state.user.lastName;
+    return this.state.data.lastName;
   }
 
   private getEmail(): string {
-    return this.state.user.email;
+    return this.state.data.email;
   }
 
   private getRoles(): Array<string> {
-    return this.state.user.roles;
+    return this.state.data.roles;
   }
 
   getData() {
@@ -48,7 +44,7 @@ class Profile extends Component<RouteComponentProps, IState> {
       Database.getUserDetails(email!)
         .then(user => {
           this.setState({
-            user: user,
+            data: user,
             status: 200
           });
         })
@@ -57,42 +53,10 @@ class Profile extends Component<RouteComponentProps, IState> {
           this.setState({ status: err.status})
         })
     }
-
-    /*axios({
-        method: 'get',
-        url: session_url,
-        headers: { 
-            'Access-Control-Allow-Origin':'*',
-            'Content-Type':'text/plain; charset=utf-8',
-            'Authorization': 'Basic '+ encodedToken,
-    }
-        })
-        .then(response => {
-          //console.log(response);
-            if(response.status === 200) {
-                const userInfo = JSON.parse(JSON.stringify(response.data));
-                console.log(userInfo);
-                this.setState({
-                  firstname: userInfo['firstName'],
-                  lastname: userInfo['lastName'],
-                  email: userInfo['email'],
-                  roles: userInfo['roles'],
-                })
-            }
-        })
-        .catch(err=>{
-            if(err.response){
-             }
-             else{
-                 this.setState({
-                 })
-             }
-        });*/
   }
 
 
   render() {
-    console.log(this.state.user);
     switch (this.state.status) {
       case 0:{
         return (

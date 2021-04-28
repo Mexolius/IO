@@ -1,13 +1,13 @@
 import { Component } from "react"
 import { Link } from "react-router-dom"
-import { CourseData } from "../../../Structure/DataModel.interface"
+import { Course } from "../../../Structure/DataModel.interface"
 
-class CourseList extends Component<{ data: Array<CourseData> }>{
+class CourseList extends Component<{ data: Array<Course> }>{
 
     render() {
         return (
             <ul className="w3-ul w3-card-4 ">
-                {this.props.data.map((x: CourseData) => {
+                {this.props.data.map(x => {
                     return (
                         <Link key={"course_" + x._id} to={'./course_details/' + x._id}>
                             <li className="w3-bar w3-white w3-hover-light-gray">

@@ -1,4 +1,3 @@
-
 export interface IUser {
     _id: string,
     firstName: string,
@@ -21,17 +20,20 @@ export interface TeachaerCourse{
 
 }
 
-export interface CourseData {
+export interface Course extends CourseData {
     _id: string,
     gradeModel: Array<Grade>,
-    name: string,
-    description: string,
-    studentsLimit: number,
-    students: any,
-    teachers: Array<String>
 }
 
 export interface ApiRequestState<DataType>{
     status: number,
     data: DataType
+}
+
+export interface CourseData {
+    name: string,
+    description: string,
+    studentLimit: number,
+    students: [],
+    teachers: Array<String>
 }

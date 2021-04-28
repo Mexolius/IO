@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import f from './fields.json'
 import 'w3-css/w3.css';
 import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent'
@@ -85,7 +85,6 @@ class Login extends AbstractFormComponent<IProps, IState> {
                                         </div>
                                     )
                                 })}
-                                {/*<WrappedButtons onSubmit={this.onSubmit} />*/}
                                 <div className="buttons">
                                     <button>Login</button>
                                     <button>Internal</button>

@@ -15,12 +15,12 @@ export default class StudenCourseView extends AbstractCourseView{
             case 200:
                 return (
                     <div>
-                        <div>Hello Course {this.state.course.name} Details </div>
+                        <div>Hello Course {this.state.data.name} Details </div>
                         <div className="course-container">
                             <div>
                                 <h3>Prowadzący</h3>
                                 <div className="instructor-list">
-                                    {this.state.course.teachers.map((inst, key) => {
+                                    {this.state.data.teachers.map((inst, key) => {
                                         return (
                                             <li key={"inst_" + key}>
                                                 <FontAwesomeIcon icon={faUserGraduate} />
@@ -33,7 +33,7 @@ export default class StudenCourseView extends AbstractCourseView{
                             {
                                 localStorage.getItem('userID')==null
                                 ?<GradeList grades={[]}/>
-                                :<GradeList grades={this.state.course.gradeModel}/>
+                                :<GradeList grades={this.state.data.gradeModel}/>
                             }
 
                         </div>

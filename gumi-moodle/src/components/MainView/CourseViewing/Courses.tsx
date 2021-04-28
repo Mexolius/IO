@@ -2,13 +2,13 @@ import { Component } from 'react'
 import ResponseError from '../../RepsonseError/ResponseError'
 import CourseList from './CourseUtils';
 import { Database } from '../../../Structure/Database';
-import { ApiRequestState, CourseData } from '../../../Structure/DataModel.interface';
+import { ApiRequestState, Course } from '../../../Structure/DataModel.interface';
 
 interface IProps {
     readonly url: string
 }
 
-interface IState extends ApiRequestState<Array<CourseData>> { }
+interface IState extends ApiRequestState<Array<Course>> { }
 
 export default class Courses extends Component<IProps, IState>{
 
@@ -16,7 +16,7 @@ export default class Courses extends Component<IProps, IState>{
         super(props);
 
         this.state = {
-            data: new Array<CourseData>(),
+            data: new Array<Course>(),
             status: 0
         };
     }
