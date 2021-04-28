@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
-import SortableTree, {addNodeUnderParent, removeNodeAtPath, TreeItem, changeNodeAtPath, map as mapTree, GetTreeItemChildrenFn, getNodeAtPath, getFlatDataFromTree, FlatDataItem } from 'react-sortable-tree';
+import SortableTree, {addNodeUnderParent, removeNodeAtPath, TreeItem, changeNodeAtPath, map as mapTree, walk as walkTree } from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { faCertificate } from '@fortawesome/free-solid-svg-icons'
 import { Database } from '../../../Structure/Database';
-import axios from 'axios';
 import ResponseError from '../../RepsonseError/ResponseError';
 
 
@@ -27,10 +25,13 @@ export class DefineGrade extends Component<{course_id: String}, {treeData: TreeI
     this.removeNode = this.removeNode.bind(this);
     this.addNode = this.addNode.bind(this);
     this.setInput = this.setInput.bind(this);
+    this.updateChildrenPointsSum = this.updateChildrenPointsSum.bind(this);
 
   }
   onChange(treeData: TreeItem[]){
     this.setState({ treeData })
+    this.updateChildrenPointsSum();
+
   }
 
   removeNode(rowInfo: { node: any; treeIndex: any; path: any; }) {
@@ -46,6 +47,8 @@ export class DefineGrade extends Component<{course_id: String}, {treeData: TreeI
       },
       }),
     })
+    this.updateChildrenPointsSum();
+
 }
 
 modifyNodeTitle(event: any, rowInfo: { node: any; treeIndex: any; path: any; }) {
@@ -72,7 +75,7 @@ modifyNode( node: any, treeIndex: any, path: any) {
       newNode: node
     })
   }));
-
+  this.updateChildrenPointsSum();
 }
 
 addNode(rowInfo: { node: any; treeIndex: any; path: any; }) {
@@ -94,6 +97,7 @@ addNode(rowInfo: { node: any; treeIndex: any; path: any; }) {
       },
     }).treeData,
   })
+  this.updateChildrenPointsSum();
 }
 
 handleNodeClick(node: any){
@@ -101,23 +105,33 @@ handleNodeClick(node: any){
     nodeClicked: node,
     isInput: true,
   });
+  this.updateChildrenPointsSum();
+
 }
 
 getNodeTitle(rowInfo: any){
   let {node, treeIndex, path} = rowInfo;
+  this.updateChildrenPointsSum();
+
   return node.title;
 }
 
 getNodePoints(rowInfo: any){
   let {node, treeIndex, path} = rowInfo;
+  this.updateChildrenPointsSum();
+
   return node.points.toString()
 }
 
 setInput(){
   this.setState({ isInput: false });
+  this.updateChildrenPointsSum();
+
 }
 
 getFlatData(){
+  this.updateChildrenPointsSum();
+
   var flatTree = mapTree({
     treeData: this.state.treeData,
     getNodeKey: ({node: TreeNode, treeIndex: number}) => {
@@ -126,6 +140,7 @@ getFlatData(){
     callback: (param: { node: { title: any; points: any; children: any; }; }) => {return {name: param.node.title, points: param.node.points, children: param.node.children}},
     ignoreCollapsed: false
 });
+
 
 Database.postCourseGradeModel(this.props.course_id, JSON.stringify(flatTree[0]))
 .then(res=>{
@@ -144,7 +159,17 @@ Database.postCourseGradeModel(this.props.course_id, JSON.stringify(flatTree[0]))
     
     console.log(err);
 })
+  console.log(flatTree)
+}
 
+updateChildrenPointsSum(){
+  walkTree({
+      treeData: this.state.treeData,
+      getNodeKey: ({node: TreeNode, treeIndex: number}) => {
+        return number;
+    },
+    callback: (param: { node: { title: any; points: any; children: any[]; }; }) => {if(param.node.children.length !== 0) {let sum = 0; param.node.children.forEach(e => sum+=e.points ); param.node.points=sum}}},
+  )
 }
 
 
@@ -179,7 +204,7 @@ Database.postCourseGradeModel(this.props.course_id, JSON.stringify(flatTree[0]))
                 rowInfo.node.title
               ),
               buttons: [
-              this.state.isInput && rowInfo.node === this.state.nodeClicked ? (
+              rowInfo.node.children?.length === 0 && this.state.isInput && rowInfo.node === this.state.nodeClicked ? (
                 <form>
                 <input
                   value={this.getNodePoints(rowInfo)}
