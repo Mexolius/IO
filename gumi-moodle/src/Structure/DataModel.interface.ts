@@ -34,6 +34,6 @@ export interface CourseData {
     name: string,
     description: string,
     studentLimit: number,
-    students: [],
+    students: Array<String>,
     teachers: Array<String>
 }

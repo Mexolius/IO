@@ -3,6 +3,7 @@ import { Component } from "react";
 import '../CourseDetails.css'
 import { ApiRequestState, Course } from "../../../../../Structure/DataModel.interface";
 import { Database } from "../../../../../Structure/Database";
+import { stringify } from "node:querystring";
 
 interface IState extends ApiRequestState<Course>{}
 
@@ -22,7 +23,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
     }
 
     componentDidMount() {
-        const user = localStorage.getItem('userID');
+        const user = JSON.stringify(localStorage.getItem('userID'))
         if(user!=null){
             Database.getCourseDetails(user, this.props.courseID)
             .then(res=>{

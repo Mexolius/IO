@@ -45,6 +45,7 @@ class Navbar extends Component<AppState> {
         localStorage.removeItem('user');
         localStorage.removeItem('authData');
         localStorage.removeItem('userID');
+        localStorage.removeItem('userRoles');
 
         this.setState({
             user: "",
