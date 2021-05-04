@@ -3,15 +3,10 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import DefineGrade from '../../../../Grades/DefineGrade/DefineGrade';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import LoadingWrapper from "../../../../LoadingComponent/LoadingWrapper";
 
-//temp
-interface Student{}
 
-export default class TeacherCourseView extends AbstractCourseView{
-
-    constructor(props: { courseID: string }) {
-        super(props)
-    }
+ class TeacherCourseView extends AbstractCourseView{
 
     render(){
         return(
@@ -31,3 +26,5 @@ export default class TeacherCourseView extends AbstractCourseView{
         )
     }
 }
+
+export default LoadingWrapper(TeacherCourseView, "Fetching grades...")

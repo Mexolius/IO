@@ -83,7 +83,7 @@ export namespace Database {
     //alias
     export const register = postUser;
     export function postUser(data: string) {
-        return fetch(url + "user", {
+        return fetch(url + "register", {
             headers: unauthorized,
             method: "POST",
             body: data

@@ -1,17 +1,17 @@
 import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import GradeList from "../../../../Grades/GradeList/GradeList";
+import LoadingWrapper from "../../../../LoadingComponent/LoadingWrapper";
 import ResponseError from "../../../../RepsonseError/ResponseError";
 import AbstractCourseView from "./AbstractCourseView";
 
-export default class StudenCourseView extends AbstractCourseView{
+class StudenCourseView extends AbstractCourseView{
 
     render() {
         
-        console.log(this.state.status)
         switch (this.state.status) {
             case 0:
-                return (<div>Loading...</div>)
+                return(<></>)
             case 200:
                 return (
                     <div>
@@ -45,3 +45,5 @@ export default class StudenCourseView extends AbstractCourseView{
         }
     }
 }
+
+export default LoadingWrapper(StudenCourseView, "Fetching grades...")

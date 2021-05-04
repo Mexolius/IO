@@ -30,12 +30,15 @@ class Navbar extends Component<AppState> {
     }
 
     componentDidMount() {
-        this.setState(
+        if(localStorage.getItem("user")){
+            this.setState(
             {
                 user: localStorage.getItem('user'),
                 logged: true
             }
         )
+        }
+        
       }
       
 
@@ -45,6 +48,7 @@ class Navbar extends Component<AppState> {
         localStorage.removeItem('user');
         localStorage.removeItem('authData');
         localStorage.removeItem('userID');
+        localStorage.removeItem('userRoles');
 
         this.setState({
             user: "",

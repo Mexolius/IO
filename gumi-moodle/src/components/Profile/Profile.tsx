@@ -5,20 +5,24 @@ import { faUserTag, faUser, faEnvelope, faFileSignature } from '@fortawesome/fre
 import { Database } from '../../Structure/Database';
 import ResponseError from '../RepsonseError/ResponseError';
 import {ApiRequestState, IUser} from '../../Structure/DataModel.interface'
+import LoadingWrapper, { LoadingProps } from '../LoadingComponent/LoadingWrapper';
 
 interface IState extends ApiRequestState<IUser> {}
 
-interface IProps extends RouteComponentProps{}
+interface IProps extends RouteComponentProps, LoadingProps{}
 
 class Profile extends Component<IProps, IState> {
 
-  constructor(props: RouteComponentProps) {
+  componentDidMount(){
+    this.getData();
+  }
+
+  constructor(props: IProps) {
     super(props);
     this.state = {
       data: {} as IUser,
       status: 0
     }
-    this.getData();
   }
 
   private getFirstName(): string {
@@ -38,6 +42,7 @@ class Profile extends Component<IProps, IState> {
   }
 
   getData() {
+    this.props.setLoading(true);
     const email = localStorage.getItem('user');
     if (email == null) this.setState({ status: 403 });
     else {
@@ -52,19 +57,15 @@ class Profile extends Component<IProps, IState> {
           console.log(err);
           this.setState({ status: err.status})
         })
+        .finally(()=>{
+          this.props.setLoading(false);
+        })
     }
   }
 
 
   render() {
     switch (this.state.status) {
-      case 0:{
-        return (
-          <div>
-            Loading...
-          </div>
-        )
-      }
 
       case 200:{
         return (
@@ -96,10 +97,12 @@ class Profile extends Component<IProps, IState> {
       }
 
       default:{
-        return <ResponseError status={this.state.status}></ResponseError>
+        return(
+          <ResponseError status={this.state.status}/>
+        ) 
       }
     }
   }
 }
 
-export default Profile;
+export default LoadingWrapper(Profile, "Loading profile") ;

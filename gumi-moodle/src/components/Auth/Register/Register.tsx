@@ -5,10 +5,15 @@ import 'w3-css/w3.css';
 import AbstractFormComponent from '../../AbstractForm/AbstractFormComponent'
 import ResponseError from '../../RepsonseError/ResponseError'
 import { Database } from '../../../Structure/Database';
+import LoadingWrapper, { LoadingProps } from '../../LoadingComponent/LoadingWrapper';
+import { ApiRequestState } from '../../../Structure/DataModel.interface';
 
-export default class Register extends AbstractFormComponent<any, { status: number }> {
+interface IProps extends LoadingProps{}
+interface IState extends ApiRequestState<any>{}
 
-    constructor(props: any) {
+class Register extends AbstractFormComponent<IProps, IState> {
+
+    constructor(props: IProps) {
         super(props);
 
         this.fields = f;
@@ -17,7 +22,9 @@ export default class Register extends AbstractFormComponent<any, { status: numbe
         });
         this.state = {
             status: 0,
+            data: {}
         }
+        this.props.setLoading(false);
     }
 
     private readUser(): string {
@@ -30,6 +37,7 @@ export default class Register extends AbstractFormComponent<any, { status: numbe
     }
 
     onSubmit(event: any): void {
+        this.props.setLoading(true);
         event.preventDefault();
         Database.register(this.readUser())
             .then(res => {
@@ -49,38 +57,49 @@ export default class Register extends AbstractFormComponent<any, { status: numbe
                     status: -1,
                 })
             })
+            .finally(()=>{
+                this.props.setLoading(false);
+            })
     }
 
 
     render() {
+        switch (this.state.status) {
+            case 409:
+            case 0:
+                return (
+                    <div className="login-container flex-col">
 
-        return (
-            <div className="login-container flex-col">
-                {
-                    this.state.status === 200 ?
+                        <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
+                            <h2>Register</h2>
+                            {this.state.status === 409 ? <ResponseError status={this.state.status} /> : <></>}
+                            {this.fields.map(x => {
+                                return (
+                                    <div key={x.name}>
+                                        <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
+                                    </div>
+                                )
+                            })}
+                            <div className="buttons">
+                                <button>Sign up</button>
+                            </div>
+                            <a className="hover-move" href="/Login">Already have an account? Sign in{'>'}{'>'}</a>
+                        </form>
+
+                    </div>
+                )
+            case 200:
+                return (
+                    <div className="login-container flex-col">
                         <h2>Thank you for joining GUMI-MOODLE</h2>
-                        :
-                        [409, 0].includes(this.state.status) ?
+                    </div>
+                )
+            default: return (
+                    <ResponseError status={this.state.status} />
 
-                            <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
-                                <h2>Register</h2>
-                                <ResponseError status={this.state.status} />
-                                {this.fields.map(x => {
-                                    return (
-                                        <div key={x.name}>
-                                            <input ref={this.rfs.get(x.name)} className={x.classnames} type={x.type} placeholder={x.name} />
-                                        </div>
-                                    )
-                                })}
-                                <div className="buttons">
-                                    <button>Sign up</button>
-                                </div>
-                                <a className="hover-move" href="/Login">Already have an account? Sign in{'>'}{'>'}</a>
-                            </form>
-                            :
-                            <ResponseError status={this.state.status} />
-                }
-            </div>
-        )
+            )
+        }
     }
 }
+
+export default LoadingWrapper(Register, "Signing up...");
