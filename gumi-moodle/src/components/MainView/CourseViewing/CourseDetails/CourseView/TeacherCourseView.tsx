@@ -6,6 +6,7 @@ import { faList, faPlus } from '@fortawesome/free-solid-svg-icons'
 import ResponseError from "../../../../RepsonseError/ResponseError";
 import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 import StudentsList from "../../../../Students/StudentsList";
+import AddGrade from "../../../../Grades/AddGrade/AddGrade";
 
 
 export default class TeacherCourseView extends AbstractCourseView{
@@ -27,6 +28,7 @@ export default class TeacherCourseView extends AbstractCourseView{
                             <Switch>
                                 <Route path='/define_grade' render={()=>(<DefineGrade course_id={this.props.courseID}/>)} />
                                 <Route path='/students_list' render={()=>(<StudentsList course={this.state.data}/>)} />
+                                <Route exact path='/add_grade/:id' children={<AddGrade course={this.state.data}/>} />
                             </Switch>
                             
                         </div>
