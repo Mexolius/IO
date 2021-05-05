@@ -1,14 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faUserGraduate } from '@fortawesome/free-solid-svg-icons'
+import {  faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import { Course } from "../../Structure/DataModel.interface";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Link } from "react-router-dom"
 
 
 export class StudentsList extends Component<{course:Course}>{
-    constructor(props: {course: Course}) {
-        super(props);
-    }
 
     render(){
         return(
@@ -22,7 +19,8 @@ export class StudentsList extends Component<{course:Course}>{
                                         <FontAwesomeIcon icon={faUserGraduate} />
                                         {student}
                                         </div>
-                                        <Link key={"course_" + key} to={'./add_grade/' + key}>
+                                        
+                                        <Link key={"course_" + key} to={'./change_grade/' + student}>
                                         <button className="w3-button w3-right w3-teal w3-hover-green">Add Grade</button>
                                         </Link>
                                     </li>

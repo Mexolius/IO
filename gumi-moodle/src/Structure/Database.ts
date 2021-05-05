@@ -100,10 +100,18 @@ export namespace Database {
 
     export function postCourseGradeModel(course_id: string, data: string) {
         console.log(data);
-        return fetch(url + "grade/" + course_id, {
+        return fetch(url + "grades/" + course_id, {
             headers: authorized,
             method: "POST",
             body: data
+        });
+    }
+
+    export function postStudentPoints(course_id: string, grade_id: string, student_id: string, points:number) {
+        return fetch(url + "grade/" + course_id+'/'+grade_id+'/'+student_id, {
+            headers: authorized,
+            method: "POST",
+            body: JSON.parse(JSON.stringify(points))
         });
     }
 

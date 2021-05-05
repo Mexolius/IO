@@ -3,7 +3,6 @@ import { Component } from "react";
 import '../CourseDetails.css'
 import { ApiRequestState, Course } from "../../../../../Structure/DataModel.interface";
 import { Database } from "../../../../../Structure/Database";
-import { stringify } from "node:querystring";
 
 interface IState extends ApiRequestState<Course>{}
 
