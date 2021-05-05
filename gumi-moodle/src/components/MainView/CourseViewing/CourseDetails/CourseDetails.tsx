@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-import StudenCourseView from './CourseView/StudentCourseView';
+import StudentCourseView from './CourseView/StudentCourseView';
 import TeacherCourseView from './CourseView/TeacherCourseView';
 
 const CourseDetails = () => {
@@ -9,7 +9,7 @@ const CourseDetails = () => {
         return (<TeacherCourseView courseID={id} />);
     }
     else{
-        return (<StudenCourseView courseID={id} />);
+        return (<StudentCourseView courseID={id} />);
     }
 }
 

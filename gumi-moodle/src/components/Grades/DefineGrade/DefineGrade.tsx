@@ -1,5 +1,5 @@
 import {Component} from 'react';
-import SortableTree, {addNodeUnderParent, removeNodeAtPath, TreeItem, changeNodeAtPath, map as mapTree, walk as walkTree } from 'react-sortable-tree';
+import SortableTree, {addNodeUnderParent, removeNodeAtPath, TreeItem, changeNodeAtPath, walk as walkTree, getFlatDataFromTree } from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMinus } from '@fortawesome/free-solid-svg-icons'
@@ -43,7 +43,7 @@ export class DefineGrade extends Component<IProps, IState> {
   }
 
   removeNode(rowInfo: { node: any; treeIndex: any; path: any; }) {
-    let {node, treeIndex, path} = rowInfo;
+    let {path} = rowInfo;
 
     this.setState({
       treeData: removeNodeAtPath({
@@ -87,7 +87,7 @@ modifyNode( node: any, treeIndex: any, path: any) {
 }
 
 addNode(rowInfo: { node: any; treeIndex: any; path: any; }) {
-  let {node, treeIndex, path} = rowInfo;
+  let {path} = rowInfo;
   this.setState({
     treeData: addNodeUnderParent({
       treeData: this.state.treeData,
@@ -118,14 +118,14 @@ handleNodeClick(node: any){
 }
 
 getNodeTitle(rowInfo: any){
-  let {node, treeIndex, path} = rowInfo;
+  let {node} = rowInfo;
   this.updateChildrenPointsSum();
 
   return node.title;
 }
 
 getNodePoints(rowInfo: any){
-  let {node, treeIndex, path} = rowInfo;
+  let {node} = rowInfo;
   this.updateChildrenPointsSum();
 
   return node.points.toString()
@@ -137,23 +137,37 @@ setInput(){
 
 }
 
+
+getParentKey(path: any){
+  if(path.length <= 1){
+    return null;
+  }
+  else {
+    return 'grade_'+path[path.length-2];
+  }
+}
+
 getFlatData(){
   this.updateChildrenPointsSum();
 
-  var flatTree = mapTree({
+  var treeData = getFlatDataFromTree({
     treeData: this.state.treeData,
     getNodeKey: ({node: TreeNode, treeIndex: number}) => {
         return number;
-    },
-    callback: (param: { node: { title: any; points: any; children: any; }; }) => {return {name: param.node.title, points: param.node.points, children: param.node.children}},
-    ignoreCollapsed: false
-});
+    }
+  })
 
+  var flatTree = treeData.map(
+    (e, key) => {
+      {return {_id: 'grade_'+key, name: e.node.title, level: e.path.length-1, maxPoints: e.node.points, studentPoints: {}, thresholds: [], parentID:  this.getParentKey(e.path)
+    }}
+    }
+  )
 
-Database.postCourseGradeModel(this.props.course_id, JSON.stringify(flatTree[0]))
+Database.postCourseGradeModel(this.props.course_id, JSON.stringify(flatTree))
 .then(res=>{
     this.setState({
-        status: 200,
+        status: res.status,
     })
 }).catch(err=>{
     if(err.response){

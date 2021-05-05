@@ -12,6 +12,8 @@ export interface Grade {
     children: Array<Grade>
 }
 
+
+
 export interface StudentCourse{
 
 }
@@ -34,6 +36,6 @@ export interface CourseData {
     name: string,
     description: string,
     studentLimit: number,
-    students: [],
+    students: Array<String>,
     teachers: Array<String>
 }

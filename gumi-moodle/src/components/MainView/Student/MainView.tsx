@@ -25,7 +25,11 @@ export default class MainView extends Component {
                     <Switch>
                         <Route path='/add_course' component={CreateCourse} />
                         <Route path='/add_grade' component={CreateGrade} />
+                        {localStorage.getItem('userRoles')?.includes("TEACHER")===true?
+                        <Route path='/my_courses' render={()=>(<Courses url={"http://localhost:8080/courses/of-teacher/"+localStorage.getItem('userID')}/>)} />
+                        :
                         <Route path='/my_courses' render={()=>(<Courses url={"http://localhost:8080/courses/of-student/"+localStorage.getItem('userID')}/>)} />
+                        }
                         <Route path='/all_courses' render={()=>(<Courses url="http://localhost:8080/courses"/>)} />
                         <Route exact path='/course_details/:id' children={<CourseDetails />} />
 

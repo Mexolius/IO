@@ -26,7 +26,9 @@ export default class AbstractCourseView extends Component<IProps, IState>{
 
     componentDidMount() {
         this.props.setLoading(true);
-        const user = localStorage.getItem('userID');
+
+        const user = JSON.stringify(localStorage.getItem('userID'))
+
         if(user!=null){
             Database.getCourseDetails(user, this.props.courseID)
             .then(res=>{
