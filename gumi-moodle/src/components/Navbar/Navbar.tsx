@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import 'w3-css/w3.css';
+import './Navbar.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Home from '../Home/Home';
 import Profile from '../Profile/Profile';
@@ -68,7 +69,7 @@ class Navbar extends Component<AppState> {
     render() {
         return (
             <Router>
-            <div className="w3-bar w3-light-gray w3-border">
+            <div className="w3-bar w3-light-gray w3-border nav-bar">
                     <Link to='/' className="w3-bar-item w3-wide"><img style={{height:"50px", width:"219px"}} src="logo.png" alt="logo"/></Link>
                     <div className="w3-right w3-bar-item">
                             {this.isLogged() && <Link to={'/profile'} className="w3-bar-item w3-hover-blue w3-button"><FontAwesomeIcon icon={faUser} /> {this.getUsername()}</Link> }

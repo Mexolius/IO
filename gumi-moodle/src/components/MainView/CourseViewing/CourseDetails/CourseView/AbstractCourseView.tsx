@@ -27,7 +27,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
     componentDidMount() {
         this.props.setLoading(true);
 
-        const user = JSON.stringify(localStorage.getItem('userID'))
+        const user = localStorage.getItem('userID');
 
         if(user!=null){
             Database.getCourseDetails(user, this.props.courseID)
@@ -38,6 +38,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
                 });
             })
             .catch(err=>{
+                console.log(err);
                 this.setState({
                     status: err.status
                 });

@@ -11,7 +11,6 @@ export const LoadingWrapper = <P extends LoadingProps>(Component : ComponentType
         const [isLoading, setLoading] = useState(true);
 
         const setLoadingState = (isComponentLoading:boolean)=>{
-            console.log("loading " + isComponentLoading);
             setLoading(isComponentLoading);
         }
 

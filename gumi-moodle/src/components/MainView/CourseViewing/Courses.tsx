@@ -3,17 +3,20 @@ import ResponseError from '../../RepsonseError/ResponseError'
 import CourseList from './CourseUtils';
 import { Database } from '../../../Structure/Database';
 import { ApiRequestState, Course } from '../../../Structure/DataModel.interface';
+import LoadingWrapper, { LoadingProps } from '../../LoadingComponent/LoadingWrapper';
 
-interface IProps {
+interface IProps extends LoadingProps {
     readonly url: string
 }
 
 interface IState extends ApiRequestState<Array<Course>> { }
 
-export default class Courses extends Component<IProps, IState>{
+class Courses extends Component<IProps, IState>{
 
-    constructor(props: { url: string }) {
+    constructor(props: IProps) {
         super(props);
+
+        this.props.setLoading(false);
 
         this.state = {
             data: new Array<Course>(),
@@ -22,6 +25,7 @@ export default class Courses extends Component<IProps, IState>{
     }
 
     componentDidMount() {
+        this.props.setLoading(true)
         Database.getAllCourses()
             .then(courses => {
                 this.setState({
@@ -34,6 +38,9 @@ export default class Courses extends Component<IProps, IState>{
                 this.setState({
                     status: err.status
                 })
+            })
+            .finally(()=>{
+                this.props.setLoading(false);
             })
     }
 
@@ -54,3 +61,5 @@ export default class Courses extends Component<IProps, IState>{
         }
     }
 }
+
+export default  LoadingWrapper(Courses, "Fetching courses...") ;

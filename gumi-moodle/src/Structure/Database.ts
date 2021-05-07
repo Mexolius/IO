@@ -48,6 +48,7 @@ export namespace Database {
     }
 
     export function getCourseDetails(userID: string, courseID: string) : Promise<Course> {
+        console.log(userID)
         return new Promise<Course>((resolve, reject) => {
             fetch(url + `courses/${userID}/${courseID}`, {
                 headers: authorized,

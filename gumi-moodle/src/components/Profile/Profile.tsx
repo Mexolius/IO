@@ -44,7 +44,11 @@ class Profile extends Component<IProps, IState> {
   getData() {
     this.props.setLoading(true);
     const email = localStorage.getItem('user');
-    if (email == null) this.setState({ status: 403 });
+    if (email == null){
+      this.setState({ status: 403 });
+      this.props.setLoading(false);
+      return;
+    } 
     else {
       Database.getUserDetails(email!)
         .then(user => {
