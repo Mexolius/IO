@@ -20,7 +20,8 @@ function numeric_grade(percent: number): { value: number, color: string } {
 
 interface IProps {
     grade: Grade,
-    id: string
+    id: string,
+    zindex: number
 }
 
 const SimpleGrade = (props: IProps) => {
@@ -59,21 +60,21 @@ class GradeDisplay extends Component<IProps, { expanded: boolean }>{
         if (!this.props.grade.isLeaf) {
             return (
                 <div>
-                    <div className="row expandable" onClick={this.onSubgradesClick} >
-                        <SimpleGrade grade={this.props.grade} id={this.props.id} />
+                    <div className="row expandable w3-card" style={{background:!this.state.expanded?'#fff':'#eceff1'}} onClick={this.onSubgradesClick} >
+                        <SimpleGrade zindex={this.props.zindex} grade={this.props.grade} id={this.props.id} />
                         <div className="flex-gap" style={{ lineHeight: "100%" }} >
                             <b style={{fontSize:17}}>Subgrades</b>
                             <FontAwesomeIcon size={"lg"} icon={this.state.expanded ? faChevronUp : faChevronDown} className="w3-bar-item w3-centered w3-circle" />
                         </div>
                     </div>
-                    {this.state.expanded ? <ChildGradeList id={this.props.id} grades={this.props.grade.children} /> : <></>}
+                    {this.state.expanded ? <ChildGradeList zindex={this.props.zindex+1} id={this.props.id} grades={this.props.grade.children} /> : <></>}
                 </div>
             )
         }
 
         else return (
-            <div className="row">
-                <SimpleGrade grade={this.props.grade} id={this.props.id} />
+            <div className="row w3-card">
+                <SimpleGrade zindex={this.props.zindex} grade={this.props.grade} id={this.props.id} />
                 <div className="flex-gap" style={{ lineHeight: "100%", opacity: 0, cursor: "default" }} >
                     Subgrades
                     <FontAwesomeIcon size={"lg"} icon={this.state.expanded ? faChevronUp : faChevronDown} className="w3-bar-item w3-centered w3-circle" />
@@ -84,15 +85,15 @@ class GradeDisplay extends Component<IProps, { expanded: boolean }>{
     }
 }
 
-const ParentGradeList = (props: { grades: Array<Grade> }) => {
+const ParentGradeList = (props: { grades: Array<Grade>, zindex:number }) => {
     const id = localStorage.getItem('userID')!;
 
     return (
-        <div className="grade-list flex-gap">
+        <div className="grade-list">
             {props.grades.map((grade: Grade, k) => {
                 return (
                     <div key={"grade_" + k} >
-                        <GradeDisplay id={id} grade={grade} />
+                        <GradeDisplay zindex={props.zindex} id={id} grade={grade} />
                     </div>
                 )
             })}
@@ -100,13 +101,13 @@ const ParentGradeList = (props: { grades: Array<Grade> }) => {
     );
 }
 
-const ChildGradeList = (props: { grades: Array<Grade>, id: string }) => {
+const ChildGradeList = (props: { grades: Array<Grade>, id: string, zindex: number }) => {
     return (
-        <div className="grade-list ">
+        <div >
             {props.grades.map((grade: Grade, k) => {
                 return (
                     <div style={{ paddingLeft: 20 }} key={"grade_" + k} >
-                        <GradeDisplay id={props.id} grade={grade} />
+                        <GradeDisplay zindex={props.zindex} id={props.id} grade={grade} />
                     </div>
                 )
             })}

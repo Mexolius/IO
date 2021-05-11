@@ -1,17 +1,21 @@
 .course-container{
-    flex-direction: row;
     margin: 1rem 0 1rem 1rem;
 }
 
-.flex-gap{
+.flex-col{
     display: flex;
     gap: 2rem;
+    flex-direction: column;
+}
+
+.flex-row{
+    display: flex;
+    gap: 2rem;
+    flex-direction: row;
 }
 
 .instructor-list{
-    background: tomato;
     list-style: none;
-    flex-direction: column;
     padding: 2rem
 }
 
@@ -20,20 +24,40 @@
 }
 
 .border-thin{
-    border: black 1px solid;
+    border: #ccc 1px solid;
 }
 
 .course-header{
     background: #eceff1;
     padding: 10px;
-    line-height: 70%;
+    align-items: center;
 }
 
-.course-header > h2{
-    margin-bottom: 2rem;
+.course-header *{
+    margin: 0px;
+}
+
+.line-below{
+    border-bottom: 2px black solid;
+    max-width: 60%;
+    margin-bottom: 5px;
+}
+
+.description{
+    max-width: 60%;
 }
 
 .course-list-grades{
     width: 100%;
     padding-right: 2rem;
+}
+
+.join-button{
+    font-size: 15pt;
+    min-width: 12rem;
+}
+
+.instructor-wrapper{
+    padding: 1rem;
+    background: #eceff1;
 }

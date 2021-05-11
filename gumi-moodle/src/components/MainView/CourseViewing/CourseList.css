@@ -1,0 +1,28 @@
+.gallery{
+    padding: 2rem 0 2rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    row-gap: 2rem;
+    width: 80%;
+    margin: auto;
+}
+
+.element{
+    max-width: 450px;
+    min-width: 300px;
+}
+
+.content{
+    display: flex;
+    flex-direction: row;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.line{
+    height:2px;
+    border-width:0;
+    color:gray;
+    background-color:gray;
+    margin: 0px !important;
+}

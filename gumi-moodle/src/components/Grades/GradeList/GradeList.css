@@ -3,10 +3,22 @@
     flex-direction: row;
     padding:2rem;
     align-items: center;
-    gap: 1em;
-    background: #eceff1;
     justify-content: space-between;
+    position: relative;
+    z-index: 2;
 }
+
+/*.row:before{
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    -webkit-box-shadow: 5px 5px 15px 5px #babdbe; 
+    box-shadow: 5px 5px 15px 5px #babdbe;
+}*/
 
 .col{
     display: flex;
@@ -16,8 +28,9 @@
 }
 
 .grade-list{
+    display: flex;
     flex-direction: column;
-    
+    gap: 5rem;
 }
 
 .expandable{

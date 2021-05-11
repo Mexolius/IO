@@ -156,7 +156,7 @@ export namespace Database {
         return fetch(url + "course", {
             headers: authorized,
             method: "POST",
-            body: data
+            body: JSON.parse(JSON.stringify(data))
         })
     }
 
@@ -165,15 +165,23 @@ export namespace Database {
         return fetch(url + "grades/" + course_id, {
             headers: authorized,
             method: "POST",
-            body: data
+            body: JSON.parse(JSON.stringify(data))
         });
     }
 
     export function postStudentPoints(course_id: string, grade_id: string, student_id: string, points:number) {
-        return fetch(url + "grade/" + course_id+'/'+grade_id+'/'+student_id, {
+        return fetch(url + `grade/${course_id}/${grade_id}/${student_id}`, {
             headers: authorized,
             method: "POST",
             body: JSON.parse(JSON.stringify(points))
+        });
+    }
+
+    export function enrollUser(course_id: string) {
+        return fetch(url + "course/enroll/" + course_id, {
+            headers: authorized,
+            method: "POST",
+            body: localStorage.getItem('userID')!
         });
     }
 

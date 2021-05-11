@@ -22,6 +22,14 @@ export default class AbstractCourseView extends Component<IProps, IState>{
         }
 
         this.props.setLoading(false);
+        this.joinCourse = this.joinCourse.bind(this);
+    }
+
+    joinCourse(){
+        Database.enrollUser(this.state.data._id);
+        setTimeout(()=>{
+            window.location.reload()
+        }, 200)
     }
 
     componentDidMount() {
@@ -56,4 +64,8 @@ export default class AbstractCourseView extends Component<IProps, IState>{
         }
         
     }
+}
+
+export function userCourseJoin(_id: string) {
+    throw new Error("Function not implemented.");
 }
