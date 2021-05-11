@@ -1,15 +1,16 @@
-import { Component } from "react"
-import { Link } from "react-router-dom"
+import { Route, generatePath, Link } from "react-router-dom"
 import { Course } from "../../../Structure/DataModel.interface"
+import CourseDetails from "./CourseDetails/CourseDetails";
 
-class CourseList extends Component<{ data: Array<Course> }>{
 
-    render() {
-        return (
+const CourseList = (props: { data: Array<Course> }) =>{
+    return (
+        <>
             <ul className="w3-ul w3-card-4 ">
-                {this.props.data.map(x => {
+                {props.data.map(x => {
+                    const id = x._id;
                     return (
-                        <Link key={"course_" + x._id} to={'./course_details/' + x._id}>
+                            <Link key={"course_" + x._id} to={generatePath(`/courses/details/:id`, {id})}>
                             <li className="w3-bar w3-white w3-hover-light-gray">
                                 <img alt="" src="https://www.pngkit.com/png/detail/449-4499737_energy-appraiser-certification-course-materials-icon-course-icon.png" className="w3-bar-item w3-circle" style={{ width: "85px" }}></img>
                                 <div className="w3-bar-item">
@@ -18,11 +19,15 @@ class CourseList extends Component<{ data: Array<Course> }>{
                                 </div>
                             </li>
                         </Link>
+
                     )
                 })}
             </ul>
+            <Route path={`/courses/details/:id`}>
+                <CourseDetails />
+            </Route>
+            </>
         )
-    }
 }
 
 

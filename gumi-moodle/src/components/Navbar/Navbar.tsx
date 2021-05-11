@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import { Component } from 'react';
 import 'w3-css/w3.css';
 import './Navbar.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
@@ -6,43 +6,43 @@ import Home from '../Home/Home';
 import Profile from '../Profile/Profile';
 import Login from '../Auth/Login/Login'
 import Register from '../Auth/Register/Register';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
 import MainView from '../MainView/Student/MainView';
+
+import * as Navbars from "./RoleNavbars"
+import Courses from '../MainView/CourseViewing/Courses';
+import { Database } from '../../Structure/Database';
+import CourseDetails from '../MainView/CourseViewing/CourseDetails/CourseDetails';
+import CreateCourse from '../MainView/CreateCourse/CreateCourse';
 
 
 type AppState = {
-    user?: string,
-    logged?: boolean
+    user?: string | null,
+    nav: JSX.Element
 };
 
-class Navbar extends Component<AppState> {
-    state: AppState;
+class Navbar extends Component<any, AppState> {
     constructor(props: any) {
         super(props);
-        this.state =(
+        this.state = (
             {
-                user: "",
-                logged: false
+                user: null,
+                nav: <Navbars.OfUnlogged />
             }
         )
-       // this.componentDidMount = this.componentDidMount.bind(this);
         this.logout = this.logout.bind(this);
     }
 
     componentDidMount() {
-        if(localStorage.getItem("user")){
+        if (localStorage.getItem("user")) {
+            const user = localStorage.getItem('user')!;
             this.setState(
-            {
-                user: localStorage.getItem('user'),
-                logged: true
-            }
-        )
+                {
+                    user: user,
+                    nav: this.construct_nav(localStorage.getItem('userRoles')!.split(";"), user)
+                }
+            )
         }
-        
-      }
-      
-
+    }
 
     logout() {
         // remove user from local storage to log user out
@@ -52,46 +52,57 @@ class Navbar extends Component<AppState> {
         localStorage.removeItem('userRoles');
 
         this.setState({
-            user: "",
-            logged: false
+            user: null,
+            nav: <Navbars.OfUnlogged />
+        });
+    }
+
+    isLogged(): boolean {
+        return this.state.user != null;
+    }
+
+    getUsername() {
+        return this.state.user ?? "";
+    }
+
+    private construct_nav(roles: Array<String>, username: string): JSX.Element {
+        if (roles.includes("STUDENT")) {
+            return (<Navbars.OfStudent logout={this.logout} username={username} />)
         }
-        )
-    }
-
-    isLogged(){
-        return this.state.logged;
-    }
-
-    getUsername(){
-        return localStorage.getItem('user');
+        if (roles.includes("TEACHER")) {
+            return (<Navbars.OfTeacher logout={this.logout} username={username} />)
+        }
+        if (roles.includes("ADMIN")) {
+            return (<Navbars.OfAdmin logout={this.logout} username={username} />)
+        }
+        return (<>WHAT ARE YOU?</>)
     }
 
     render() {
         return (
             <Router>
-            <div className="w3-bar w3-light-gray w3-border nav-bar">
-                    <Link to='/' className="w3-bar-item w3-wide"><img style={{height:"50px", width:"219px"}} src="logo.png" alt="logo"/></Link>
+                <div className="w3-bar w3-light-gray w3-border nav-bar">
+                    <Link to='/' className="w3-bar-item w3-wide"><img style={{ height: "50px", width: "219px" }} src="logo.png" alt="logo" /></Link>
                     <div className="w3-right w3-bar-item">
-                            {this.isLogged() && <Link to={'/profile'} className="w3-bar-item w3-hover-blue w3-button"><FontAwesomeIcon icon={faUser} /> {this.getUsername()}</Link> }
-                            {this.isLogged() && <button  className="w3-button w3-red w3-hover-orange" onClick={this.logout}>Log out</button> }
-                            <Link to={'/'} className="w3-bar-item w3-hover-blue w3-button"> Home</Link>
-                            {!this.isLogged() &&<Link to={'/login'} className="w3-bar-item w3-hover-blue w3-button">Login</Link>}
-                            {!this.isLogged() &&<Link to={'/register'} className="w3-bar-item w3-hover-blue w3-button">Register</Link>}
-                            <Link to={'/courses'} className="w3-bar-item w3-hover-blue w3-button">Courses</Link>
-                        </div>  
+                        <Link to={'/'} className="w3-bar-item w3-hover-blue w3-button"> Home</Link>
+                        {this.state.nav}
                     </div>
+                </div>
                 <Switch>
-                        <Route exact path='/' component={Home} />
-                        <Route path='/profile' component={Profile} />
-                        <Route path='/login' component={Login} />
-                        <Route path='/register' component={Register} />
-                        <Route path='/courses' component={MainView} />
+                    <Route exact path='/' component={Home} />
+                    <Route path='/profile' component={Profile} />
+                    <Route path='/login' component={Login} />
+                    <Route path='/register' component={Register} />
+                    <Route path='/courses/all'><Courses course_fetch_fun={Database.getAllCourses}/> </Route>
+                    <Route path='/courses/my'><Courses course_fetch_fun={Database.getMyCourses}/></Route>
+                    <Route path='/courses/add' component={CreateCourse} />
+                    <Route path='/courses/details/:id'><CourseDetails /></Route>
                 </Switch>
             </Router>
         );
     }
 
-    
+
 }
 
 export default Navbar;

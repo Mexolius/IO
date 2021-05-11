@@ -14,31 +14,31 @@ class StudenCourseView extends AbstractCourseView{
                 return(<></>)
             case 200:
                 return (
-                    <div>
-                        <div>Hello Course {this.state.data.name} Details </div>
-                        <div className="course-container">
-                            <div>
+                        <div className="flex-gap course-container">
+                            <div style={{background: "#d1d9ff"}}>
                                 <h3>Prowadzący</h3>
-                                <div className="instructor-list">
+                                <div className="instructor-list flex-gap">
                                     {this.state.data.teachers.map((inst, key) => {
                                         return (
-                                            <li key={"inst_" + key}>
+                                            <div key={"inst_" + key}>
                                                 <FontAwesomeIcon icon={faUserGraduate} />
                                                 {inst}
-                                            </li>
+                                            </div>
                                         );
                                     })}
                                 </div>
                             </div>
-                            {
-                                localStorage.getItem('userID')==null
-                                ?<GradeList grades={[]}/>
-                                :<GradeList grades={this.state.data.gradeModel}/>
-                            }
-
+                            <div className="flex-gap course-list-grades" style={{flexDirection:"column"}}>
+                                <div className="border-thin course-header">
+                                    <h2>{this.state.data.name}</h2>
+                                    <p>{this.state.data.description}</p>
+                                </div>
+                                <div>
+                                    <h2>Your grades</h2>
+                                    <GradeList grades={this.state.data.grades}/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
                 )
             default:
                 return <ResponseError status={this.state.status} />

@@ -1,17 +1,39 @@
 .course-container{
-    display: flex;
     flex-direction: row;
+    margin: 1rem 0 1rem 1rem;
+}
+
+.flex-gap{
+    display: flex;
+    gap: 2rem;
 }
 
 .instructor-list{
     background: tomato;
     list-style: none;
-    display: flex;
     flex-direction: column;
-    gap: 10px;
+    padding: 2rem
 }
 
 .instructor-list li{
     background: peachpuff;
 }
 
+.border-thin{
+    border: black 1px solid;
+}
+
+.course-header{
+    background: #eceff1;
+    padding: 10px;
+    line-height: 70%;
+}
+
+.course-header > h2{
+    margin-bottom: 2rem;
+}
+
+.course-list-grades{
+    width: 100%;
+    padding-right: 2rem;
+}

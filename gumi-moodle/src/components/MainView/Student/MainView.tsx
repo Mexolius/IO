@@ -13,7 +13,7 @@ export default class MainView extends Component {
 
     render() {
         return (
-            <Router>
+            /*<Router>
                 <div className="w3-section w3-bottombar w3-topbar w3-dark-gray w3-padding-16 w3-center">
                     <Link to={'/add_course'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faPlus} /> Add Course</Link>
                     <Link to={'/add_grade'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faPlus} /> Add Grade</Link>
@@ -35,7 +35,8 @@ export default class MainView extends Component {
 
                     </Switch>
                 </div>
-            </Router>
+            </Router>*/
+            <></>
         )
     }
 }

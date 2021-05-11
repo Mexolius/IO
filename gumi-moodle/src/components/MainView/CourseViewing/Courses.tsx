@@ -1,12 +1,11 @@
 import { Component } from 'react'
 import ResponseError from '../../RepsonseError/ResponseError'
 import CourseList from './CourseUtils';
-import { Database } from '../../../Structure/Database';
 import { ApiRequestState, Course } from '../../../Structure/DataModel.interface';
 import LoadingWrapper, { LoadingProps } from '../../LoadingComponent/LoadingWrapper';
 
 interface IProps extends LoadingProps {
-    readonly url: string
+    readonly course_fetch_fun: ()=>Promise<Array<Course>>
 }
 
 interface IState extends ApiRequestState<Array<Course>> { }
@@ -26,7 +25,7 @@ class Courses extends Component<IProps, IState>{
 
     componentDidMount() {
         this.props.setLoading(true)
-        Database.getAllCourses()
+        this.props.course_fetch_fun()
             .then(courses => {
                 this.setState({
                     data: courses,
@@ -46,10 +45,6 @@ class Courses extends Component<IProps, IState>{
 
     render() {
         switch (this.state.status) {
-            case 0:
-                return (
-                    <div>Loading...</div>
-                );
             case 200:
                 return (
                     <CourseList data={this.state.data} />

@@ -10,7 +10,6 @@ const PoggersBar = (props: {max:number, values:Array<number> , thresholds:Array<
     return (
         <div className="prog-bar">
             {props.values.sort((a,b)=>b-a).map((x,k)=>{
-                console.log(colors[k]);
                 return(<Filler key={"filler_"+k} color={colors[k]} percent={x/props.max} zIndex={k}/>)
             })}
             {props.thresholds.map((x,k)=>{

@@ -6,10 +6,18 @@ export interface IUser {
     roles: Array<string>,
 }
 
+
 export interface Grade {
-    points: number,
-    name: string
-    children: Array<Grade>
+    _id: string,
+    name: string,
+    maxPoints: number,
+    aggregation: string,
+    studentPoints: {[key: string]:number}
+    thresholds: Array<number>,
+    parentID: string,
+    level: number
+    children: Array<Grade>,
+    isLeaf: boolean
 }
 
 
@@ -24,7 +32,7 @@ export interface TeachaerCourse{
 
 export interface Course extends CourseData {
     _id: string,
-    gradeModel: Array<Grade>,
+    grades: Array<Grade>,
 }
 
 export interface ApiRequestState<DataType>{

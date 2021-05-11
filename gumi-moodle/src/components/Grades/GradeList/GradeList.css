@@ -1,19 +1,29 @@
 .row{
     display: flex;
     flex-direction: row;
-    padding: 1em;
-    border: 2px solid #222;
-
+    padding:2rem;
     align-items: center;
-
-    gap: 1em
+    gap: 1em;
+    background: #eceff1;
+    justify-content: space-between;
 }
 
 .col{
     display: flex;
     flex-direction: column;
+    line-height: 2rem;
+    width: 50%;
 }
 
 .grade-list{
-    list-style: none;
+    flex-direction: column;
+    
+}
+
+.expandable{
+    cursor: pointer;
+}
+
+.expandable:hover{
+    background: #babdbe;
 }

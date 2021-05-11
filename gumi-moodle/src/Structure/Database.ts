@@ -1,4 +1,4 @@
-import { Course, IUser } from "./DataModel.interface";
+import { Course, Grade, IUser } from "./DataModel.interface";
 
 export namespace Database {
     //////////////
@@ -30,6 +30,32 @@ export namespace Database {
             reason: "Network Error"
         });
     }
+
+    function sortGrades(grades: Array<Grade>): Array<Grade>{
+        grades.forEach(g=>g.children=[])
+        const grouped_grades = groupGrades(grades);
+        grouped_grades[0].map(g=>findChildrenGrades(g,grouped_grades));
+        return grouped_grades[0];
+    }
+
+    function groupGrades(grades: Array<Grade>) : Array<Array<Grade>> {
+        return grades.reduce(function(memo:Array<Array<Grade>>, x) {
+          if (!memo[x.level]) { memo[x.level] = []; }
+          memo[x.level].push(x);
+          return memo;
+        }, []);
+      }
+      
+
+    function findChildrenGrades(parent: Grade, children: Array<Array<Grade>>){
+        if(!parent.isLeaf){
+            const potential_children = children[parent.level+1];
+            const actual_children = potential_children.filter(child=>child.parentID===parent._id);
+            parent.children.push(...actual_children);
+            parent.children.map(child=>findChildrenGrades(child,children));
+        }
+        
+    }
     //#endregion UTIL
     /////////////////
 
@@ -47,14 +73,49 @@ export namespace Database {
         })
     }
 
+    
+    export function getMyCourses(): Promise<Array<Course>> {
+        const user = localStorage.getItem("userID"), roles = localStorage.getItem('userRoles');
+
+        return new Promise<Array<Course>>((resolve, reject) => {
+            if(user!=null && roles!=null){
+                const endpoint = roles.includes("TEACHER")?"of-teacher":"of-student";
+                fetch(url + `courses/${endpoint}/${user}`, {
+                headers: authorized,
+                method: "GET"
+            })
+                .then(response => handleThen(response, resolve, reject))
+                .catch(() => handleCatch(reject));
+            }
+            else{
+                reject({
+                    status: 401,
+                    reason: "User not logged in"
+                });
+            }
+            
+        })
+    }
+
     export function getCourseDetails(userID: string, courseID: string) : Promise<Course> {
-        console.log(userID)
         return new Promise<Course>((resolve, reject) => {
             fetch(url + `courses/${userID}/${courseID}`, {
                 headers: authorized,
                 method: "GET"
             })
-                .then(response => handleThen(response, resolve, reject))
+                .then(response => {
+                    if(response.ok){
+                        response.json().then(data=>{
+                            data.grades = sortGrades(data.grades);
+                            resolve(data)
+                        })
+                        .catch(reject)
+                    }
+                    else reject({
+                        status: response.status,
+                        reason: response.statusText
+                    });
+                })
                 .catch(() => handleCatch(reject))
         })
     }

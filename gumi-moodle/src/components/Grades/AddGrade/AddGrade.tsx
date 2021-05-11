@@ -32,7 +32,7 @@ export class AddGrade extends Component<IProps, IState> {
   constructor(props:any) {
     super(props);
 //temporary before new Grade Model
-    let x: NewGrade[] = this.props.course.gradeModel.map( e => {
+    let x: NewGrade[] = this.props.course.grades.map( e => {
         return {
             _id:JSON.parse(JSON.stringify(e))['_id'],
             name: JSON.parse(JSON.stringify(e))['name'],

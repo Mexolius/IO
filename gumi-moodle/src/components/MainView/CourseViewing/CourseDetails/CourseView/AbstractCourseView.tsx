@@ -32,6 +32,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
         if(user!=null){
             Database.getCourseDetails(user, this.props.courseID)
             .then(res=>{
+                console.log(res);
                 this.setState({
                     status: 200,
                     data: res

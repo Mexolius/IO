@@ -3,7 +3,7 @@ import './GradeList.css'
 import PoggersBar from './PoggersBar/PoggersBar';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { Grade } from '../../../Structure/DataModel.interface';
 
 
@@ -18,84 +18,100 @@ function numeric_grade(percent: number): { value: number, color: string } {
     return { value: 5, color: "#3377f5" };
 }
 
-function isCompound(g: Grade): boolean {
-    return Array.isArray(g.children) && g.children.length !== 0;
+interface IProps {
+    grade: Grade,
+    id: string
 }
 
-const SimpleGrade = (props: { grade: Grade }) => {
-    const percent = 100 * props.grade.points / 100;
-    const numeric = numeric_grade(percent);
+const SimpleGrade = (props: IProps) => {
+
+    const val = props.grade.studentPoints[props.id] ?? 0;
 
     return (
-        <div className="col">
-            <div>{props.grade.name}</div>
-            <PoggersBar max={100} values={[~~(Math.random()*100)]} thresholds={[30, 60, 90]} />
-        </div>
+        <>
+            <div className="col flex-gap">
+            <b style={{ fontSize: 20 }}>{props.grade.name}</b>
+                <PoggersBar max={props.grade.maxPoints} values={[val]} thresholds={props.grade.thresholds} />
+            </div>
+            <b style={{ fontSize: 20 }}>
+                {`${(100 * val / props.grade.maxPoints).toFixed(2)}%`}
+            </b>
+        </>
     )
 }
 
-class GradeDisplay extends Component<{ grade: Grade }, { expanded: boolean }>{
+class GradeDisplay extends Component<IProps, { expanded: boolean }>{
 
-    constructor(props: { grade: Grade }) {
+    constructor(props: IProps) {
         super(props);
 
         this.state = { expanded: false }
         this.onSubgradesClick = this.onSubgradesClick.bind(this);
     }
 
-    onSubgradesClick(){
+    onSubgradesClick() {
         this.setState(state => ({
             expanded: !state.expanded
         }));
     }
 
     render() {
-        if (isCompound(this.props.grade)){
-            const reduced_grade = this.props.grade.children.reduce((a:Grade,b:Grade)=>{
-                return{
-
-                        name:a.name+b.name,
-                        points: a.points+b.points,
-
-                    children:new Array<Grade>(0)
-                }
-            },{points: 0, name:'',children:[]})
+        if (!this.props.grade.isLeaf) {
             return (
                 <div>
-                    <div className="row">
-                        <SimpleGrade grade={reduced_grade} />
-                        <div onClick={this.onSubgradesClick}>Subgrades
-                        <FontAwesomeIcon icon={faChevronDown} className="w3-bar-item w3-centered w3-circle" /></div>
+                    <div className="row expandable" onClick={this.onSubgradesClick} >
+                        <SimpleGrade grade={this.props.grade} id={this.props.id} />
+                        <div className="flex-gap" style={{ lineHeight: "100%" }} >
+                            <b style={{fontSize:17}}>Subgrades</b>
+                            <FontAwesomeIcon size={"lg"} icon={this.state.expanded ? faChevronUp : faChevronDown} className="w3-bar-item w3-centered w3-circle" />
+                        </div>
                     </div>
-                    {this.state.expanded?<GradeList grades={this.props.grade.children} />:null}
+                    {this.state.expanded ? <ChildGradeList id={this.props.id} grades={this.props.grade.children} /> : <></>}
                 </div>
             )
         }
-            
-        else
-            return (<div className="row"><SimpleGrade grade={this.props.grade} /></div>)
-    }
-}
 
-class GradeList extends Component<{ grades: Array<Grade> }>{
-
-    render() {
-
-        return (
-            <ul className="grade-list">
-                {this.props.grades.map((grade: Grade, k) => {
-                    const changed = grade;
-                    changed.children=[{name: "g1", points:~~(Math.random()*100), children:[]},{name: "g2", points:~~(Math.random()*100), children:[]},{name: "g3", points:~~(Math.random()*100), children:[]}]
-                    return (
-                        <li key={"grade_" + k}>
-                            <GradeDisplay grade={changed}></GradeDisplay>
-                        </li>
-                    )
-                })}
-            </ul>
-        );
+        else return (
+            <div className="row">
+                <SimpleGrade grade={this.props.grade} id={this.props.id} />
+                <div className="flex-gap" style={{ lineHeight: "100%", opacity: 0, cursor: "default" }} >
+                    Subgrades
+                    <FontAwesomeIcon size={"lg"} icon={this.state.expanded ? faChevronUp : faChevronDown} className="w3-bar-item w3-centered w3-circle" />
+                </div>
+            </div>
+        )
 
     }
 }
 
-export default GradeList;
+const ParentGradeList = (props: { grades: Array<Grade> }) => {
+    const id = localStorage.getItem('userID')!;
+
+    return (
+        <div className="grade-list flex-gap">
+            {props.grades.map((grade: Grade, k) => {
+                return (
+                    <div key={"grade_" + k} >
+                        <GradeDisplay id={id} grade={grade} />
+                    </div>
+                )
+            })}
+        </div>
+    );
+}
+
+const ChildGradeList = (props: { grades: Array<Grade>, id: string }) => {
+    return (
+        <div className="grade-list ">
+            {props.grades.map((grade: Grade, k) => {
+                return (
+                    <div style={{ paddingLeft: 20 }} key={"grade_" + k} >
+                        <GradeDisplay id={props.id} grade={grade} />
+                    </div>
+                )
+            })}
+        </div>
+    );
+}
+
+export default ParentGradeList;
