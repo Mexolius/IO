@@ -72,7 +72,7 @@ class Register extends AbstractFormComponent<IProps, IState> {
 
                         <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
                             <h2>Register</h2>
-                            {this.state.status === 409 ? <ResponseError status={this.state.status} /> : <></>}
+                            {this.state.status === 409 ? <div style={{color:"red"}}>This email already has an account connected to it!</div> : <></>}
                             {this.fields.map(x => {
                                 return (
                                     <div key={x.name}>
