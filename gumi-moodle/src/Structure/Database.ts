@@ -32,10 +32,14 @@ export namespace Database {
     }
 
     function sortGrades(grades: Array<Grade>): Array<Grade>{
-        grades.forEach(g=>g.children=[])
-        const grouped_grades = groupGrades(grades);
-        grouped_grades[0].map(g=>findChildrenGrades(g,grouped_grades));
-        return grouped_grades[0];
+        if(grades.length!==0){
+            grades.forEach(g=>g.children=[])
+            const grouped_grades = groupGrades(grades);
+            grouped_grades[0].map(g=>findChildrenGrades(g,grouped_grades));
+            return grouped_grades[0];
+        }
+        else return [];
+
     }
 
     function groupGrades(grades: Array<Grade>) : Array<Array<Grade>> {
@@ -104,9 +108,12 @@ export namespace Database {
                 method: "GET"
             })
                 .then(response => {
+                    console.log(response)
                     if(response.ok){
                         response.json().then(data=>{
+                            console.log(data);
                             data.grades = sortGrades(data.grades);
+                            console.log(data);
                             resolve(data)
                         })
                         .catch(reject)

@@ -14,8 +14,8 @@ const CourseList = (props: { data: Array<Course> }) => {
                 {props.data.map(x => {
                     const id = x._id;
                     return (
-                        <div className="element">
-                            <Link style={{textDecoration:"none"}} key={"course_" + x._id} to={generatePath(`/courses/details/:id`, { id })}>
+                        <div key={"course_" + x._id} className="element">
+                            <Link style={{textDecoration:"none"}}  to={generatePath(`/courses/details/:id`, { id })}>
                                 <div className="w3-card w3-hover-shadow">
                                 <header className="course-title">{x.name}</header>
                                     <div className="content">

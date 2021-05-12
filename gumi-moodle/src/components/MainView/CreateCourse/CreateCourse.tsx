@@ -21,8 +21,6 @@ export default class CreateCourse extends Component<IProps, IState>{
             name: '',
             description: '',
             studentLimit: 0,
-            students: [],
-            teachers: [],
             values: [],
             submitSuccess: false,
             status: 0
@@ -32,17 +30,14 @@ export default class CreateCourse extends Component<IProps, IState>{
     }
 
     private readFormData(): string {
-        let user = {} as { [key: string]: any; }
-        const key = localStorage.getItem('userID');
-        if (key !== null)
-            user[key] = {};
+
 
         const formData = {
             "name": this.state.name,
             "description": this.state.description,
             "studentLimit": this.state.studentLimit,
-            "students": user as any,
-            "teachers": this.state.teachers
+            "students": [],
+            "teachers": [localStorage.getItem('userID')!]
         }
 
         this.setState({ submitSuccess: true, values: [...this.state.values, formData] });
