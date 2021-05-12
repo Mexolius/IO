@@ -35,12 +35,15 @@ export default class CreateCourse extends Component<IProps, IState>{
         const formData = {
             "name": this.state.name,
             "description": this.state.description,
-            "studentLimit": this.state.studentLimit,
+            "studentLimit": Number(this.state.studentLimit),
             "students": [],
-            "teachers": [localStorage.getItem('userID')!]
+            "teachers": [localStorage.getItem('userID')!],
+            "grades": [],
+            "isEnrolled": false
         }
-
+        
         this.setState({ submitSuccess: true, values: [...this.state.values, formData] });
+        console.log(JSON.stringify(formData));
         return JSON.stringify(formData)
     }
 
@@ -88,10 +91,10 @@ export default class CreateCourse extends Component<IProps, IState>{
                         <input name="name" className="w3-input w3-border w3-white" onChange={this.handleInputChanges} type="text" />
 
                         <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faKey} /> Students Limit</b></label>
-                        <input name="description" className="w3-input w3-border w3-white" onChange={this.handleInputChanges} type="text" />
+                        <input name="studentLimit" className="w3-input w3-border w3-white" onChange={this.handleInputChanges} type="text" />
 
                         <label className="w3-text-dark-gray"><b><FontAwesomeIcon icon={faFilePrescription} /> Description</b></label>
-                        <input name="studentLimit" className="w3-input w3-border w3-white" style={{ height: "100px" }} onChange={this.handleInputChanges} type="text" />
+                        <input name="description" className="w3-input w3-border w3-white" style={{ height: "100px" }} onChange={this.handleInputChanges} type="text" />
 
                         <button type="submit" className="w3-button w3-block w3-dark-gray w3-margin-bottom">Submit</button>
                     </form>
