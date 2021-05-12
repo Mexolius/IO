@@ -147,6 +147,10 @@ getParentKey(path: any){
   }
 }
 
+isLeaf(childrensLength: any){
+  return childrensLength == 0 ? true : false;
+}
+
 getFlatData(){
   this.updateChildrenPointsSum();
 
@@ -159,7 +163,7 @@ getFlatData(){
 
   var flatTree = treeData.map(
     (e, key) => {
-      {return {_id: 'grade_'+key, name: e.node.title, level: e.path.length-1, maxPoints: e.node.points, studentPoints: {}, thresholds: [], parentID:  this.getParentKey(e.path)
+      {return {_id: 'grade_'+key, name: e.node.title, aggregation:"SUM", level: e.path.length-1, maxPoints: e.node.points, studentPoints: {}, thresholds: [], parentID:  this.getParentKey(e.path), isLeaf: this.isLeaf(e.node.children?.length)
     }}
     }
   )
@@ -235,7 +239,7 @@ updateChildrenPointsSum(){
                 />
               </form>
               ) : (
-                rowInfo.node.points.toString()
+                rowInfo.node.points.toString() + ' max points'
               ),
                 <FontAwesomeIcon className="w3-text-green w3-margin-left w3-margin-right w3-large" onClick={(event) => this.addNode(rowInfo)} icon={faPlus} />,
                 <FontAwesomeIcon className="w3-text-red w3-large" onClick={(event) => this.removeNode(rowInfo)} icon={faMinus} />

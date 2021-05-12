@@ -3,18 +3,7 @@ import SortableTree, {TreeItem, getFlatDataFromTree, changeNodeAtPath, walk as w
 import 'react-sortable-tree/style.css';
 import { Database } from '../../../Structure/Database';
 import ResponseError from '../../RepsonseError/ResponseError';
-import { Course } from '../../../Structure/DataModel.interface';
-
-
-export interface NewGrade {
-    _id: string,
-    name: string,
-    level: number,
-    maxPoints: number,
-    studentPoints: {id:string, points:number}[],
-    thresholds: number[],
-    parentID: string
-}
+import { Course, Grade } from '../../../Structure/DataModel.interface';
 
 interface IProps{
   course: Course,
@@ -31,28 +20,21 @@ interface IState{
 export class AddGrade extends Component<IProps, IState> {
   constructor(props:any) {
     super(props);
-//temporary before new Grade Model
-    let x: NewGrade[] = this.props.course.grades.map( e => {
-        return {
-            _id:JSON.parse(JSON.stringify(e))['_id'],
-            name: JSON.parse(JSON.stringify(e))['name'],
-            level: JSON.parse(JSON.stringify(e))['level'],
-            maxPoints: JSON.parse(JSON.stringify(e))['maxPoints'],
-            studentPoints: JSON.parse(JSON.stringify(e))['studentPoints'],
-            thresholds: JSON.parse(JSON.stringify(e))['thresholds'],
-            parentID: JSON.parse(JSON.stringify(e))['parentID'],
-            points: 0,
-            children: []
-        } as NewGrade
-    }
-    )
 
     var treeStruct = getTreeFromFlatData({
-        flatData: x,
+        flatData: this.props.course.grades,
         getKey: node => node._id,
         getParentKey: node => node.parentID,
-        rootKey: x[0].parentID
+        rootKey: this.props.course.grades[0].parentID,
         });
+
+        walkTree({
+          treeData: treeStruct,
+          getNodeKey: ({node: TreeNode, treeIndex: number}) => {
+            return number;
+        },
+        callback: (param: { node: { title: any; points: any; children: any[]; expanded: boolean}; }) => {param.node.points=0; param.node.expanded=true}},
+      )
         
     this.state = {
       treeData: treeStruct,
@@ -67,7 +49,18 @@ export class AddGrade extends Component<IProps, IState> {
 
 modifyNodePoints(event: any, rowInfo: { node: any; treeIndex: any; path: any; }) {
   let {node, treeIndex, path} = rowInfo;
-  node.points = Number(event.target.value);
+  if(isNaN(event.target.value) || (event.target.value == NaN) ) {
+    node.points = 0;
+  }
+  else if(Number(event.target.value) < 0) {
+    node.points = 0;
+  }
+  else if(Number(event.target.value) > rowInfo.node.maxPoints) {
+    node.points = rowInfo.node.maxPoints;
+  }
+  else {
+    node.points = Number(event.target.value);
+  }
   this.modifyNode(node,treeIndex,path);
 }
 
@@ -100,7 +93,14 @@ getNodePoints(rowInfo: any){
   let {node} = rowInfo;
   this.updateChildrenPointsSum();
 
-  return node.points.toString()
+  return node.points?.toString()
+}
+
+getNodeMaxPoints(rowInfo: any){
+  let {node} = rowInfo;
+  this.updateChildrenPointsSum();
+
+  return node.maxPoints?.toString()
 }
 
 setInput(){
@@ -179,13 +179,13 @@ updateChildrenPointsSum(){
               rowInfo.node.children?.length === 0 && this.state.isInput && rowInfo.node === this.state.nodeClicked ? (
                 <form>
                 <input
-                  value={this.getNodePoints(rowInfo)}
+                  value={rowInfo.node.points}
                   onChange={(event) => this.modifyNodePoints(event, rowInfo)}
                   onBlur={this.setInput}
                 />
               </form>
               ) : (
-                rowInfo.node.points.toString() + '/' + rowInfo.node.maxPoints.toString()
+                rowInfo.node.points + '/' + rowInfo.node.maxPoints + ' points'
               ) 
                      ],
                      onClick: () => {
