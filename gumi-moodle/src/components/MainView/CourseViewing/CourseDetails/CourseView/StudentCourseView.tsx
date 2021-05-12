@@ -17,7 +17,7 @@ class StudenCourseView extends AbstractCourseView{
                 return (
                         <div className="flex-row course-container">
                             <div className="instructor-wrapper border-thin">
-                                <h3>Prowadzący</h3>
+                                <div className="instructor-header">Instructors</div>
                                 <div className="flex-col instructor-list">
                                     {this.state.data.teachers.map((inst, key) => {
                                         return (

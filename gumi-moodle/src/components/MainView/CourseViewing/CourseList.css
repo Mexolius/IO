@@ -12,9 +12,18 @@
     min-width: 300px;
 }
 
+.course-title{
+    background:#455a64;
+    color:#fff; 
+    font-size:15pt; 
+    font-weight:bolder; 
+    padding: 5px 0 5px 1rem;
+}
+
 .content{
     display: flex;
     flex-direction: row;
+    align-items: center;
     padding: 2rem;
     gap: 2rem;
 }
