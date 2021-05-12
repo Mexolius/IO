@@ -14,7 +14,7 @@ export class StudentsList extends Component<{course:Course}>{
                         <ul className="w3-ul w3-card-4 " style={{overflow: "scroll"}}>
                             {this.props.course.students.map((student, key) => {
                                 return (
-                                    <li className="w3-bar w3-white w3-hover-light-gray">
+                                    <li key={'student_'+student} className="w3-bar w3-white w3-hover-light-gray">
                                         <div className="w3-bar-item">
                                         <FontAwesomeIcon icon={faUserGraduate} />
                                         {student}
