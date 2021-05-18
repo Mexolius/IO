@@ -127,6 +127,31 @@ export namespace Database {
         })
     }
 
+    export function getGradesLength(userID: string, courseID: string) : Promise<number> {
+        return new Promise<number>((resolve, reject) => {
+            fetch(url + `courses/${userID}/${courseID}`, {
+                headers: authorized,
+                method: "GET"
+            })
+                .then(response => {
+                    console.log(response)
+                    if(response.ok){
+                        response.json().then(data=>{
+                            console.log(data);
+                        //    data.grades = sortGrades(data.grades);
+                            console.log(data);
+                            resolve(data.grades.length)
+                        })
+                        .catch(reject)
+                    }
+                    else reject({
+                        status: response.status,
+                        reason: response.statusText
+                    });
+                })
+                .catch(() => handleCatch(reject))
+        })
+    }
 
     export function getUserDetails(email: string, token?: string): Promise<IUser> {
         const tempLoginHeaders = token === undefined
@@ -169,7 +194,7 @@ export namespace Database {
 
     export function postCourseGradeModel(course_id: string, data: string) {
         console.log(data);
-        return fetch(url + "grades/" + course_id, {
+        return fetch(url + "grade/" + course_id, {
             headers: authorized,
             method: "POST",
             body: JSON.parse(JSON.stringify(data))

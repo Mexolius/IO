@@ -18,7 +18,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
 
         this.state = {
             status: 0,
-            data: {} as Course
+            data: {} as Course,
         }
 
         this.props.setLoading(false);
@@ -41,7 +41,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
             Database.getCourseDetails(user, this.props.courseID)
             .then(res=>{
                 this.setState({
-                    status: 200,
+                    status: 200,                
                     data: res
                 });
             })
@@ -54,12 +54,6 @@ export default class AbstractCourseView extends Component<IProps, IState>{
             .finally(()=>{
                 this.props.setLoading(false);
             })
-        }
-        else{
-            this.setState({
-                status: 401
-            });
-            this.props.setLoading(false);
         }
         
     }

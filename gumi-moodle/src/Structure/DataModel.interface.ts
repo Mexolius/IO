@@ -37,7 +37,7 @@ export interface Course extends CourseData {
 
 export interface ApiRequestState<DataType>{
     status: number,
-    data: DataType
+    data: DataType,
 }
 
 export interface CourseData {

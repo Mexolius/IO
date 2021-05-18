@@ -14,7 +14,9 @@ interface IState {
   treeData: TreeItem[],
   nodeClicked: any,
   isInput: boolean,
-  status: Number
+  status: Number,
+  gradesLength: number
+
 }
 
 export class DefineGrade extends Component<IProps, IState> {
@@ -28,7 +30,8 @@ export class DefineGrade extends Component<IProps, IState> {
       ],
       nodeClicked: null,
       isInput: false,
-      status: 0
+      status: 0,
+      gradesLength: 0
     };
     this.removeNode = this.removeNode.bind(this);
     this.addNode = this.addNode.bind(this);
@@ -36,6 +39,21 @@ export class DefineGrade extends Component<IProps, IState> {
     this.updateChildrenPointsSum = this.updateChildrenPointsSum.bind(this);
 
   }
+
+  componentDidMount(){
+    Database.getGradesLength(localStorage.getItem('userID') || "", this.props.course_id).then(res=>{
+          this.setState({
+              gradesLength: res
+          });
+      })
+      .catch(err=>{
+          console.log(err);
+          this.setState({
+              gradesLength: 0
+          });
+      })
+    }
+  
   onChange(treeData: TreeItem[]) {
     this.setState({ treeData })
     this.updateChildrenPointsSum();
@@ -144,7 +162,7 @@ export class DefineGrade extends Component<IProps, IState> {
       return null;
     }
     else {
-      return 'grade_' + path[path.length - 2];
+      return 'grade_' + Number(path[path.length - 2] + this.state.gradesLength);
     }
   }
 
@@ -164,7 +182,7 @@ getFlatData(){
 
   var flatTree = treeData.map(
     (e, key) => {
-      {return {_id: 'grade_'+key, name: e.node.title, aggregation:"SUM", level: e.path.length-1, maxPoints: e.node.points, studentPoints: {}, thresholds: [], parentID:  this.getParentKey(e.path), isLeaf: this.isLeaf(e.node.children?.length)
+      {return {_id: 'grade_'+ Number(key + this.state.gradesLength), name: e.node.title, aggregation:"SUM", level: e.path.length-1, maxPoints: e.node.points, studentPoints: {}, thresholds: [], parentID:  this.getParentKey(e.path), isLeaf: this.isLeaf(e.node.children?.length)
     }}
     }
   )

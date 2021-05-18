@@ -6,7 +6,7 @@ import TeacherCourseView from './CourseView/TeacherCourseView';
 const CourseDetails = () => {
     const { id } = useParams<{  id: string }>();
     console.log(id)
-    if(localStorage.getItem('userRoles')?.includes("TEACHER")){
+    if(localStorage.getItem('userRoles')?.includes("ADMIN")){
         return (<TeacherCourseView courseID={id} />);
     }
     else{

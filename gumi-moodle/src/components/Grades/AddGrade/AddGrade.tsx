@@ -7,26 +7,27 @@ import { Course, Grade } from '../../../Structure/DataModel.interface';
 
 interface IProps{
   course: Course,
-  studentID: string
+  studentID: string,
+  choosenGradeModelID : string
 }
 interface IState{
   treeData: TreeItem[], 
   nodeClicked: any, 
   isInput: boolean, 
-  status: Number
+  status: Number,
 }
 
 
 export class AddGrade extends Component<IProps, IState> {
   constructor(props:any) {
     super(props);
-
     var treeStruct = getTreeFromFlatData({
         flatData: this.props.course.grades,
         getKey: node => node._id,
         getParentKey: node => node.parentID,
         rootKey: this.props.course.grades[0].parentID,
         });
+        console.log(this.props.course)
 
         walkTree({
           treeData: treeStruct,
@@ -35,13 +36,18 @@ export class AddGrade extends Component<IProps, IState> {
         },
         callback: (param: { node: { title: any; points: any; children: any[]; expanded: boolean}; }) => {param.node.points=0; param.node.expanded=true}},
       )
-        
+
+      let treeData: TreeItem[] = [];
+        treeStruct.forEach(e =>{ if(e._id === this.props.choosenGradeModelID) treeData.push(e) });
     this.state = {
-      treeData: treeStruct,
+      treeData: treeData,
       nodeClicked: null,
       isInput: false,
-      status: 0
+      status: 0,
     };
+
+   // let x = this.props.course.grades[this.state.choosenGradeModel] as Grade
+   // console.log('x= ' + x)
     this.setInput = this.setInput.bind(this);
     this.updateChildrenPointsSum = this.updateChildrenPointsSum.bind(this);
   }
@@ -62,6 +68,10 @@ modifyNodePoints(event: any, rowInfo: { node: any; treeIndex: any; path: any; })
     node.points = Number(event.target.value);
   }
   this.modifyNode(node,treeIndex,path);
+}
+
+getGradeIndex(grades: Grade[], id: string): number {
+  return grades.findIndex(e => e._id === id);
 }
 
 modifyNode( node: any, treeIndex: any, path: any) {
