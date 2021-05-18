@@ -31,11 +31,30 @@ export namespace Database {
         });
     }
 
+
+    const aggregates = new Map(
+        [
+            ["SUM",(a:number,b:number)=>a+b]
+        ]
+    )
+
+    function aggregateGrade(g:Grade, id:string) : number{
+        if(g.isLeaf) return g.studentPoints[id]??0;
+        const aggrFunc = aggregates.get(g.aggregation)??aggregates.get('SUM')!
+        const results = g.children.map(x=>aggregateGrade(x,id)).reduce(aggrFunc,0);
+        g.studentPoints[id] = results;
+        return results;
+    }
+
     function sortGrades(grades: Array<Grade>): Array<Grade>{
+        
         if(grades.length!==0){
             grades.forEach(g=>g.children=[])
             const grouped_grades = groupGrades(grades);
             grouped_grades[0].map(g=>findChildrenGrades(g,grouped_grades));
+            const id = localStorage.getItem("userID")!;
+            console.log(grades.map(x=>{return{points:x.studentPoints[id]??0, max: x.maxPoints}}));
+            //grouped_grades[0].forEach(x=>aggregateGrade(x,id));
             return grouped_grades[0];
         }
         else return [];

@@ -43,7 +43,7 @@ class StudenCourseView extends AbstractCourseView{
                                 </div>
                                 <div>
                                     <h2>Your grades</h2>
-                                    <GradeList zindex={0} grades={this.state.data.grades}/>
+                                    <GradeList grades={this.state.data.grades}/>
                                 </div>
                             </div>
                         </div>
