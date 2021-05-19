@@ -20,8 +20,7 @@ function numeric_grade(percent: number): { value: number, color: string } {
 
 interface IProps {
     grade: Grade,
-    id: string,
-    zindex: number
+    id: string
 }
 
 const SimpleGrade = (props: IProps) => {
@@ -31,8 +30,8 @@ const SimpleGrade = (props: IProps) => {
     return (
         <>
             <div className="col flex-gap">
-            <b style={{ fontSize: 20 }}>{props.grade.name}</b>
-                <PoggersBar max={props.grade.maxPoints} values={[val]} thresholds={props.grade.thresholds} />
+                <b style={{ fontSize: 20 }}>{props.grade.name}</b>
+                <PoggersBar color={val === 0 ? "lightgray" : "white"} max={props.grade.maxPoints} values={[val]} thresholds={[50,60,70,80,90]} />
             </div>
             <b style={{ fontSize: 20 }}>
                 {`${(100 * val / props.grade.maxPoints).toFixed(2)}%`}
@@ -57,27 +56,28 @@ class GradeDisplay extends Component<IProps, { expanded: boolean }>{
     }
 
     render() {
+
         if (!this.props.grade.isLeaf) {
             return (
                 <div>
-                    <div className="row expandable w3-card" style={{background:!this.state.expanded?'#fff':'#eceff1'}} onClick={this.onSubgradesClick} >
-                        <SimpleGrade zindex={this.props.zindex} grade={this.props.grade} id={this.props.id} />
+                    <div className="row expandable w3-card" style={{ background: !this.state.expanded ? '#fff' : '#eceff1' }} onClick={this.onSubgradesClick} >
+                        <SimpleGrade  grade={this.props.grade} id={this.props.id} />
                         <div className="flex-gap" style={{ lineHeight: "100%" }} >
-                            <b style={{fontSize:17}}>Subgrades</b>
+                            <b style={{ fontSize: 17 }}>Subgrades</b>
                             <FontAwesomeIcon size={"lg"} icon={this.state.expanded ? faChevronUp : faChevronDown} className="w3-bar-item w3-centered w3-circle" />
                         </div>
                     </div>
-                    {this.state.expanded ? <ChildGradeList zindex={this.props.zindex+1} id={this.props.id} grades={this.props.grade.children} /> : <></>}
+                    {this.state.expanded ? <ChildGradeList id={this.props.id} grades={this.props.grade.children} /> : <></>}
                 </div>
             )
         }
 
         else return (
             <div className="row w3-card">
-                <SimpleGrade zindex={this.props.zindex} grade={this.props.grade} id={this.props.id} />
+                <SimpleGrade  grade={this.props.grade} id={this.props.id} />
                 <div className="flex-gap" style={{ lineHeight: "100%", opacity: 0, cursor: "default" }} >
-                    Subgrades
-                    <FontAwesomeIcon size={"lg"} icon={this.state.expanded ? faChevronUp : faChevronDown} className="w3-bar-item w3-centered w3-circle" />
+                    <b style={{ fontSize: 17 }}>Subgrades</b>
+                    <FontAwesomeIcon size={"lg"} icon={faChevronDown} className="w3-bar-item w3-centered w3-circle" />
                 </div>
             </div>
         )
@@ -85,7 +85,7 @@ class GradeDisplay extends Component<IProps, { expanded: boolean }>{
     }
 }
 
-const ParentGradeList = (props: { grades: Array<Grade>, zindex:number }) => {
+const ParentGradeList = (props: { grades: Array<Grade>}) => {
     const id = localStorage.getItem('userID')!;
 
     return (
@@ -93,7 +93,7 @@ const ParentGradeList = (props: { grades: Array<Grade>, zindex:number }) => {
             {props.grades.map((grade: Grade, k) => {
                 return (
                     <div key={"grade_" + k} >
-                        <GradeDisplay zindex={props.zindex} id={id} grade={grade} />
+                        <GradeDisplay id={id} grade={grade} />
                     </div>
                 )
             })}
@@ -101,13 +101,13 @@ const ParentGradeList = (props: { grades: Array<Grade>, zindex:number }) => {
     );
 }
 
-const ChildGradeList = (props: { grades: Array<Grade>, id: string, zindex: number }) => {
+const ChildGradeList = (props: { grades: Array<Grade>, id: string}) => {
     return (
         <div >
             {props.grades.map((grade: Grade, k) => {
                 return (
-                    <div style={{ paddingLeft: 20 }} key={"grade_" + k} >
-                        <GradeDisplay zindex={props.zindex} id={props.id} grade={grade} />
+                    <div style={{ paddingLeft: 30 }} key={"grade_" + k} >
+                        <GradeDisplay id={props.id} grade={grade} />
                     </div>
                 )
             })}
