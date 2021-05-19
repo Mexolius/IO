@@ -1,5 +1,4 @@
 import { Database } from "../../../../Structure/Database";
-import LoadingWrapper, { LoadingProps } from "../../../LoadingComponent/LoadingWrapper"
 
 interface IProps{
     course_id: string;

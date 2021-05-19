@@ -37,6 +37,7 @@ export interface TeachaerCourse{
 export interface Course extends CourseData {
     _id: string,
     grades: Array<Grade>,
+    isEnrolled: boolean
 }
 
 export interface ApiRequestState<DataType>{
@@ -50,5 +51,5 @@ export interface CourseData {
     studentLimit: number,
     students: Array<String>,
     teachers: Array<Instructor>
-    isEnrolled: boolean
+    
 }
