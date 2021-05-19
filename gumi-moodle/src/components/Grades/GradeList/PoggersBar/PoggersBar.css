@@ -2,7 +2,7 @@
     position: relative;
     height: 2rem;
     width: 100%;
-    border-radius: 50px;
+    border-radius: none;
     border: 1px solid #333;
     overflow: hidden;
 }
@@ -19,7 +19,7 @@
 .filler{
     position: absolute;
     height: 100%;
-    border-radius: inherit;
+    border-radius: none;
     animation: 1.5s ease-in-out 0s 1 prog;
 }
 

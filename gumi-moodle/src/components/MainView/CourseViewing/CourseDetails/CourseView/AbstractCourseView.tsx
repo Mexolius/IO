@@ -26,7 +26,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
     }
 
     joinCourse(){
-        Database.enrollUser(this.state.data._id);
+        Database.enrollMe(this.state.data._id);
         setTimeout(()=>{
             window.location.reload()
         }, 200)
@@ -52,6 +52,7 @@ export default class AbstractCourseView extends Component<IProps, IState>{
                 });
             })
             .finally(()=>{
+                console.log(false);
                 this.props.setLoading(false);
             })
         }

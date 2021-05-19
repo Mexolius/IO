@@ -4,13 +4,13 @@ import StudentCourseView from './CourseView/StudentCourseView';
 import TeacherCourseView from './CourseView/TeacherCourseView';
 
 const CourseDetails = () => {
-    const { id } = useParams<{  id: string }>();
-    console.log(id)
-    if(localStorage.getItem('userRoles')?.includes("ADMIN")){
-        return (<TeacherCourseView courseID={id} />);
+    const { id } = useParams<{id: string }>();
+
+    if(localStorage.getItem('userRoles')?.includes("STUDENT")){
+        return (<StudentCourseView courseID={id} />);
     }
     else{
-        return (<StudentCourseView courseID={id} />);
+        return (<TeacherCourseView courseID={id} />);
     }
 }
 

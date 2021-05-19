@@ -37,7 +37,7 @@ export default class CreateCourse extends Component<IProps, IState>{
             "description": this.state.description,
             "studentLimit": Number(this.state.studentLimit),
             "students": [],
-            "teachers": [localStorage.getItem('userID')!],
+            "teachers": [{_id:localStorage.getItem('userID')!, firstName:"", lastName:""}],
             "grades": [],
             "isEnrolled": false
         }

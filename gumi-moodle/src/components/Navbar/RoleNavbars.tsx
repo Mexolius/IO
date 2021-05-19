@@ -21,7 +21,6 @@ const OfStudent = (props: { logout: any, username: string }) => {
 const OfTeacher = (props: { logout: any, username: string }) => {
     return (<>
         <OfLogged logout={props.logout} username={props.username} />
-        <Link to={'/courses/all'} className="w3-bar-item w3-hover-blue w3-button">All Courses</Link>
         <Link to={'/courses/my'} className="w3-bar-item w3-hover-blue w3-button">My Courses</Link>
         <Link to={'/courses/add'} className="w3-bar-item w3-hover-blue w3-button">Add course</Link>
     </>);

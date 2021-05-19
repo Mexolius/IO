@@ -23,7 +23,9 @@ class StudenCourseView extends AbstractCourseView{
                                         return (
                                             <div className="flex-row" key={"inst_" + key}>
                                                 <FontAwesomeIcon icon={faUserGraduate} />
-                                                {inst}
+                                                <div>
+                                                    {inst.firstName} {inst.lastName}
+                                                </div>
                                             </div>
                                         );
                                     })}
@@ -37,14 +39,19 @@ class StudenCourseView extends AbstractCourseView{
                                     </div>
                                     
                                     {
-                                    !this.state.data.students.includes(localStorage.getItem('userID')!)
+                                    !this.state.data.isEnrolled
                                     &&<button className="w3-button w3-green join-button" onClick={this.joinCourse}>Join course!</button>
                                     }
                                 </div>
-                                <div>
-                                    <h2>Your grades</h2>
-                                    <GradeList grades={this.state.data.grades}/>
-                                </div>
+                                {
+                                    this.state.data.isEnrolled
+                                    ?<div>
+                                        <h2>Your grades</h2>
+                                        <GradeList grades={this.state.data.grades}/>
+                                    </div>
+                                    :<h2>Enroll to see your grades!</h2>
+                                }
+                                
                             </div>
                         </div>
                 )

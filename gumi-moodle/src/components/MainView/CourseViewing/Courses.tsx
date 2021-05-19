@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import ResponseError from '../../RepsonseError/ResponseError'
-import CourseList from './CourseUtils';
+import CourseList from './CourseList';
 import { ApiRequestState, Course } from '../../../Structure/DataModel.interface';
 import LoadingWrapper, { LoadingProps } from '../../LoadingComponent/LoadingWrapper';
 

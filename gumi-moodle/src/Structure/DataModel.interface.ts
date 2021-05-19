@@ -20,7 +20,11 @@ export interface Grade {
     isLeaf: boolean
 }
 
-
+interface Instructor{
+    firstName:string,
+    lastName:string,
+    _id:string,
+}
 
 export interface StudentCourse{
 
@@ -45,5 +49,6 @@ export interface CourseData {
     description: string,
     studentLimit: number,
     students: Array<String>,
-    teachers: Array<String>
+    teachers: Array<Instructor>
+    isEnrolled: boolean
 }

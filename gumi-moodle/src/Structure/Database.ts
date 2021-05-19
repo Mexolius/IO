@@ -31,59 +31,74 @@ export namespace Database {
         });
     }
 
-
     const aggregates = new Map(
         [
-            ["SUM",(a:number,b:number)=>a+b]
+            ["SUM", (a: number, b: number) => a + b],
+            ["MAX", (a: number, b: number) => Math.max(a, b)],
         ]
     )
 
-    function aggregateGrade(g:Grade, id:string) : number{
-        if(g.isLeaf) return g.studentPoints[id]??0;
-        const aggrFunc = aggregates.get(g.aggregation)??aggregates.get('SUM')!
-        const results = g.children.map(x=>aggregateGrade(x,id)).reduce(aggrFunc,0);
+    function aggregateGrade(g: Grade, id: string): number {
+        if (g.isLeaf) return g.studentPoints[id] ?? 0;
+        const aggrFunc = aggregates.get(g.aggregation) ?? aggregates.get('SUM')!
+        const results = g.children.map(x => aggregateGrade(x, id)).reduce(aggrFunc, 0);
         g.studentPoints[id] = results;
         return results;
     }
 
-    function sortGrades(grades: Array<Grade>): Array<Grade>{
-        
-        if(grades.length!==0){
-            grades.forEach(g=>g.children=[])
+    function sortGrades(grades: Array<Grade>): Array<Grade> {
+        //console.log(grades);
+        if (grades.length !== 0) {
+            grades.forEach(g => g.children = [])
             const grouped_grades = groupGrades(grades);
-            grouped_grades[0].map(g=>findChildrenGrades(g,grouped_grades));
+            grouped_grades[0].map(g => findChildrenGrades(g, grouped_grades));
             const id = localStorage.getItem("userID")!;
-            console.log(grades.map(x=>{return{points:x.studentPoints[id]??0, max: x.maxPoints}}));
-            //grouped_grades[0].forEach(x=>aggregateGrade(x,id));
+            grouped_grades[0].forEach(x => aggregateGrade(x, id));
             return grouped_grades[0];
         }
         else return [];
 
     }
 
-    function groupGrades(grades: Array<Grade>) : Array<Array<Grade>> {
-        return grades.reduce(function(memo:Array<Array<Grade>>, x) {
-          if (!memo[x.level]) { memo[x.level] = []; }
-          memo[x.level].push(x);
-          return memo;
+    function groupGrades(grades: Array<Grade>): Array<Array<Grade>> {
+        return grades.reduce(function (memo: Array<Array<Grade>>, x) {
+            if (!memo[x.level]) { memo[x.level] = []; }
+            memo[x.level].push(x);
+            return memo;
         }, []);
-      }
-      
+    }
 
-    function findChildrenGrades(parent: Grade, children: Array<Array<Grade>>){
-        if(!parent.isLeaf){
-            const potential_children = children[parent.level+1];
-            const actual_children = potential_children.filter(child=>child.parentID===parent._id);
+
+    function findChildrenGrades(parent: Grade, children: Array<Array<Grade>>) {
+        //console.log(parent);
+        if (!parent.isLeaf) {
+            const potential_children = children[parent.level + 1] ?? [];
+            const actual_children = potential_children.filter(child => child.parentID === parent._id);
             parent.children.push(...actual_children);
-            parent.children.map(child=>findChildrenGrades(child,children));
+            parent.children.map(child => findChildrenGrades(child, children));
         }
-        
+
     }
     //#endregion UTIL
     /////////////////
 
     /////////////
     //#region GET
+
+    export function getExport(format: string, course_id:string): Promise<any> {
+        return new Promise<any>((resolve, reject) => {
+            fetch(url + `export/course/${format}/${course_id}`, {
+                headers: authorized,
+                method: "GET"
+            })
+                .then(x=>{
+                    window.open(x.url)
+                    resolve(x)
+                })
+                .catch(() => handleCatch(reject))
+        })
+    }
+
 
     export function getAllCourses(): Promise<Array<Course>> {
         return new Promise<Array<Course>>((resolve, reject) => {
@@ -96,46 +111,46 @@ export namespace Database {
         })
     }
 
-    
+
     export function getMyCourses(): Promise<Array<Course>> {
         const user = localStorage.getItem("userID"), roles = localStorage.getItem('userRoles');
 
         return new Promise<Array<Course>>((resolve, reject) => {
-            if(user!=null && roles!=null){
-                const endpoint = roles.includes("TEACHER")?"of-teacher":"of-student";
+            if (user != null && roles != null) {
+                const endpoint = roles.includes("TEACHER") ? "of-teacher" : "of-student";
                 fetch(url + `courses/${endpoint}/${user}`, {
-                headers: authorized,
-                method: "GET"
-            })
-                .then(response => handleThen(response, resolve, reject))
-                .catch(() => handleCatch(reject));
+                    headers: authorized,
+                    method: "GET"
+                })
+                    .then(response => handleThen(response, resolve, reject))
+                    .catch(() => handleCatch(reject));
             }
-            else{
+            else {
                 reject({
                     status: 401,
                     reason: "User not logged in"
                 });
             }
-            
+
         })
     }
 
-    export function getCourseDetails(userID: string, courseID: string) : Promise<Course> {
+    export function getCourseDetails(userID: string, courseID: string): Promise<Course> {
         return new Promise<Course>((resolve, reject) => {
             fetch(url + `courses/${userID}/${courseID}`, {
                 headers: authorized,
                 method: "GET"
             })
                 .then(response => {
-                    console.log(response)
-                    if(response.ok){
-                        response.json().then(data=>{
-                            console.log(data);
+                    //console.log(response)
+                    if (response.ok) {
+                        response.json().then(data => {
+                            //console.log(data);
                             data.grades = sortGrades(data.grades);
-                            console.log(data);
+                            //console.log(data);
                             resolve(data)
                         })
-                        .catch(reject)
+                            .catch(reject)
                     }
                     else reject({
                         status: response.status,
@@ -146,7 +161,7 @@ export namespace Database {
         })
     }
 
-    export function getGradesLength(userID: string, courseID: string) : Promise<number> {
+    export function getGradesLength(userID: string, courseID: string): Promise<number> {
         return new Promise<number>((resolve, reject) => {
             fetch(url + `courses/${userID}/${courseID}`, {
                 headers: authorized,
@@ -154,14 +169,14 @@ export namespace Database {
             })
                 .then(response => {
                     console.log(response)
-                    if(response.ok){
-                        response.json().then(data=>{
+                    if (response.ok) {
+                        response.json().then(data => {
                             console.log(data);
-                        //    data.grades = sortGrades(data.grades);
+                            //    data.grades = sortGrades(data.grades);
                             console.log(data);
                             resolve(data.grades.length)
                         })
-                        .catch(reject)
+                            .catch(reject)
                     }
                     else reject({
                         status: response.status,
@@ -220,7 +235,7 @@ export namespace Database {
         });
     }
 
-    export function postStudentPoints(course_id: string, grade_id: string, student_id: string, points:number) {
+    export function postStudentPoints(course_id: string, grade_id: string, student_id: string, points: number) {
         return fetch(url + `grade/${course_id}/${grade_id}/${student_id}`, {
             headers: authorized,
             method: "POST",
@@ -228,8 +243,16 @@ export namespace Database {
         });
     }
 
-    export function enrollUser(course_id: string) {
-        return fetch(url + "course/enroll/" + course_id, {
+    export function enrollUser(user: string, course_id: string) {
+        return fetch(url + "course/enroll-by-email/" + course_id, {
+            headers: authorized,
+            method: "POST",
+            body: user
+        });
+    }
+
+    export function enrollMe(course_id: string) {
+        return fetch(url + "course/enroll-by-id/" + course_id, {
             headers: authorized,
             method: "POST",
             body: localStorage.getItem('userID')!

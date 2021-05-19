@@ -6,7 +6,6 @@ import Home from '../Home/Home';
 import Profile from '../Profile/Profile';
 import Login from '../Auth/Login/Login'
 import Register from '../Auth/Register/Register';
-import MainView from '../MainView/Student/MainView';
 
 import * as Navbars from "./RoleNavbars"
 import Courses from '../MainView/CourseViewing/Courses';
@@ -80,7 +79,8 @@ class Navbar extends Component<any, AppState> {
 
     render() {
         return (
-            <Router>
+            <div style={{minHeight:"90vh"}}>
+                <Router>
                 <div className="w3-bar w3-light-gray w3-border nav-bar">
                     <Link to='/' className="w3-bar-item w3-wide"><img style={{ height: "50px", width: "219px" }} src="logo.png" alt="logo" /></Link>
                     <div className="w3-right w3-bar-item">
@@ -96,9 +96,11 @@ class Navbar extends Component<any, AppState> {
                     <Route path='/courses/all'><Courses course_fetch_fun={Database.getAllCourses}/> </Route>
                     <Route path='/courses/my'><Courses course_fetch_fun={Database.getMyCourses}/></Route>
                     <Route path='/courses/add' component={CreateCourse} />
-                    <Route path='/courses/details/:id'><CourseDetails /></Route>
+                    <Route exact path='/courses/details/:id'><CourseDetails /></Route>
                 </Switch>
             </Router>
+
+            </div>
         );
     }
 

@@ -7,17 +7,6 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 import { Grade } from '../../../Structure/DataModel.interface';
 
 
-function numeric_grade(percent: number): { value: number, color: string } {
-    const thresholds = [60, 70, 80, 90];
-    if (percent <= 50) return { value: 2, color: "#c71010" };
-    let g = 3;
-    for (let v of thresholds) {
-        if (percent <= v) return { value: g, color: `rgb(97, ${300 - g * 20}, ${90 + g * 40})` };
-        g += 0.5;
-    }
-    return { value: 5, color: "#3377f5" };
-}
-
 interface IProps {
     grade: Grade,
     id: string
