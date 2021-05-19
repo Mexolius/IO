@@ -201,6 +201,24 @@ export namespace Database {
         });
     }
 
+    export function postCourseGradeModels(course_id: string, data: string) {
+        console.log(data);
+        return fetch(url + "grades/" + course_id, {
+            headers: authorized,
+            method: "POST",
+            body: JSON.parse(JSON.stringify(data))
+        });
+    }
+
+    export function updateCourseGradeModel(course_id: string, grade_id: string, data: string) {
+        console.log(data);
+        return fetch(url + `grade/${course_id}/${grade_id}`, {
+            headers: authorized,
+            method: "POST",
+            body: data
+        });
+    }
+
     export function postStudentPoints(course_id: string, grade_id: string, student_id: string, points:number) {
         return fetch(url + `grade/${course_id}/${grade_id}/${student_id}`, {
             headers: authorized,
@@ -208,6 +226,8 @@ export namespace Database {
             body: JSON.parse(JSON.stringify(points))
         });
     }
+
+    
 
     export function enrollUser(course_id: string) {
         return fetch(url + "course/enroll/" + course_id, {
