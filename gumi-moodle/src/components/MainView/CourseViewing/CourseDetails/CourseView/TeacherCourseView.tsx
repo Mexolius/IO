@@ -21,7 +21,8 @@ class TeacherCourseView extends AbstractCourseView{
                             <Link to={'/change_thresholds'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faEdit} /> Change Thresholds</Link>
                             <Link to={'/students_list'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faList} /> Students List</Link>
                             <Link to={'/add_teacher'} className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faUser} /> Add Teacher</Link>
-                            <Link to={'/export_data'} download="data.ccsv" className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faOutdent} /> Export Data</Link>
+                            <Link to={'/export_data/csv'} download="data.csv" className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faOutdent} />Export CSV</Link>
+                            <Link to={'/export_data/xlsx'} download="data.csv" className="w3-button w3-border w3-light-gray"><FontAwesomeIcon icon={faOutdent} />Export XLSX</Link>
                         </div>
                         <div className="w3-container w3-light-gray w3-border w3-padding-16">
                             <Switch>
@@ -29,7 +30,8 @@ class TeacherCourseView extends AbstractCourseView{
                                 <Route path='/change_thresholds' render={()=>(<ChangeThresholds {...this.state.data}/>)} />
                                 <Route path='/students_list' render={()=>(<StudentsList course={this.state.data}/>)} />
                                 <Route path='/add_teacher' render={()=>(<AddTeacher course_id={this.props.courseID}/>)} />
-                                <Route path='/export_data' render={()=>(<ExportData course_id={this.props.courseID}/>)} />
+                                <Route path='/export_data/csv' render={()=>(<ExportData format="csv" course_id={this.props.courseID}/>)} />
+                                <Route path='/export_data/xlsx' render={()=>(<ExportData format="xlsx" course_id={this.props.courseID}/>)} />
                                 <Route exact path='/change_grade/:id' children={<ChangeGrade {...this.state.data} /> } />
                             </Switch>
                             
