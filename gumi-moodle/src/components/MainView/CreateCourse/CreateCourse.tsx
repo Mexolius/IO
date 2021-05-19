@@ -39,7 +39,6 @@ export default class CreateCourse extends Component<IProps, IState>{
             "students": [],
             "teachers": [{_id:localStorage.getItem('userID')!, firstName:"", lastName:""}],
             "grades": [],
-            "isEnrolled": false
         }
         
         this.setState({ submitSuccess: true, values: [...this.state.values, formData] });
