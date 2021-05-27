@@ -1,0 +1,27 @@
+.nav-bar{
+    height: 66px;
+}
+
+.menu{
+    display: flex;
+    flex-direction: row;
+    align-self: flex-start;
+    height: 100%;
+}
+
+.menu > *{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    gap: 8px;
+    padding: 0 1rem 0 1rem;
+}
+
+.menu > a:hover{
+    background: #90caf9 !important;
+}
+
+#logout:hover{
+    background: rgb(187, 0, 37) !important;
+    color: white !important;
+}

@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
-import './App.css';
+import {Component} from 'react';
 import 'w3-css/w3.css';
 
-import Navbar from './components/Navbar/Navbar'
+import Navbar from './components/Common/Navbar/Navbar'
 
 class App extends Component{
 
