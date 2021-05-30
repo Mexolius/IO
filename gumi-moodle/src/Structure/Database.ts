@@ -1,4 +1,4 @@
-import { Course, Grade, IUser } from "./DataModel.interface";
+import { Course, Grade, IUser, Notification } from "./DataModel.interface";
 
 export namespace Database {
     //////////////
@@ -84,6 +84,17 @@ export namespace Database {
 
     /////////////
     //#region GET
+
+    export function getNotifications() : Promise<Array<Notification>>{
+        return new Promise<Array<Notification>>((resolve,reject)=>{
+            fetch(url + `/notifications/user/${localStorage.getItem('userID')}`, {
+                headers: authorized,
+                method: "GET"
+            })
+            .then(response=>handleThen(response,resolve,reject))
+            .catch(() => handleCatch(reject));
+        });
+    }
 
     export function getExport(format: string, course_id:string): Promise<any> {
         return new Promise<any>((resolve, reject) => {

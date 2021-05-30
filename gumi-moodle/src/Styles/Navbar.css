@@ -17,8 +17,12 @@
     padding: 0 1rem 0 1rem;
 }
 
-.menu > a:hover{
+.menu > *:hover{
     background: #90caf9 !important;
+}
+
+#logout{
+    order: 10;
 }
 
 #logout:hover{

@@ -6,7 +6,6 @@ export interface IUser {
     roles: Array<string>,
 }
 
-
 export interface Grade {
     _id: string,
     name: string,
@@ -52,4 +51,10 @@ export interface CourseData {
     students: Array<String>,
     teachers: Array<Instructor>
     
+}
+
+export interface Notification{
+    courseID: string;
+    gradeID: string;
+    createdTimestamp: string;
 }

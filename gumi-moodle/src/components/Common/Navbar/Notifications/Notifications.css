@@ -1,0 +1,42 @@
+.dot {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 101%;
+    left:-2px !important;
+    background-color: #f1f1f1;
+    padding: 10px 0 10px 0;
+    min-width: 400px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.notification{
+    margin: "auto";
+    min-width: 360px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
