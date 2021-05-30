@@ -1,5 +1,5 @@
 .course-container{
-    margin: 1rem 0 1rem 1rem;
+    margin:0 0 1rem 0;
     height: 100%;
 }
 
@@ -18,7 +18,7 @@
 .instructor-list{
     list-style: none;
     padding: 2rem;
-    min-height: 85vh;
+    
 }
 
 .instructor-list li{
@@ -33,10 +33,11 @@
     background: #eceff1;
     padding: 10px;
     align-items: center;
+    margin-top: 2rem;
 }
 
 .course-header *{
-    margin: 0px;
+    margin-top: 0px;
 }
 
 .line-below{
@@ -59,9 +60,20 @@
     min-width: 12rem;
 }
 
-.instructor-wrapper{
-    background: #eceff1;
+.menu-wrapper{
+    background: #424242;
+    gap: 0;
+    min-height: 95vh;
+}
 
+.menu-wrapper > *{
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+.menu-wrapper > *:hover{
+    background: #6d6d6d;
 }
 
 .instructor-header{

@@ -19,7 +19,7 @@ export interface Grade {
     isLeaf: boolean
 }
 
-interface Instructor{
+export interface Instructor{
     firstName:string,
     lastName:string,
     _id:string,
@@ -57,4 +57,8 @@ export interface Notification{
     courseID: string;
     gradeID: string;
     createdTimestamp: string;
+}
+
+export interface GraphData{
+    
 }

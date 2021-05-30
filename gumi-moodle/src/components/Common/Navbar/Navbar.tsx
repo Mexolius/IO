@@ -10,7 +10,7 @@ import Register from '../Register/Register';
 import * as Navbars from "./RoleNavbars"
 import Courses from '../Courses';
 import { Database } from '../../../Structure/Database';
-import CourseDetails from '../../Student/CourseDetails';
+import CourseDetails from '../CourseDetails';
 import CreateCourse from '../../Teacher/Courses/CreateCourse/CreateCourse';
 
 

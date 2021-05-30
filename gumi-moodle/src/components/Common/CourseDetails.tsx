@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 
-import StudentCourseView from './StudentCourseView';
+import StudentCourseView from '../Student/StudentCourseView';
 import TeacherCourseView from '../Teacher/TeacherCourseView';
 
 const CourseDetails = () => {

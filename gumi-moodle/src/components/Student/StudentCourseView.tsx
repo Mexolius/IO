@@ -1,34 +1,29 @@
-import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import GradeList from "./GradeList/GradeList";
 import LoadingWrapper from "../../Structure/LoadingComponent/LoadingWrapper";
 import ResponseError from "../../Structure/ResponseError";
 import AbstractCourseView from "../../Structure/AbstractCourseView";
+import TeacherList from "./TeacherList/TeacherList";
+import {BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import GradeView from "./Views/GradeView";
+import GraphView from "./Views/GraphView";
+import AchievementView from "./Views/AchievementView";
 
-class StudenCourseView extends AbstractCourseView{
+class StudenCourseView extends AbstractCourseView {
     render() {
         switch (this.state.status) {
             case 0:
-                return(<></>)
+                return (<></>)
             case 200:
                 return (
                         <div className="flex-row course-container">
-                            <div className="instructor-wrapper border-thin">
-                                <div className="instructor-header">Instructors</div>
-                                <div className="flex-col instructor-list">
-                                    {this.state.data.teachers.map((inst, key) => {
-                                        return (
-                                            <div className="flex-row" key={"inst_" + key}>
-                                                <FontAwesomeIcon icon={faUserGraduate} />
-                                                <div>
-                                                    {inst.firstName} {inst.lastName}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+
+                            <Router>
+                                <div className="menu-wrapper flex-col">
+                                    <Link to={`/courses/details/${this.state.data._id}/grades`}>Grades</Link>
+                                    <Link to={`/courses/details/${this.state.data._id}/stats`}>Statistics</Link>
+                                    <Link to={`/courses/details/${this.state.data._id}/achievements`}>Achievements</Link>
+                                    <TeacherList teachers={this.state.data.teachers}/>
                                 </div>
-                            </div>
-                            <div className="flex-col course-list-grades" style={{}}>
+                                <div className="flex-col course-list-grades" style={{}}>
                                 <div className="course-header border-thin flex-row">
                                     <div className="course-header">
                                         <h2 className="line-below">{this.state.data.name}</h2>
@@ -40,17 +35,19 @@ class StudenCourseView extends AbstractCourseView{
                                     &&<button className="w3-button w3-green join-button" onClick={this.joinCourse}>Join course!</button>
                                     }
                                 </div>
-                                {
-                                    this.state.data.isEnrolled
-                                    ?<div>
-                                        <h2>Your grades</h2>
-                                        <GradeList grades={this.state.data.grades}/>
-                                    </div>
-                                    :<h2>Enroll to see your grades!</h2>
-                                }
+                                <Switch>
+                                    <Route exact path={`/courses/details/${this.state.data._id}/grades`} render={()=> <GradeView grades={this.state.data.grades} />} />
+                                    <Route exact path={`/courses/details/${this.state.data._id}/stats`} component={GraphView}/>
+                                    <Route exact path={`/courses/details/${this.state.data._id}/achievements`} component={AchievementView} />
+                                </Switch>
+                                </div>
                                 
-                            </div>
-                        </div>
+                                    
+                            </Router>
+
+                                
+                            
+                        </div >
                 )
             default:
                 return <ResponseError status={this.state.status} />

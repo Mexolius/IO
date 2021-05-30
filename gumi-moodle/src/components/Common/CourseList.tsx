@@ -1,6 +1,6 @@
 import { Route, generatePath, Link } from "react-router-dom"
 import { Course } from "../../Structure/DataModel.interface"
-import CourseDetails from "../Student/CourseDetails";
+import CourseDetails from "./CourseDetails";
 
 import '../../Styles/CourseList.css'
 
