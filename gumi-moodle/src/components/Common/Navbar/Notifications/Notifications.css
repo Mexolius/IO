@@ -1,10 +1,15 @@
-.dot {
-    position: absolute;
+.bell-dot{
     right: 10px;
     bottom: 10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 20px;
+    width: 23px;
+    height: 23px;
+    font-size: 10px;
+    position: absolute;
+}
+
+.dot {
+    
+    border-radius: 100%;
     font-weight: bold;
     display: flex;
     justify-content: center;
@@ -20,10 +25,12 @@
     position: absolute;
     top: 101%;
     left:-2px !important;
-    background-color: #f1f1f1;
-    padding: 10px 0 10px 0;
+    background-color: #424242;
+    color: white;
     min-width: 400px;
     z-index: 10;
+    max-height: 70vh;
+    overflow-y: scroll;
 }
 
 .dropdown:hover .dropdown-content {
@@ -33,10 +40,16 @@
 }
 
 .notification{
+    padding: 1rem;
     margin: "auto";
     min-width: 360px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    text-decoration: none;
+}
+
+.notification:hover{
+    background: #6d6d6d;
 }

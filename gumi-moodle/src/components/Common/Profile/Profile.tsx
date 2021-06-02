@@ -73,7 +73,7 @@ class Profile extends Component<IProps, IState> {
 
       case 200:{
         return (
-          <div className="w3-section">
+          <div style={{cursor:"default"}} className="w3-section content-wrapper">
             <div className="w3-card w3-round w3-light">
               <div className="w3-container">
                 <div className="w3-container">
@@ -82,13 +82,13 @@ class Profile extends Component<IProps, IState> {
                 </div>
 
                 <ul className="w3-ul ">
-                  <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faFileSignature} /> First Name: <b>{this.getFirstName()}</b></p></li>
-                  <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faFileSignature} /> Last Name:   <b>{this.getLastName()}</b></p></li>
-                  <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faEnvelope} /> E-mail:  <b>{this.getEmail()}</b></p></li>
-                  <li className="w3-bar w3-white w3-hover-light-gray"><p><FontAwesomeIcon icon={faUserTag} /> Roles: <b>
+                  <li className="w3-bar w3-white"><p><FontAwesomeIcon icon={faFileSignature} /> First Name: <b>{this.getFirstName()}</b></p></li>
+                  <li className="w3-bar w3-white"><p><FontAwesomeIcon icon={faFileSignature} /> Last Name:   <b>{this.getLastName()}</b></p></li>
+                  <li className="w3-bar w3-white"><p><FontAwesomeIcon icon={faEnvelope} /> E-mail:  <b>{this.getEmail()}</b></p></li>
+                  <li className="w3-bar w3-white"><p><FontAwesomeIcon icon={faUserTag} /> Roles: <b>
                     {this.getRoles().map((x, k) => {
                       return (
-                        <span key={"role_" + k} className="w3-tag w3-teal w3-hover-green w3-round">{x} </span>
+                        <span key={"role_" + k} className="w3-tag w3-teal w3-round">{x} </span>
                       )
                     })}
 

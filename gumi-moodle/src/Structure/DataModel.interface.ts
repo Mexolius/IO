@@ -57,8 +57,13 @@ export interface Notification{
     courseID: string;
     gradeID: string;
     createdTimestamp: string;
+    gradeName: string;
+    courseName: string;
 }
 
 export interface GraphData{
-    
+    studentPointsPosition: number,
+    studentPoints: number,
+    points: Array<number>,
+    gradeName:string
 }

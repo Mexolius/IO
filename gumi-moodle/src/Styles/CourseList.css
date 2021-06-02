@@ -13,7 +13,7 @@
 }
 
 .course-title{
-    background:#455a64;
+    background:#424242;
     color:#fff; 
     font-size:15pt; 
     font-weight:bolder; 
@@ -31,7 +31,7 @@
 .line{
     height:2px;
     border-width:0;
-    color:gray;
-    background-color:gray;
+    color:#1b1b1b;
+    background-color:#1b1b1b;
     margin: 0px !important;
 }

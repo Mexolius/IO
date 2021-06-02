@@ -12,6 +12,8 @@ import Courses from '../Courses';
 import { Database } from '../../../Structure/Database';
 import CourseDetails from '../CourseDetails';
 import CreateCourse from '../../Teacher/Courses/CreateCourse/CreateCourse';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faTwitch, faTwitter } from '@fortawesome/free-brands-svg-icons';
 
 
 type AppState = {
@@ -79,9 +81,10 @@ class Navbar extends Component<any, AppState> {
 
     render() {
         return (
-            <div style={{minHeight:"90vh"}}>
+            <>
+            <div style={{minHeight:"calc(90vh - 10em - 9px"}}>
                 <Router>
-                <div className="w3-light-gray w3-border nav-bar">
+                <div className="nav-bar">
                     <Link to='/' className="w3-bar-item w3-wide"><img style={{padding:"8px 0 0 8px", height: "50px", width: "219px" }} src="logo.png" alt="logo" /></Link>
                     <div className=" menu w3-right w3-bar-item">
                         <Link to={'/'} className=" w3-bar-item w3-button"> Home</Link>
@@ -99,8 +102,40 @@ class Navbar extends Component<any, AppState> {
                     <Route exact path='/courses/details/:id'><CourseDetails /></Route>
                 </Switch>
             </Router>
-
+            
             </div>
+            <footer>                
+                
+                <div className="flex-col">
+                    Social media space
+                    <div className="flex-row" >
+                        <FontAwesomeIcon icon={faFacebook} size={'2x'} inverse/>
+                        <FontAwesomeIcon icon={faTwitter} size={'2x'} inverse/>
+                        <FontAwesomeIcon icon={faTwitch} size={'2x'} inverse/>
+                    </div>
+                    
+                </div>
+                
+                <div>Drugi navbar? Informacje? Kontakt</div>
+                <div className="flex-col">
+                    <div className="flex-row" >
+                        <div>Authors and stuff</div>
+                    </div>
+                    <div className="flex-row" >
+                        <div>Paweł Kopel</div>
+                        <div>Paweł Miziołek</div>
+                    </div>
+                    <div className="flex-row" >
+                        <div>Marek Ślązak</div>
+                        <div>Sebastian Wąwoźny </div>
+                        <div>Paweł Tyszko</div>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </footer>
+            </>
         );
     }
 

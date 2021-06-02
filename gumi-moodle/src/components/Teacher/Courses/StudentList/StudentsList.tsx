@@ -10,11 +10,11 @@ export class StudentsList extends Component<{course:Course}>{
     render(){
         return(
             <div>
-                        <h3>Students</h3>
+                    <h3>Students</h3>
                         <ul className="w3-ul w3-card-4 " style={{overflow: "scroll"}}>
                             {this.props.course.students.map((student, key) => {
                                 return (
-                                    <li key={'student_'+student} className="w3-bar w3-white w3-hover-light-gray">
+                                    <li key={'student_'+key} className="w3-bar w3-white w3-hover-light-gray">
                                         <div className="w3-bar-item">
                                         <FontAwesomeIcon icon={faUserGraduate} />
                                         {student}

@@ -1,5 +1,18 @@
 .nav-bar{
     height: 66px;
+    background: #6d6d6d;
+    color: white;
+}
+
+.content-wrapper{
+    padding: 3rem 10px 2rem 10px;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.content-wrapper>*{
+    width: 100%;
 }
 
 .menu{
@@ -7,6 +20,7 @@
     flex-direction: row;
     align-self: flex-start;
     height: 100%;
+    font-weight: bold;
 }
 
 .menu > *{
@@ -18,7 +32,8 @@
 }
 
 .menu > *:hover{
-    background: #90caf9 !important;
+    background: #424242 !important;
+    color: white !important;
 }
 
 #logout{
@@ -28,4 +43,45 @@
 #logout:hover{
     background: rgb(187, 0, 37) !important;
     color: white !important;
+}
+
+footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 3rem 2rem;
+    gap: 2rem;
+    width: 100%;
+    background: #6d6d6d;
+    color: white;
+    clear: both;
+    position: relative;
+    height: 15em;
+    font-weight: bold;
+    margin-top: calc(2em + 1px);
+}
+
+footer >*{
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.flex-row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.grid-ish{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
 }

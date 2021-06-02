@@ -68,6 +68,8 @@ class Register extends AbstractFormComponent<IProps, IState> {
             case 409:
             case 0:
                 return (
+                    <div className="content-wrapper" style={{display:"flex",justifyContent:"center", alignItems:"center",height:"calc(67vh - 10px)"}}>
+
                     <div className="login-container flex-col">
 
                         <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
@@ -86,6 +88,7 @@ class Register extends AbstractFormComponent<IProps, IState> {
                             <a className="hover-move" href="/Login">Already have an account? Sign in{'>'}{'>'}</a>
                         </form>
 
+                    </div>
                     </div>
                 )
             case 200:

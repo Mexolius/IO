@@ -73,6 +73,7 @@ class Login extends AbstractFormComponent<IProps, IState> {
         switch (this.getStatus()) {
             case 0:
                 return (
+                    <div className="content-wrapper" style={{display:"flex",justifyContent:"center", alignItems:"center",height:"calc(67vh - 10px)"}}>
                     <div className="login-container flex-col">
                         <form className="flex-col" name="loginForm" onSubmit={this.onSubmit}>
                             <h2>Login</h2>
@@ -90,6 +91,8 @@ class Login extends AbstractFormComponent<IProps, IState> {
                             <a className="hover-move" href="/Register">Don't have an account? Sign up{'>'}{'>'}</a>
                             <a className="hover-move" href="/">Forgot password? Recover{'>'}{'>'} </a>
                         </form>
+                    </div>
+
                     </div>
                 )
             case 200:

@@ -40,7 +40,7 @@ const NotificationsList = (props: IProps) => {
     return (
         <div className={"dropdown"}>
             <FontAwesomeIcon style={{ minWidth: "2rem" }} icon={faBell} />
-            <span style={props.nots.length === 0 ? {} : { background: "#5d99c6", color: "#fff" }} className="dot">
+            <span style={props.nots.length === 0 ? {} : { background: "#5d99c6", color: "#fff" }} className="dot bell-dot">
                 {props.nots.length}
             </span>
             <div className="dropdown-content">
@@ -70,14 +70,14 @@ function dateToString(timeStamp: string): string {
 
     
     if(isToday(date)) return `${date.getHours()}:${date.getMinutes()}`
-    return `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`
+    return `${date.getDay()+1}-${date.getMonth()}-${date.getFullYear()}`
 }
 
 const NotificationDisplay = (props: { not: Notification }) => {
     return (
         <Link to={"/courses/details/"+props.not.courseID} className="notification">
-            <div className="col"><b>{props.not.courseID}</b>
-            {props.not.gradeID}</div>
+            <div className="col"><b>{props.not.courseName}</b>
+            {props.not.gradeName}</div>
             {dateToString(props.not.createdTimestamp)}
         </Link>
     )

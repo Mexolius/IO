@@ -2,6 +2,9 @@
     padding: 1rem 18px;
     overflow: hidden;
     transition: max-height 0.5s, opacity 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 
 }
 

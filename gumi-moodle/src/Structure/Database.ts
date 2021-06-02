@@ -1,4 +1,4 @@
-import { Course, Grade, IUser, Notification } from "./DataModel.interface";
+import { Course, Grade, GraphData, IUser, Notification } from "./DataModel.interface";
 
 export namespace Database {
     //////////////
@@ -85,9 +85,20 @@ export namespace Database {
     /////////////
     //#region GET
 
+    export function getGraph(courseID:string) : Promise<Array<GraphData>>{
+        return new Promise<Array<GraphData>>((resolve,reject)=>{
+            fetch(url + `histogram/grades/${courseID}/${localStorage.getItem('userID')}`, {
+                headers: authorized,
+                method: "GET"
+            })
+            .then(response=>handleThen(response,resolve,reject))
+            .catch(() => handleCatch(reject));
+        })
+    }
+
     export function getNotifications() : Promise<Array<Notification>>{
         return new Promise<Array<Notification>>((resolve,reject)=>{
-            fetch(url + `/notifications/user/${localStorage.getItem('userID')}`, {
+            fetch(url + `notifications/user/${localStorage.getItem('userID')}`, {
                 headers: authorized,
                 method: "GET"
             })
@@ -148,6 +159,7 @@ export namespace Database {
 
     export function getCourseDetails(userID: string, courseID: string): Promise<Course> {
         return new Promise<Course>((resolve, reject) => {
+            console.log(url + `courses/${userID}/${courseID}`)
             fetch(url + `courses/${userID}/${courseID}`, {
                 headers: authorized,
                 method: "GET"

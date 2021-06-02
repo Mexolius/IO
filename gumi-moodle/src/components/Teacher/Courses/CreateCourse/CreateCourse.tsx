@@ -80,7 +80,7 @@ export default class CreateCourse extends Component<IProps, IState>{
         const { submitSuccess } = this.state;
 
         return (
-            <div className="w3-section w3-padding-16">
+            <div className="w3-section w3-padding-16 content-wrapper">
                 {!submitSuccess && (
                     <form id={"create-post-form"} onSubmit={this.processFormSubmission} noValidate={true} className="w3-container w3-border w3-padding-16 w3-white">
                         <h1 className="w3-bottombar w3-border-dark-gray">Add new course</h1>
