@@ -4,7 +4,7 @@ export namespace Database {
     //////////////
     //#region UTIL
 
-    const url = "http://localhost:8080/";
+    const url = "http://3.143.145.158:8080/";
     const authorized = {
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json; charset=utf-8',
