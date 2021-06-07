@@ -235,12 +235,16 @@ export class DefineGrade extends Component<IProps, IState> {
     switch (this.state.status) {
       case 200:
         return (
-          <h2>You have correctly defined the grade!</h2>
+          <div className="w3-panel w3-round-large w3-border w3-green">
+            <h3>Success!</h3>
+            <p>You have correctly defined the grade!</p>
+          </div>
         )
       case 0:
         return (
 
           <div>
+            <h4 className="w3-border-bottom w3-border-dark-gray w3-text-dark-gray w3-margin-bottom">You are definining new grade</h4>
             <div style={{ height: 400 }}>
               <SortableTree
                 treeData={this.state.treeData}
@@ -281,9 +285,8 @@ export class DefineGrade extends Component<IProps, IState> {
                   onClick: () => this.handleNodeClick(rowInfo.node)
                 })}/>
             </div>
-            <button className="w3-btn w3-hover-green w3-right w3-teal" onClick={this.getFlatData.bind(this)}>Submit</button>
-
-          </div>
+            <button style={{backgroundColor: "#5d99c6"}} className="w3-btn w3-hover-blue w3-right w3-text-white" onClick={this.getFlatData.bind(this)}>Submit</button>
+                </div>
         );
       default:
         return (

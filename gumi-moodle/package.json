@@ -19,6 +19,7 @@
     "babel-plugin": "^1.0.6",
     "multicolorslider": "^1.0.2",
     "plotly.js": "^1.58.4",
+    "rc-slider": "^9.7.2",
     "react": "^16.14.0",
     "react-circular-progressbar": "^2.0.4",
     "react-compound-slider": "^3.3.1",

@@ -25,6 +25,12 @@ export interface Instructor{
     _id:string,
 }
 
+export interface Student{
+    firstName:string,
+    lastName:string,
+    _id:string,
+}
+
 export interface StudentCourse{
 
 }
@@ -48,7 +54,7 @@ export interface CourseData {
     name: string,
     description: string,
     studentLimit: number,
-    students: Array<String>,
+    students: Array<Student>,
     teachers: Array<Instructor>
     
 }

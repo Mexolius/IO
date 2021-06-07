@@ -170,12 +170,15 @@ updateChildrenPointsSum(){
     switch (this.state.status) {
       case 200:
       return (
-        <h2>You added the grade!</h2> 
+        <div className="w3-panel w3-round-large w3-border w3-green">
+          <h3>Success!</h3>
+          <p>You added the grade!</p>
+        </div>
       )
       case 0:
     return (
       <div>
-         <h2>You are grading {this.props.studentID} student</h2> 
+         <h4 className="w3-border-bottom w3-border-dark-gray w3-text-dark-gray w3-margin-bottom">You are grading <b>{this.props.studentID}</b> student</h4>
          <div style={{ height: 400 }}>
           <SortableTree
              treeData={this.state.treeData}
@@ -205,8 +208,8 @@ updateChildrenPointsSum(){
              
         ></SortableTree>
         </div>
-          <button className="w3-btn w3-hover-green w3-right w3-teal" onClick={this.onSubmit.bind(this)}>Submit</button>
-        
+
+          <button style={{backgroundColor: "#5d99c6"}} className="w3-btn w3-border-top w3-hover-blue w3-right w3-text-white" onClick={this.onSubmit.bind(this)}>Submit</button>
       </div>
     );
     default:

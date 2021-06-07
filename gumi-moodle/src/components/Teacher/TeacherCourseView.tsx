@@ -29,7 +29,7 @@ class TeacherCourseView extends AbstractCourseView{
                             <Switch>
                                 <Route path={`/courses/details/${this.state.data._id}/define_grade`} render={()=>(<DefineGrade course_id={this.props.courseID}/>)} />
                                 <Route path={`/courses/details/${this.state.data._id}/change_thresholds`} render={()=>(<ChangeThresholds {...this.state.data}/>)} />
-                                <Route path={`/courses/details/${this.state.data._id}/students_list`} render={()=>(<StudentsList course={this.state.data}/>)} />
+                                <Route path={`/courses/details/${this.state.data._id}/students_list`} render={()=>(<StudentsList students={this.state.data.students}/>)} />
                                 <Route path={`/courses/details/${this.state.data._id}/add_teacher`} render={()=>(<AddTeacher course_id={this.props.courseID}/>)} />
                                 <Route path={`/courses/details/${this.state.data._id}/export_data/csv`} render={()=>(<ExportData format="csv" course_id={this.props.courseID}/>)} />
                                 <Route path={`/courses/details/${this.state.data._id}/export_data/xlsx`} render={()=>(<ExportData format="xlsx" course_id={this.props.courseID}/>)} />
