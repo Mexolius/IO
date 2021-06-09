@@ -1,0 +1,40 @@
+# This workflow will do a clean install of node dependencies, attempt to build the source and release the app as a .zip
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Create release
+
+on: 
+  push:
+    tags:
+      - 'v**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.x
+    - name: build node app
+      run: |
+        cd gumi-moodle
+        npm ci
+        node --max_old_space_size=8000 /usr/bin/npm run build
+    - name: bundle the build directory
+      run: zip -r gumi-moodle build/*
+    - name: bundle the ENTIRE gumi-moodle directory
+      if: ${{ failure() }}
+      run: |
+        rm -rf build gumi-moodle.zip
+        zip -r gumi-moodle *
+    - name: Create release
+      if: ${{ always() }}
+      uses: softprops/action-gh-release@v1
+      with:
+        files: gumi-moodle.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
